@@ -21,7 +21,7 @@ import { SiteNavbar } from "@/components/site-navbar";
 import { PartnerMarquee } from "@/components/partner-marquee";
 import { EngineeringFloorPlan } from "@/components/engineering-floor-plan";
 import { HeritageProjectGallery } from "@/components/heritage-project-gallery";
-import { PaymentCalculator } from "@/components/payment-calculator";
+import { PaymentSection } from "@/components/payment-section";
 import { ResidenceGallerySlider } from "@/components/residence-gallery-slider";
 import { useLang } from "@/components/language-provider";
 import type { CopyKey, Lang } from "@/lib/i18n";
@@ -34,6 +34,7 @@ import {
   DISTRICT_ATTRACTIONS_PAGE,
 } from "@/lib/district-attractions";
 import { REMOTE_IMAGE_BLUR_DATA_URL } from "@/lib/image-blur-placeholder";
+import { monthlyMortgagePayment } from "@/lib/financing-math";
 
 const PanoramaViewerModal = dynamic(
   () =>
@@ -45,45 +46,6 @@ const LightMap = dynamic(() => import("@/components/light-map"), {
   ssr: false,
 });
 const DarkMap = dynamic(() => import("@/components/dark-map"), { ssr: false });
-
-const PAYMENT_PHASES = [
-  {
-    pct: "20",
-    title: "Down payment",
-    when: "On booking",
-    body: "Initial capital allocation secures your position and activates the sales agreement under RERA-registered escrow protocols.",
-    bullets: ["Executes reservation & KYC", "Applied to final purchase price"],
-  },
-  {
-    pct: "40",
-    title: "During construction",
-    when: "Milestone-linked",
-    body: "Progressive instalments mirror certified construction stages — aligned with engineer sign-off and programme transparency.",
-    bullets: ["Tied to structural milestones", "Disclosed schedule pre-commitment"],
-  },
-  {
-    pct: "40",
-    title: "On handover",
-    when: "Completion",
-    body: "Final balance due at practical completion and key release, following snagging clearance and authority approvals.",
-    bullets: ["Title readiness coordination", "Move-in concierge available"],
-  },
-];
-
-function monthlyMortgagePayment(
-  principal: number,
-  annualRatePct: number,
-  years: number,
-): number {
-  if (principal <= 0) return 0;
-  const monthlyRate = annualRatePct / 100 / 12;
-  const n = Math.max(1, Math.round(years * 12));
-  if (monthlyRate <= 0) return principal / n;
-  return (
-    (principal * monthlyRate * Math.pow(1 + monthlyRate, n)) /
-    (Math.pow(1 + monthlyRate, n) - 1)
-  );
-}
 
 function formatAed(n: number, lang: Lang) {
   return new Intl.NumberFormat(lang === "ar" ? "ar-AE" : "en-AE", {
@@ -808,84 +770,13 @@ export default function Home() {
             align="center"
           />
 
-          <div className="relative mx-auto hidden w-full max-w-[1100px] md:block">
-            <div className="grid grid-cols-3 gap-4">
-              {PAYMENT_PHASES.map((ph) => (
-                <div key={ph.title} className="text-center">
-                  <p className="font-serif text-[clamp(2.25rem,5vw,3.5rem)] font-extralight tabular-nums leading-none tracking-[-0.02em] text-charcoal">
-                    {ph.pct}%
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <div className="relative my-8 h-12">
-              <div
-                className="absolute start-0 end-0 top-1/2 h-px -translate-y-1/2 bg-charcoal/14"
-                aria-hidden
-              />
-              <div className="relative grid h-full grid-cols-3">
-                {PAYMENT_PHASES.map((ph) => (
-                  <div key={ph.title} className="flex justify-center">
-                    <span
-                      className="relative z-10 mt-[1.125rem] flex h-[11px] w-[11px] items-center justify-center rounded-full border border-charcoal/20 bg-white shadow-sm"
-                      aria-hidden
-                    >
-                      <span className="h-[5px] w-[5px] rounded-full bg-charcoal" />
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-6 px-1">
-              {PAYMENT_PHASES.map((ph) => (
-                <div key={ph.title} className="text-center">
-                  <p className="font-sans text-[10px] font-semibold uppercase leading-snug tracking-[0.22em] text-charcoal">
-                    {ph.title
-                      .split(" ")
-                      .map((w) => w.toUpperCase())
-                      .join(" ")}
-                  </p>
-                  <p className="mx-auto mt-6 hidden max-w-[240px] font-sans text-[13px] font-normal leading-relaxed text-charcoal/38 lg:block">
-                    {ph.body}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-10 md:hidden">
-            {PAYMENT_PHASES.map((ph) => (
-              <div key={ph.title} className="border-s border-charcoal/12 ps-6">
-                <p className="font-serif text-3xl font-extralight tabular-nums text-charcoal">
-                  {ph.pct}%
-                </p>
-                <p className="mt-3 font-sans text-[10px] font-semibold uppercase tracking-[0.22em] text-charcoal">
-                  {ph.title
-                    .split(" ")
-                    .map((w) => w.toUpperCase())
-                    .join(" ")}
-                </p>
-                <p className="mt-3 font-sans text-[13px] leading-relaxed text-charcoal/40">
-                  {ph.body}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mx-auto mt-14 max-w-xl md:mt-16">
-            <PaymentCalculator
-              lang={lang}
-              t={t}
-              initialPurchasePrice={
-                RESIDENCE_MODELS.find((m) => m.id === "2br")?.booking
-                  .priceMin ?? RESIDENCE_MODELS[0].booking.priceMin
-              }
-              downPaymentPct={Number(PAYMENT_PHASES[0].pct)}
-              currency="AED"
-            />
-          </div>
+          <PaymentSection
+            initialPurchasePrice={
+              RESIDENCE_MODELS.find((m) => m.id === "2br")?.booking.priceMin ??
+              RESIDENCE_MODELS[0].booking.priceMin
+            }
+            currency="AED"
+          />
         </div>
       </section>
 
