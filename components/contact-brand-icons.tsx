@@ -2,22 +2,26 @@
 
 import { useId } from "react";
 
-/** All marks: viewBox 0 0 24 24 — size with `className` (e.g. h-6 w-6 inside a 40px circle). */
-
+/** viewBox 0 0 24 24 — use with `h-6 w-6` inside 40px glass controls. */
 const svgBase = "block h-6 w-6 shrink-0";
 
-/** International Symbol of Access (official blue roundel + white figure). */
+/** Thin-line accessibility / wheelchair-in-circle (lux minimal, not filled ISA). */
 export function IconInternationalAccess({ className }: { className?: string }) {
   return (
     <svg
-      className={`${svgBase} ${className ?? ""}`}
+      className={`${svgBase} text-charcoal ${className ?? ""}`}
       viewBox="0 0 24 24"
+      fill="none"
       aria-hidden
     >
-      <circle cx="12" cy="12" r="11" fill="#003E9C" />
+      <circle cx="12" cy="12" r="9.25" stroke="currentColor" strokeWidth="1.1" />
+      <circle cx="12" cy="7.35" r="1.35" stroke="currentColor" strokeWidth="1.1" />
       <path
-        fill="#fff"
-        d="M12 5.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm-3 4.25h6c.55 0 1 .45 1 1v.5H8c0-.55.45-1 1-1zm-.75 2.25h8.5c.28 0 .5.22.5.5s-.22.5-.5.5h-1.25v3.5l1.5 2.75c.14.25.05.55-.2.7-.25.14-.55.05-.7-.2L14.25 16H9.75l-.6 3.25c-.08.4-.45.7-.88.7h-.02c-.5 0-.88-.38-.82-.88l.65-3.57H7.25c-.28 0-.5-.22-.5-.5s.22-.5.5-.5h1.5v-3.5H7.25c-.28 0-.5-.22-.5-.5s.22-.5.5-.5zm2.5 1h3.5v3h-3.5v-3zm-.5 5.25c1.45 0 2.625 1.175 2.625 2.625S12.75 21 11.3 21 8.675 19.825 8.675 18.375 9.85 15.75 11.3 15.75zm0 1.25c-.76 0-1.375.615-1.375 1.375S10.54 19.75 11.3 19.75s1.375-.615 1.375-1.375S12.06 17 11.3 17z"
+        stroke="currentColor"
+        strokeWidth="1.1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M9.25 11.25h5.5M14.75 11.25l-1.1 5.6M9.25 11.25 8 16.1M12 13.35v2.9M9.4 18.6a2.65 2.65 0 1 0 5.3 0"
       />
     </svg>
   );
@@ -72,7 +76,7 @@ export function BrandIconInstagram({ className }: { className?: string }) {
   );
 }
 
-/** Telegram — #0088cc circle + white paper plane. */
+/** Telegram — #0088cc circle + white plane. */
 export function BrandIconTelegram({ className }: { className?: string }) {
   return (
     <svg
@@ -89,7 +93,7 @@ export function BrandIconTelegram({ className }: { className?: string }) {
   );
 }
 
-/** Messenger — blue gradient bubble + white bolt. */
+/** Messenger — blue gradient + bolt. */
 export function BrandIconMessenger({ className }: { className?: string }) {
   const mid = useId().replace(/:/g, "");
   return (
@@ -141,7 +145,7 @@ export function BrandIconGmail({ className }: { className?: string }) {
   );
 }
 
-/** Phone — filled handset for contrast on white. */
+/** Phone — filled handset. */
 export function BrandIconPhone({ className }: { className?: string }) {
   return (
     <svg

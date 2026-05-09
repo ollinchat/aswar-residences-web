@@ -157,3 +157,18 @@ html.aswar-a11y-underline-links a[href] {
   text-underline-offset: 0.2em;
   text-decoration-thickness: 1px;
 }
+
+/* Floating contact hub — portal root; !important beats layout/map stacking */
+.aswar-floating-hub-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9998 !important;
+}
+
+.aswar-floating-hub-root {
+  position: fixed !important;
+  left: 2rem !important;
+  bottom: max(2rem, env(safe-area-inset-bottom, 0px)) !important;
+  z-index: 9999 !important;
+  pointer-events: none;
+}

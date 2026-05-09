@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useId, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   AnimatePresence,
   motion,
@@ -24,9 +25,30 @@ const A11Y_TEXT = "aswar-a11y-text";
 const A11Y_CONTRAST = "aswar-a11y-contrast";
 const A11Y_UNDERLINE = "aswar-a11y-underline";
 
-const spring = { type: "spring" as const, stiffness: 420, damping: 28 };
-
+const fabSpring = { type: "spring" as const, stiffness: 400, damping: 28 };
 const fabHover = { y: -4, scale: 1.05 };
+
+/** Elastic menu — float up with slight overshoot */
+const menuSpring = {
+  type: "spring" as const,
+  stiffness: 260,
+  damping: 14,
+  mass: 0.72,
+};
+
+const CHANNEL_GLOW: Record<string, string> = {
+  wa: "[&_svg]:transition-[filter,transform] motion-safe:hover:[&_svg]:drop-shadow-[0_0_12px_rgba(37,211,102,0.75)]",
+  phone:
+    "[&_svg]:transition-[filter,transform] motion-safe:hover:[&_svg]:drop-shadow-[0_0_10px_rgba(26,28,30,0.45)]",
+  email:
+    "[&_svg]:transition-[filter,transform] motion-safe:hover:[&_svg]:drop-shadow-[0_0_12px_rgba(234,67,53,0.5)]",
+  messenger:
+    "[&_svg]:transition-[filter,transform] motion-safe:hover:[&_svg]:drop-shadow-[0_0_14px_rgba(0,178,255,0.65)]",
+  instagram:
+    "[&_svg]:transition-[filter,transform] motion-safe:hover:[&_svg]:drop-shadow-[0_0_14px_rgba(225,48,108,0.55)]",
+  telegram:
+    "[&_svg]:transition-[filter,transform] motion-safe:hover:[&_svg]:drop-shadow-[0_0_14px_rgba(0,136,204,0.75)]",
+};
 
 type Channel = {
   id: string;
@@ -117,7 +139,7 @@ function ToggleRow({
       role="switch"
       aria-checked={checked}
       onClick={() => onChange(!checked)}
-      className="flex w-full items-center justify-between gap-4 rounded-[2px] border border-charcoal/[0.08] bg-white px-3 py-2.5 text-start transition-colors hover:bg-neutral-50/90"
+      className="flex w-full items-center justify-between gap-4 rounded-[2px] border border-white/15 bg-white/50 px-3 py-2.5 text-start backdrop-blur-md transition-colors hover:bg-white/70"
     >
       <span className="font-sans text-[11px] font-medium leading-snug tracking-wide text-charcoal">
         {label}
@@ -138,9 +160,21 @@ function ToggleRow({
   );
 }
 
+const glassOrb =
+  "relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl";
+
+const hitWrap = "flex min-h-[48px] min-w-[48px] items-center justify-center rounded-full";
+
+const menuPanelGlass =
+  "w-[min(100vw-3rem,220px)] origin-bottom rounded-[2px] border border-white/20 bg-white/40 p-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl";
+
+const contactMenuGlass =
+  "flex origin-bottom flex-col-reverse gap-2 rounded-[2px] border border-white/20 bg-white/40 p-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl";
+
 export function FloatingContactHub() {
   const { t } = useLang();
   const reduceMotion = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [a11yOpen, setA11yOpen] = useState(false);
   const [textLarge, setTextLarge] = useState(false);
@@ -150,6 +184,10 @@ export function FloatingContactHub() {
   const contactMenuTitleId = useId();
   const a11yMenuTitleId = useId();
   const channels = useMemo(() => buildChannels(), []);
+
+  useEffect(() => {
+    queueMicrotask(() => setMounted(true));
+  }, []);
 
   useEffect(() => {
     const t0 = readStored(A11Y_TEXT);
@@ -203,18 +241,14 @@ export function FloatingContactHub() {
 
   const overlayOpen = contactOpen || a11yOpen;
 
-  const transition = reduceMotion
-    ? { duration: 0.2 }
-    : { type: "spring" as const, stiffness: 380, damping: 26, mass: 0.85 };
-
-  const fabShell =
-    "flex h-10 w-10 items-center justify-center rounded-full border border-charcoal/10 bg-white text-charcoal shadow-[0_6px_28px_-10px_rgba(26,28,30,0.22)] backdrop-blur-md backdrop-saturate-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/20";
+  const menuTransition = reduceMotion ? { duration: 0.2 } : menuSpring;
+  const fadeTransition = reduceMotion ? { duration: 0.15 } : { duration: 0.22 };
 
   const hoverProps = reduceMotion
     ? {}
-    : { whileHover: fabHover, transition: spring };
+    : { whileHover: fabHover, transition: fabSpring };
 
-  return (
+  const tree = (
     <>
       <AnimatePresence>
         {overlayOpen ? (
@@ -225,18 +259,14 @@ export function FloatingContactHub() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={reduceMotion ? { duration: 0.15 } : transition}
-            className="pointer-events-auto fixed inset-0 z-[99] bg-charcoal/[0.06] backdrop-blur-[2px]"
+            transition={fadeTransition}
+            className="aswar-floating-hub-backdrop pointer-events-auto bg-charcoal/[0.07] backdrop-blur-[2px]"
             onClick={closeAll}
           />
         ) : null}
       </AnimatePresence>
 
-      {/*
-        Viewport-fixed stack (not inside scrolling layout) — z-[100], physical left/bottom for RTL+LTR.
-      */}
-      <div className="pointer-events-none fixed bottom-6 left-6 z-[100] flex flex-col items-start gap-3">
-        {/* Accessibility — top; menu slides up from the button */}
+      <div className="aswar-floating-hub-root flex flex-col items-start gap-3">
         <div className="pointer-events-auto flex flex-col items-start gap-2">
           <AnimatePresence>
             {a11yOpen ? (
@@ -248,20 +278,20 @@ export function FloatingContactHub() {
                 initial={
                   reduceMotion
                     ? { opacity: 0 }
-                    : { opacity: 0, y: 28, scale: 0.96 }
+                    : { opacity: 0, y: 36, scale: 0.92 }
                 }
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={
                   reduceMotion
                     ? { opacity: 0 }
-                    : { opacity: 0, y: 20, scale: 0.96 }
+                    : { opacity: 0, y: 24, scale: 0.94 }
                 }
-                transition={transition}
-                className="w-[min(100vw-3rem,220px)] origin-bottom rounded-[2px] border border-charcoal/10 bg-white/90 p-2.5 shadow-[0_12px_40px_-14px_rgba(26,28,30,0.18)] backdrop-blur-md backdrop-saturate-150"
+                transition={menuTransition}
+                className={menuPanelGlass}
               >
                 <p
                   id={a11yMenuTitleId}
-                  className="border-b border-charcoal/[0.08] pb-2 font-sans text-[9px] font-semibold uppercase tracking-[0.22em] text-charcoal/45"
+                  className="border-b border-white/20 pb-2 font-sans text-[9px] font-semibold uppercase tracking-[0.22em] text-charcoal/50"
                 >
                   {t("a11yMenuTitle")}
                 </p>
@@ -286,21 +316,22 @@ export function FloatingContactHub() {
             ) : null}
           </AnimatePresence>
 
-          <motion.button
-            type="button"
-            onClick={toggleA11y}
-            aria-expanded={a11yOpen}
-            aria-haspopup="dialog"
-            aria-label={a11yOpen ? t("hubAriaA11yClose") : t("hubAriaA11yOpen")}
-            whileTap={{ scale: 0.96 }}
-            {...hoverProps}
-            className={fabShell}
-          >
-            <IconInternationalAccess />
-          </motion.button>
+          <div className={hitWrap}>
+            <motion.button
+              type="button"
+              onClick={toggleA11y}
+              aria-expanded={a11yOpen}
+              aria-haspopup="dialog"
+              aria-label={a11yOpen ? t("hubAriaA11yClose") : t("hubAriaA11yOpen")}
+              whileTap={{ scale: 0.96 }}
+              {...hoverProps}
+              className={`${glassOrb} text-charcoal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25`}
+            >
+              <IconInternationalAccess />
+            </motion.button>
+          </div>
         </div>
 
-        {/* Contact — bottom */}
         <div className="pointer-events-auto flex flex-col items-start gap-2">
           <AnimatePresence>
             {contactOpen ? (
@@ -312,16 +343,16 @@ export function FloatingContactHub() {
                 initial={
                   reduceMotion
                     ? { opacity: 0 }
-                    : { opacity: 0, y: 28, scale: 0.96 }
+                    : { opacity: 0, y: 36, scale: 0.92 }
                 }
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={
                   reduceMotion
                     ? { opacity: 0 }
-                    : { opacity: 0, y: 20, scale: 0.96 }
+                    : { opacity: 0, y: 24, scale: 0.94 }
                 }
-                transition={transition}
-                className="flex origin-bottom flex-col-reverse gap-2 rounded-[2px] border border-charcoal/10 bg-white/90 p-2.5 shadow-[0_12px_40px_-14px_rgba(26,28,30,0.18)] backdrop-blur-md backdrop-saturate-150"
+                transition={menuTransition}
+                className={contactMenuGlass}
               >
                 <p id={contactMenuTitleId} className="sr-only">
                   {t("hubMenuTitle")}
@@ -332,70 +363,80 @@ export function FloatingContactHub() {
                     initial={
                       reduceMotion
                         ? { opacity: 0 }
-                        : { opacity: 0, y: 12, scale: 0.96 }
+                        : { opacity: 0, y: 14, scale: 0.94 }
                     }
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={
                       reduceMotion
                         ? { opacity: 0 }
-                        : { opacity: 0, y: 8, scale: 0.96 }
+                        : { opacity: 0, y: 10, scale: 0.96 }
                     }
                     transition={{
-                      ...transition,
-                      delay: reduceMotion ? 0 : index * 0.04,
+                      ...menuTransition,
+                      delay: reduceMotion ? 0 : index * 0.035,
                     }}
                     className="group relative flex items-center justify-start"
                   >
                     <span
-                      className="pointer-events-none absolute left-full top-1/2 z-10 ml-3 hidden max-w-[200px] -translate-y-1/2 rounded-[2px] border border-charcoal/[0.08] bg-charcoal px-2.5 py-1.5 text-start font-sans text-[10px] font-medium leading-snug tracking-wide text-white opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 md:block whitespace-nowrap"
+                      className="pointer-events-none absolute left-full top-1/2 z-[10060] ml-3 hidden max-w-[200px] -translate-y-1/2 rounded-[2px] border border-white/20 bg-charcoal/95 px-2.5 py-1.5 text-start font-sans text-[10px] font-medium leading-snug tracking-wide text-white opacity-0 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-md transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 md:block whitespace-nowrap"
                       role="tooltip"
                     >
                       {t(ch.labelKey)}
                     </span>
-                    <motion.a
-                      href={ch.href}
-                      title={t(ch.labelKey)}
-                      {...(ch.external
-                        ? { target: "_blank", rel: "noopener noreferrer" }
-                        : {})}
-                      className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-charcoal/[0.08] bg-white shadow-[inset_0_0_0_1px_rgba(26,28,30,0.04)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25"
-                      aria-label={t(ch.labelKey)}
-                      onClick={() => setContactOpen(false)}
-                      whileTap={{ scale: 0.95 }}
-                      {...(reduceMotion ? {} : { whileHover: fabHover, transition: spring })}
-                    >
-                      {ch.node}
-                    </motion.a>
+                    <div className={hitWrap}>
+                      <motion.a
+                        href={ch.href}
+                        title={t(ch.labelKey)}
+                        {...(ch.external
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : {})}
+                        className={`${glassOrb} ${CHANNEL_GLOW[ch.id] ?? ""} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25`}
+                        aria-label={t(ch.labelKey)}
+                        onClick={() => setContactOpen(false)}
+                        whileTap={{ scale: 0.95 }}
+                        {...(reduceMotion
+                          ? {}
+                          : { whileHover: fabHover, transition: fabSpring })}
+                      >
+                        {ch.node}
+                      </motion.a>
+                    </div>
                   </motion.div>
                 ))}
               </motion.div>
             ) : null}
           </AnimatePresence>
 
-          <motion.button
-            type="button"
-            onClick={toggleContact}
-            aria-expanded={contactOpen}
-            aria-haspopup="dialog"
-            aria-label={contactOpen ? t("hubAriaClose") : t("hubAriaOpen")}
-            whileTap={{ scale: 0.96 }}
-            {...hoverProps}
-            className={fabShell}
-          >
-            <motion.span
-              animate={{ rotate: contactOpen ? 90 : 0 }}
-              transition={spring}
-              className="flex items-center justify-center"
+          <div className={hitWrap}>
+            <motion.button
+              type="button"
+              onClick={toggleContact}
+              aria-expanded={contactOpen}
+              aria-haspopup="dialog"
+              aria-label={contactOpen ? t("hubAriaClose") : t("hubAriaOpen")}
+              whileTap={{ scale: 0.96 }}
+              {...hoverProps}
+              className={`${glassOrb} text-charcoal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25`}
             >
-              {contactOpen ? (
-                <X className="h-5 w-5" strokeWidth={1} aria-hidden />
-              ) : (
-                <MessageCircle className="h-5 w-5" strokeWidth={1} aria-hidden />
-              )}
-            </motion.span>
-          </motion.button>
+              <motion.span
+                animate={{ rotate: contactOpen ? 90 : 0 }}
+                transition={fabSpring}
+                className="flex items-center justify-center"
+              >
+                {contactOpen ? (
+                  <X className="h-5 w-5" strokeWidth={1} aria-hidden />
+                ) : (
+                  <MessageCircle className="h-5 w-5" strokeWidth={1} aria-hidden />
+                )}
+              </motion.span>
+            </motion.button>
+          </div>
         </div>
       </div>
     </>
   );
+
+  if (!mounted) return null;
+
+  return createPortal(tree, document.body);
 }

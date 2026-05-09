@@ -7,10 +7,9 @@ import { LanguageProvider } from "@/components/language-provider";
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <LanguageProvider>
-      <InquiryModalProvider>
-        {children}
-        <FloatingContactHub />
-      </InquiryModalProvider>
+      <InquiryModalProvider>{children}</InquiryModalProvider>
+      {/* Portal renders to document.body — outside main/layout DOM */}
+      <FloatingContactHub />
     </LanguageProvider>
   );
 }
