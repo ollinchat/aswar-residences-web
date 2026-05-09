@@ -1,9 +1,12 @@
 export type ResidenceModel = {
   id: string;
   label: string;
+  /** Numeric areas for Sq.Ft / Sq.M toggle */
+  areas: {
+    totalSqft: number;
+    balconySqft: number;
+  };
   specs: {
-    totalArea: string;
-    balcony: string;
     parking: string;
   };
   images: string[];
@@ -20,11 +23,8 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
   {
     id: "studio",
     label: "Studio",
-    specs: {
-      totalArea: "548 SQ.FT",
-      balcony: "52 SQ.FT",
-      parking: "1 Reserved bay",
-    },
+    areas: { totalSqft: 548, balconySqft: 52 },
+    specs: { parking: "1 Reserved bay" },
     images: [
       "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1800&q=88",
       "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1800&q=88",
@@ -36,11 +36,8 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
   {
     id: "1br",
     label: "1BR",
-    specs: {
-      totalArea: "892 SQ.FT",
-      balcony: "118 SQ.FT",
-      parking: "1 Reserved bay",
-    },
+    areas: { totalSqft: 892, balconySqft: 118 },
+    specs: { parking: "1 Reserved bay" },
     images: [
       "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1800&q=88",
       "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1800&q=88",
@@ -52,11 +49,8 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
   {
     id: "2br",
     label: "2BR",
-    specs: {
-      totalArea: "1,420 SQ.FT",
-      balcony: "186 SQ.FT",
-      parking: "2 Reserved bays",
-    },
+    areas: { totalSqft: 1420, balconySqft: 186 },
+    specs: { parking: "2 Reserved bays" },
     images: [
       "https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=1800&q=88",
       "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1800&q=88",
@@ -68,11 +62,8 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
   {
     id: "3br",
     label: "3BR",
-    specs: {
-      totalArea: "2,180 SQ.FT",
-      balcony: "240 SQ.FT",
-      parking: "2 Reserved bays",
-    },
+    areas: { totalSqft: 2180, balconySqft: 240 },
+    specs: { parking: "2 Reserved bays" },
     images: [
       "https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?auto=format&fit=crop&w=1800&q=88",
       "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?auto=format&fit=crop&w=1800&q=88",
@@ -84,11 +75,8 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
   {
     id: "penthouse",
     label: "Penthouse",
-    specs: {
-      totalArea: "4,850 SQ.FT",
-      balcony: "620 SQ.FT",
-      parking: "3 Reserved bays",
-    },
+    areas: { totalSqft: 4850, balconySqft: 620 },
+    specs: { parking: "3 Reserved bays" },
     images: [
       "https://images.unsplash.com/photo-1600047509355-9dc75507daeb?auto=format&fit=crop&w=1800&q=88",
       "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1800&q=88",

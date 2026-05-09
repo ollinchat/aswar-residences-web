@@ -4,7 +4,13 @@ import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
-import { Play } from "lucide-react";
+import {
+  GraduationCap,
+  Play,
+  ShoppingBag,
+  TrainFront,
+  Trees,
+} from "lucide-react";
 import { SiteNavbar } from "@/components/site-navbar";
 import { PartnerMarquee } from "@/components/partner-marquee";
 import { EngineeringFloorPlan } from "@/components/engineering-floor-plan";
@@ -12,6 +18,8 @@ import { ResidenceGallerySlider } from "@/components/residence-gallery-slider";
 import { useLang } from "@/components/language-provider";
 import type { Lang } from "@/lib/i18n";
 import { RESIDENCE_MODELS } from "@/lib/residence-models";
+import type { AreaMetric } from "@/lib/area-format";
+import { formatAreaValue } from "@/lib/area-format";
 
 const PanoramaViewerModal = dynamic(
   () =>
@@ -44,6 +52,40 @@ const PAYMENT_PHASES = [
     bullets: ["Title readiness coordination", "Move-in concierge available"],
   },
 ];
+
+const DISTRICT_GALLERY = [
+  {
+    src: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1400&q=88",
+    alt: "Dubai skyline toward Business Bay",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1582672060674-884a8839a85f?auto=format&fit=crop&w=1400&q=88",
+    alt: "Dubai waterfront promenade",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1400&q=88",
+    alt: "Urban boulevard at dusk",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1518684079-b4a468aebefc?auto=format&fit=crop&w=1400&q=88",
+    alt: "Contemporary district architecture",
+  },
+] as const;
+
+function monthlyMortgagePayment(
+  principal: number,
+  annualRatePct: number,
+  years: number,
+): number {
+  if (principal <= 0) return 0;
+  const monthlyRate = annualRatePct / 100 / 12;
+  const n = Math.max(1, Math.round(years * 12));
+  if (monthlyRate <= 0) return principal / n;
+  return (
+    (principal * monthlyRate * Math.pow(1 + monthlyRate, n)) /
+    (Math.pow(1 + monthlyRate, n) - 1)
+  );
+}
 
 function formatAed(n: number, lang: Lang) {
   return new Intl.NumberFormat(lang === "ar" ? "ar-AE" : "en-AE", {
@@ -128,7 +170,7 @@ function SectionIntro({
 }) {
   return (
     <div
-      className={`mb-24 md:mb-32 lg:mb-40 ${
+      className={`mb-10 md:mb-12 lg:mb-14 ${
         align === "center" ? "mx-auto max-w-3xl text-center" : ""
       }`}
     >
@@ -137,7 +179,7 @@ function SectionIntro({
       </h2>
       {subtitle ? (
         <p
-          className={`mt-10 max-w-xl font-sans text-[11px] font-medium uppercase leading-relaxed tracking-[0.28em] text-charcoal/42 ${
+          className={`mt-6 max-w-xl font-sans text-[11px] font-medium uppercase leading-relaxed tracking-[0.28em] text-charcoal/42 ${
             align === "center" ? "mx-auto" : ""
           }`}
         >
@@ -178,9 +220,17 @@ export default function Home() {
   const [viewerOpen, setViewerOpen] = useState(false);
   const [viewerSrc, setViewerSrc] = useState("/hero-360-panorama.jpg");
   const [viewerTitle, setViewerTitle] = useState("360° Experience");
-  const [viewMode, setViewMode] = useState<"lifestyle" | "engineering">(
-    "lifestyle",
-  );
+  const [viewMode, setViewMode] = useState<
+    "lifestyle" | "engineering" | "financing"
+  >("lifestyle");
+  const [areaMetric, setAreaMetric] = useState<AreaMetric>("sqft");
+  /** When null, financing uses the active unit's starting price. */
+  const [financingPriceOverride, setFinancingPriceOverride] = useState<
+    number | null
+  >(null);
+  const [downPct, setDownPct] = useState(20);
+  const [ratePct, setRatePct] = useState(4.99);
+  const [termYears, setTermYears] = useState(25);
 
   useEffect(() => {
     if (!viewerOpen) return;
@@ -193,6 +243,22 @@ export default function Home() {
 
   const activeResidence =
     RESIDENCE_MODELS.find((m) => m.id === residenceId) ?? RESIDENCE_MODELS[0];
+
+  const purchasePrice =
+    financingPriceOverride ?? activeResidence.booking.priceMin;
+
+  const selectResidence = (id: string) => {
+    setResidenceId(id);
+    setFinancingPriceOverride(null);
+  };
+
+  const downAmount = Math.round((purchasePrice * downPct) / 100);
+  const loanPrincipal = Math.max(0, purchasePrice - downAmount);
+  const monthlyPayment = monthlyMortgagePayment(
+    loanPrincipal,
+    ratePct,
+    termYears,
+  );
 
   const open360 = (src: string, title: string) => {
     setViewerSrc(src);
@@ -230,7 +296,7 @@ export default function Home() {
           aria-hidden
         />
 
-        <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 pb-32 pt-24 md:pb-40">
+        <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 pb-24 pt-20 md:pb-28">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -267,10 +333,10 @@ export default function Home() {
 
       <section
         id="the-residences"
-        className="scroll-mt-24 bg-[#FFFFFF] px-6 py-28 md:px-14 md:py-36"
+        className="scroll-mt-24 bg-[#FFFFFF] px-6 py-20 md:px-14"
       >
         <div className="mx-auto max-w-[1360px]">
-          <header className="mb-14 md:mb-16">
+          <header className="mb-10 md:mb-12">
             <p className="font-sans text-[9px] font-medium uppercase tracking-[0.52em] text-charcoal/32">
               {t("magazineKicker")}
             </p>
@@ -282,7 +348,7 @@ export default function Home() {
             </p>
           </header>
 
-          <div className="mb-14 border-b border-charcoal/[0.08]">
+          <div className="mb-10 border-b border-charcoal/[0.08]">
             <div className="scrollbar-none flex gap-8 overflow-x-auto pb-px md:flex-wrap md:gap-x-12 md:gap-y-6 lg:gap-x-14">
               {RESIDENCE_MODELS.map((m) => {
                 const active = residenceId === m.id;
@@ -290,7 +356,7 @@ export default function Home() {
                   <button
                     key={m.id}
                     type="button"
-                    onClick={() => setResidenceId(m.id)}
+                    onClick={() => selectResidence(m.id)}
                     className="group relative shrink-0 pb-4 text-start transition-opacity hover:opacity-90"
                   >
                     <span
@@ -332,7 +398,115 @@ export default function Home() {
               className="grid items-start gap-12 lg:grid-cols-12 lg:gap-14"
             >
               <div className="lg:col-span-7">
-                {viewMode === "lifestyle" ? (
+                {viewMode === "financing" ? (
+                  <div className="space-y-6 rounded-[2px] border border-charcoal/[0.08] bg-[#FAFAFA] p-6 md:p-8">
+                    <div>
+                      <p className="font-sans text-[9px] font-medium uppercase tracking-[0.28em] text-charcoal/38">
+                        {t("financingTitle")}
+                      </p>
+                      <p className="mt-3 max-w-md font-sans text-[11px] font-medium uppercase leading-relaxed tracking-[0.2em] text-charcoal/45">
+                        {t("financingSubtitle")}
+                      </p>
+                    </div>
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      <label className="block space-y-2">
+                        <span className="font-sans text-[9px] font-medium uppercase tracking-[0.22em] text-charcoal/40">
+                          {t("financingPurchasePrice")}
+                        </span>
+                        <input
+                          type="number"
+                          min={500_000}
+                          step={50_000}
+                          value={purchasePrice}
+                          onChange={(e) =>
+                            setFinancingPriceOverride(
+                              Math.max(0, Number(e.target.value) || 0),
+                            )
+                          }
+                          className="w-full rounded-[2px] border border-charcoal/[0.12] bg-white px-3 py-2.5 font-sans text-sm tabular-nums text-charcoal outline-none ring-0 transition-shadow focus:border-charcoal/35"
+                        />
+                      </label>
+                      <label className="block space-y-2">
+                        <span className="font-sans text-[9px] font-medium uppercase tracking-[0.22em] text-charcoal/40">
+                          {t("financingDownPayment")} ({downPct}%)
+                        </span>
+                        <input
+                          type="range"
+                          min={15}
+                          max={50}
+                          step={1}
+                          value={downPct}
+                          onChange={(e) =>
+                            setDownPct(Number(e.target.value))
+                          }
+                          className="mt-3 w-full accent-charcoal"
+                        />
+                      </label>
+                      <label className="block space-y-2">
+                        <span className="font-sans text-[9px] font-medium uppercase tracking-[0.22em] text-charcoal/40">
+                          {t("financingRate")}
+                        </span>
+                        <input
+                          type="number"
+                          min={0}
+                          max={15}
+                          step={0.05}
+                          value={ratePct}
+                          onChange={(e) =>
+                            setRatePct(Number(e.target.value) || 0)
+                          }
+                          className="w-full rounded-[2px] border border-charcoal/[0.12] bg-white px-3 py-2.5 font-sans text-sm tabular-nums text-charcoal outline-none focus:border-charcoal/35"
+                        />
+                      </label>
+                      <label className="block space-y-2">
+                        <span className="font-sans text-[9px] font-medium uppercase tracking-[0.22em] text-charcoal/40">
+                          {t("financingTerm")}
+                        </span>
+                        <select
+                          value={termYears}
+                          onChange={(e) =>
+                            setTermYears(Number(e.target.value))
+                          }
+                          className="w-full rounded-[2px] border border-charcoal/[0.12] bg-white px-3 py-2.5 font-sans text-sm text-charcoal outline-none focus:border-charcoal/35"
+                        >
+                          {[20, 25, 30].map((y) => (
+                            <option key={y} value={y}>
+                              {y}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    </div>
+                    <div className="border-t border-charcoal/[0.08] pt-6">
+                      <dl className="grid gap-3 sm:grid-cols-3">
+                        <div>
+                          <dt className="font-sans text-[9px] font-medium uppercase tracking-[0.2em] text-charcoal/35">
+                            {t("financingDownPayment")}
+                          </dt>
+                          <dd className="mt-1 font-serif text-lg font-light tabular-nums text-charcoal">
+                            {formatAed(downAmount, lang)}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="font-sans text-[9px] font-medium uppercase tracking-[0.2em] text-charcoal/35">
+                            {t("financingLoanPrincipal")}
+                          </dt>
+                          <dd className="mt-1 font-serif text-lg font-light tabular-nums text-charcoal">
+                            {formatAed(loanPrincipal, lang)}
+                          </dd>
+                        </div>
+                        <div className="sm:col-span-1">
+                          <dt className="font-sans text-[9px] font-medium uppercase tracking-[0.2em] text-charcoal/35">
+                            {t("financingMonthly")}
+                          </dt>
+                          <dd className="mt-1 font-serif text-2xl font-light tabular-nums tracking-tight text-charcoal">
+                            {formatAed(Math.round(monthlyPayment), lang)}
+                          </dd>
+                        </div>
+                      </dl>
+                    </div>
+                  </div>
+                ) : viewMode === "lifestyle" ? (
                   <ResidenceGallerySlider
                     images={activeResidence.images}
                     label={activeResidence.label}
@@ -351,7 +525,7 @@ export default function Home() {
               </div>
 
               <aside className="space-y-10 lg:col-span-5 lg:sticky lg:top-28 lg:self-start">
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-2">
                   <button
                     type="button"
                     onClick={() => setViewMode("lifestyle")}
@@ -373,6 +547,17 @@ export default function Home() {
                     }`}
                   >
                     {t("technicalBlueprint")}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setViewMode("financing")}
+                    className={`rounded-[2px] px-4 py-2 font-sans text-[9px] font-medium uppercase tracking-[0.22em] transition-colors ${
+                      viewMode === "financing"
+                        ? "bg-charcoal text-white"
+                        : "text-charcoal/42 ring-1 ring-charcoal/[0.1] hover:text-charcoal"
+                    }`}
+                  >
+                    {t("financingTitle")}
                   </button>
                 </div>
 
@@ -397,13 +582,52 @@ export default function Home() {
                   </div>
                 </div>
 
-                <dl className="space-y-0 border-t border-charcoal/[0.08]">
+                <div className="border-t border-charcoal/[0.08] pt-6">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <p className="font-sans text-[9px] font-medium uppercase tracking-[0.24em] text-charcoal/32">
+                      {t("totalArea")} · {t("balcony")}
+                    </p>
+                    <div
+                      className="inline-flex rounded-[2px] p-0.5 ring-1 ring-charcoal/[0.1]"
+                      role="group"
+                      aria-label="Area unit"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setAreaMetric("sqft")}
+                        className={`rounded-[1px] px-3 py-1.5 font-sans text-[9px] font-medium uppercase tracking-[0.18em] transition-colors ${
+                          areaMetric === "sqft"
+                            ? "bg-charcoal text-white"
+                            : "text-charcoal/45 hover:text-charcoal"
+                        }`}
+                      >
+                        {t("metricSqft")}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAreaMetric("sqm")}
+                        className={`rounded-[1px] px-3 py-1.5 font-sans text-[9px] font-medium uppercase tracking-[0.18em] transition-colors ${
+                          areaMetric === "sqm"
+                            ? "bg-charcoal text-white"
+                            : "text-charcoal/45 hover:text-charcoal"
+                        }`}
+                      >
+                        {t("metricSqm")}
+                      </button>
+                    </div>
+                  </div>
+
+                  <dl className="mt-5 space-y-0">
                   <div className="flex justify-between gap-6 border-b border-charcoal/[0.08] py-3.5">
                     <dt className="max-w-[55%] font-sans text-[10px] font-medium uppercase leading-snug tracking-[0.14em] text-charcoal/40">
                       {t("totalArea")}
                     </dt>
                     <dd className="text-end font-sans text-[11px] font-semibold tracking-[0.04em] text-charcoal">
-                      {activeResidence.specs.totalArea}
+                      {formatAreaValue(
+                        activeResidence.areas.totalSqft,
+                        areaMetric,
+                        lang,
+                      )}
                     </dd>
                   </div>
                   <div className="flex justify-between gap-6 border-b border-charcoal/[0.08] py-3.5">
@@ -411,7 +635,11 @@ export default function Home() {
                       {t("balcony")}
                     </dt>
                     <dd className="text-end font-sans text-[11px] font-semibold tracking-[0.04em] text-charcoal">
-                      {activeResidence.specs.balcony}
+                      {formatAreaValue(
+                        activeResidence.areas.balconySqft,
+                        areaMetric,
+                        lang,
+                      )}
                     </dd>
                   </div>
                   <div className="flex justify-between gap-6 py-3.5">
@@ -422,14 +650,31 @@ export default function Home() {
                       {activeResidence.specs.parking}
                     </dd>
                   </div>
-                </dl>
+                  </dl>
+                </div>
+
+                {viewMode === "financing" ? (
+                  <div className="space-y-4 border-t border-charcoal/[0.08] pt-8">
+                    <p className="font-sans text-[11px] font-normal leading-relaxed text-charcoal/48">
+                      {t("financingDisclaimer")}
+                    </p>
+                    <a
+                      href={`mailto:sales@aswar.ae?subject=${encodeURIComponent(
+                        `Finance quote — ASWAR 01 — ${activeResidence.label}`,
+                      )}`}
+                      className="inline-flex w-full items-center justify-center rounded-[2px] bg-charcoal px-6 py-3.5 font-mono text-[10px] uppercase tracking-[0.24em] text-white transition-colors hover:bg-charcoal/90"
+                    >
+                      {t("financingCta")}
+                    </a>
+                  </div>
+                ) : null}
               </aside>
             </motion.article>
           </AnimatePresence>
         </div>
       </section>
 
-      <section className="bg-[#FFFFFF] px-6 py-40 md:px-12 md:py-48 lg:py-56">
+      <section className="bg-[#FFFFFF] px-6 py-20 md:px-12">
         <div className="mx-auto max-w-6xl">
           <SectionIntro
             title={t("paymentTitle")}
@@ -505,16 +750,88 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="px-6 py-48 md:px-12 md:py-56 lg:py-64">
+      <section
+        id="district-highlights"
+        className="scroll-mt-24 bg-[#FAFAFA] px-6 py-20 md:px-12"
+      >
+        <div className="mx-auto max-w-6xl">
+          <SectionIntro
+            title={t("districtTitle")}
+            subtitle={t("districtSubtitle")}
+          />
+          <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
+            {DISTRICT_GALLERY.map((img) => (
+              <div
+                key={img.src}
+                className="relative aspect-[4/3] overflow-hidden rounded-[2px] bg-charcoal/[0.04]"
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 grid grid-cols-2 gap-5 md:mt-14 md:grid-cols-4 md:gap-6">
+            {(
+              [
+                {
+                  Icon: GraduationCap,
+                  label: "proxSchools" as const,
+                  mins: "proxSchoolsMins" as const,
+                },
+                {
+                  Icon: ShoppingBag,
+                  label: "proxShopping" as const,
+                  mins: "proxShoppingMins" as const,
+                },
+                {
+                  Icon: Trees,
+                  label: "proxParks" as const,
+                  mins: "proxParksMins" as const,
+                },
+                {
+                  Icon: TrainFront,
+                  label: "proxMetro" as const,
+                  mins: "proxMetroMins" as const,
+                },
+              ] as const
+            ).map(({ Icon, label, mins }) => (
+              <div
+                key={label}
+                className="flex flex-col items-center rounded-[2px] border border-charcoal/[0.08] bg-white px-4 py-6 text-center"
+              >
+                <Icon
+                  className="h-9 w-9 text-charcoal"
+                  strokeWidth={1}
+                  aria-hidden
+                />
+                <p className="mt-4 font-sans text-[10px] font-medium uppercase tracking-[0.2em] text-charcoal">
+                  {t(label)}
+                </p>
+                <p className="mt-2 font-serif text-sm font-light text-charcoal/55">
+                  {t(mins)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#ebebeb] px-6 py-20 md:px-12">
         <div className="mx-auto max-w-6xl">
           <SectionIntro
             title={t("locationTitle")}
             subtitle={t("locationSubtitle")}
           />
-          <div className="overflow-hidden rounded-[2px] border border-charcoal/[0.08] shadow-sm">
+          <div className="overflow-hidden rounded-[2px] bg-[#ebebeb]">
             <LightMap />
           </div>
-          <p className="mt-10 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-charcoal/35">
+          <p className="mt-8 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-charcoal/40">
             {t("locationMapCaption")}
           </p>
         </div>
@@ -524,7 +841,7 @@ export default function Home() {
 
       <section
         id="heritage"
-        className="border-t border-charcoal/[0.06] bg-white px-6 py-24 text-charcoal md:px-12 md:py-32"
+        className="border-t border-charcoal/[0.06] bg-white px-6 py-20 text-charcoal md:px-12"
       >
         <div className="mx-auto max-w-3xl text-center">
           <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-charcoal/35">
@@ -570,7 +887,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer id="contact" className="border-t border-charcoal/[0.06] bg-[#FAFAFA] px-8 py-28 md:px-12 md:py-36">
+      <footer id="contact" className="border-t border-charcoal/[0.06] bg-[#FAFAFA] px-8 py-20 md:px-12">
         <div className="mx-auto grid max-w-7xl gap-16 md:grid-cols-4 md:gap-12">
           <div className="space-y-8 md:col-span-2">
             <div className="font-serif text-lg font-medium tracking-[0.28em] text-charcoal">
@@ -603,7 +920,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <div className="mx-auto mt-20 flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
+        <div className="mx-auto mt-14 flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
           <p className="font-mono text-[9px] uppercase tracking-widest text-charcoal/30">
             © 2026 {t("footerDev")}. All rights reserved.
           </p>
