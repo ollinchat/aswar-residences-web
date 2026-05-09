@@ -2,6 +2,11 @@
 module.exports = {
   theme: {
     extend: {
+      fontFamily: {
+        serif: ["var(--font-playfair)", "Georgia", "serif"],
+        mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
+        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
+      },
       colors: {
         /** Primary brand — Aswar Gold */
         "aswar-gold": "#C5A059",
