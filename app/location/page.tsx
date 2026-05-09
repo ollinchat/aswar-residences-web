@@ -11,18 +11,18 @@ export default function LocationPage() {
   return (
     <>
       <SiteNavbar variant="solid" />
-      <main className="bg-paper px-6 pb-32 pt-32 text-ink md:px-12 md:pt-40">
-        <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-ink/45">
+      <main className="bg-parchment px-6 pb-32 pt-32 text-charcoal md:px-12 md:pt-40">
+        <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-charcoal/45">
           Location
         </p>
         <h1 className="mt-6 max-w-3xl font-serif text-4xl font-medium tracking-tight md:text-6xl">
           Business Bay, at the centre of the new Dubai
         </h1>
-        <p className="mt-8 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-wider text-ink/50">
+        <p className="mt-8 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-wider text-charcoal/50">
           Replace this copy with approved district storytelling, commute times,
           and landmark distances once finalised.
         </p>
-        <div className="mt-14 overflow-hidden rounded-sm border border-ink/10">
+        <div className="mt-14 overflow-hidden rounded-sm border border-charcoal/10">
           <iframe
             title="Business Bay, Dubai"
             src="https://maps.google.com/maps?q=Business+Bay+Dubai&hl=en&z=14&output=embed"
@@ -33,7 +33,7 @@ export default function LocationPage() {
         </div>
         <Link
           href="/"
-          className="mt-14 inline-flex font-mono text-[10px] uppercase tracking-[0.25em] text-champagne hover:text-ink"
+          className="mt-14 inline-flex font-mono text-[10px] uppercase tracking-[0.25em] text-champagne hover:text-charcoal"
         >
           ← Back to home
         </Link>

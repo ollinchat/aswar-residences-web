@@ -24,14 +24,14 @@ export function SiteNavbar({
   const isLight = variant === "solid" || onLight;
 
   const linkClass = isLight
-    ? "text-ink/55 hover:text-ink"
+    ? "text-charcoal/55 hover:text-charcoal"
     : "text-white/75 hover:text-white";
 
   return (
     <nav
       className={`fixed top-0 z-50 flex w-full items-center justify-between px-6 py-6 transition-colors duration-300 md:px-12 md:py-7 ${
         isLight
-          ? "border-b border-ink/8 bg-paper/90 text-ink backdrop-blur-md"
+          ? "border-b border-charcoal/8 bg-parchment/90 text-charcoal backdrop-blur-md"
           : "border-b border-white/10 bg-transparent text-white"
       }`}
     >
@@ -42,7 +42,7 @@ export function SiteNavbar({
         ASWAR
       </Link>
       <div
-        className={`hidden items-center gap-8 font-mono text-[10px] uppercase tracking-[0.2em] md:flex lg:gap-10 ${isLight ? "text-ink/55" : "text-white/75"}`}
+        className={`hidden items-center gap-8 font-mono text-[10px] uppercase tracking-[0.2em] md:flex lg:gap-10 ${isLight ? "text-charcoal/55" : "text-white/75"}`}
       >
         <Link href="/#the-residences" className={`transition-colors ${linkClass}`}>
           Residences
@@ -60,7 +60,7 @@ export function SiteNavbar({
           href="#inquire"
           className={`border-b border-champagne pb-0.5 transition-colors ${
             isLight
-              ? "text-champagne hover:text-ink"
+              ? "text-champagne hover:text-charcoal"
               : "text-white hover:text-white"
           }`}
         >

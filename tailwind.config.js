@@ -17,9 +17,8 @@ module.exports = {
         sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
       },
       colors: {
-        /** Brand palette — Paper, Ink, Champagne only */
-        paper: "#FDFDFD",
-        ink: "#1A1A1A",
+        charcoal: "#1A1C1E",
+        parchment: "#F4F1EA",
         champagne: "#D4AF37",
       },
     },

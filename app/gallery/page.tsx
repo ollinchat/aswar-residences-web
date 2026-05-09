@@ -11,20 +11,20 @@ export default function GalleryPage() {
   return (
     <>
       <SiteNavbar variant="solid" />
-      <main className="bg-paper px-6 pb-32 pt-32 text-ink md:px-12 md:pt-40">
-        <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-ink/45">
+      <main className="bg-parchment px-6 pb-32 pt-32 text-charcoal md:px-12 md:pt-40">
+        <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-charcoal/45">
           Gallery
         </p>
         <h1 className="mt-6 max-w-3xl font-serif text-4xl font-medium tracking-tight md:text-6xl">
           Imagery & media library
         </h1>
-        <p className="mt-8 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-wider text-ink/50">
+        <p className="mt-8 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-wider text-charcoal/50">
           Dedicated space for campaign photography, film, and press assets.
           Wire your CMS or DAM here when ready.
         </p>
         <Link
           href="/"
-          className="mt-14 inline-flex font-mono text-[10px] uppercase tracking-[0.25em] text-champagne hover:text-ink"
+          className="mt-14 inline-flex font-mono text-[10px] uppercase tracking-[0.25em] text-champagne hover:text-charcoal"
         >
           ← Back to home
         </Link>
