@@ -32,6 +32,7 @@ import {
   DISTRICT_ATTRACTIONS_INITIAL,
   DISTRICT_ATTRACTIONS_PAGE,
 } from "@/lib/district-attractions";
+import { REMOTE_IMAGE_BLUR_DATA_URL } from "@/lib/image-blur-placeholder";
 
 const PanoramaViewerModal = dynamic(
   () =>
@@ -821,6 +822,9 @@ export default function Home() {
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
+                    priority={idx < 4}
+                    placeholder="blur"
+                    blurDataURL={REMOTE_IMAGE_BLUR_DATA_URL}
                   />
                 </motion.div>
               );
@@ -832,7 +836,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={loadMoreDistrict}
-                className="rounded-full border border-charcoal/12 bg-white px-8 py-2.5 font-serif text-[11px] font-medium uppercase tracking-[0.28em] text-charcoal/70 transition-colors hover:border-charcoal/25 hover:text-charcoal"
+                className="rounded-full border border-charcoal/22 bg-transparent px-10 py-2.5 font-serif text-[10px] font-medium uppercase tracking-[0.32em] text-charcoal/55 transition-all duration-300 ease-out hover:border-charcoal/40 hover:bg-charcoal/[0.02] hover:text-charcoal"
               >
                 {t("districtLoadMore")}
               </button>
@@ -947,48 +951,54 @@ export default function Home() {
 
       <section
         id="heritage"
-        className="border-t border-charcoal/[0.06] bg-white px-6 py-20 text-charcoal md:px-12"
+        className="border-t border-charcoal/[0.06] bg-white px-6 py-12 text-charcoal md:px-12 md:py-14"
       >
         <div className="mx-auto max-w-6xl">
-          <div className="grid gap-14 lg:grid-cols-12 lg:items-start lg:gap-20">
-            <div className="space-y-10 lg:col-span-5 lg:sticky lg:top-28">
-              <div>
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-10">
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-8 lg:col-span-4">
+              <div className="shrink-0">
                 <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-charcoal/35">
                   {t("engineeringSealTitle")}
                 </p>
-                <div className="mt-8 flex h-24 w-24 items-center justify-center rounded-full border border-charcoal/[0.1] bg-[#FAFAFA] shadow-[inset_0_0_0_1px_rgba(26,28,30,0.04)] md:mt-10 md:h-28 md:w-28">
-                  <span className="font-serif text-[9px] font-medium tracking-[0.55em] text-charcoal/30 md:text-[10px]">
+                <div className="mt-5 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full border border-charcoal/[0.1] bg-[#FAFAFA] shadow-[inset_0_0_0_1px_rgba(26,28,30,0.04)] md:h-20 md:w-20">
+                  <span className="font-serif text-[8px] font-medium tracking-[0.5em] text-charcoal/30 md:text-[9px]">
                     ASWAR
                   </span>
                 </div>
-                <p className="mt-3 font-mono text-[8px] uppercase tracking-[0.5em] text-charcoal/25">
+                <p className="mt-2 font-mono text-[8px] uppercase tracking-[0.5em] text-charcoal/25">
                   {t("engineeringSealParent")}
                 </p>
               </div>
-              <p className="max-w-md font-sans text-sm font-normal leading-relaxed text-charcoal/50 md:text-[15px]">
-                {t("engineeringSealLine")}
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <a
-                  href="https://www.sami-najami.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex rounded-[2px] bg-charcoal px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-charcoal/90"
-                >
-                  {t("heritageSite")} ↗
-                </a>
-                <a
-                  href="/partners/sami-najami-brand.pdf"
-                  download
-                  className="inline-flex rounded-[2px] border border-charcoal/15 bg-white px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-charcoal/70 transition-colors hover:border-charcoal/30 hover:text-charcoal"
-                >
-                  {t("downloadPdf")}
-                </a>
+              <div className="hidden h-24 w-px shrink-0 bg-charcoal/[0.08] sm:block lg:h-28" aria-hidden />
+              <div className="min-w-0 rounded-sm border border-charcoal/[0.08] bg-[#FAFAFA]/80 px-4 py-3 sm:max-w-[200px]">
+                <p className="font-mono text-[7px] uppercase leading-relaxed tracking-[0.38em] text-charcoal/35">
+                  {t("heritageTags")}
+                </p>
               </div>
             </div>
-            <div className="lg:col-span-7">
+            <div className="min-w-0 lg:col-span-8">
               <HeritageProjectGallery variant="masonry" />
             </div>
+          </div>
+          <p className="mx-auto mt-8 max-w-2xl font-sans text-sm font-normal leading-relaxed text-charcoal/50 md:mt-10 md:text-[15px]">
+            {t("engineeringSealLine")}
+          </p>
+          <div className="mt-6 flex flex-wrap gap-4">
+            <a
+              href="https://www.sami-najami.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex rounded-[2px] bg-charcoal px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-charcoal/90"
+            >
+              {t("heritageSite")} ↗
+            </a>
+            <a
+              href="/partners/sami-najami-brand.pdf"
+              download
+              className="inline-flex rounded-[2px] border border-charcoal/15 bg-white px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-charcoal/70 transition-colors hover:border-charcoal/30 hover:text-charcoal"
+            >
+              {t("downloadPdf")}
+            </a>
           </div>
         </div>
       </section>

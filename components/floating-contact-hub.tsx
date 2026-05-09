@@ -7,7 +7,7 @@ import {
   motion,
   useReducedMotion,
 } from "framer-motion";
-import { ChevronRight, Plus } from "lucide-react";
+import { MessageCircle, Plus, UserRound, X } from "lucide-react";
 import type { ReactNode } from "react";
 import {
   BrandIconFacebook,
@@ -23,6 +23,21 @@ import {
 } from "@/components/contact-brand-icons";
 import { useLang } from "@/components/language-provider";
 import type { CopyKey, Lang } from "@/lib/i18n";
+
+const glassFab =
+  "relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/40 text-charcoal shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-2xl transition-[box-shadow,border-color,transform] duration-300 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25";
+
+const fabGlowCool =
+  "motion-safe:hover:border-blue-200/45 motion-safe:hover:shadow-[0_0_26px_rgba(96,165,250,0.38),0_8px_28px_rgba(0,0,0,0.1)]";
+
+const fabGlowGold =
+  "motion-safe:hover:border-champagne/35 motion-safe:hover:shadow-[0_0_26px_rgba(212,175,55,0.42),0_8px_28px_rgba(0,0,0,0.1)]";
+
+const fabGlowGoldStrong =
+  "motion-safe:hover:border-champagne/40 motion-safe:hover:shadow-[0_0_30px_rgba(212,175,55,0.48),0_8px_28px_rgba(0,0,0,0.11)]";
+
+const hitWrap =
+  "flex min-h-[52px] min-w-[52px] items-center justify-center rounded-full";
 
 const LS_TEXT_SIZE = "aswar-a11y-text-size";
 const LS_LEGACY_TEXT = "aswar-a11y-text";
@@ -196,19 +211,6 @@ function writeTextSize(size: TextSize) {
   if (size === "md") window.localStorage.removeItem(LS_TEXT_SIZE);
   else window.localStorage.setItem(LS_TEXT_SIZE, size);
 }
-
-function pillTypography(lang: Lang) {
-  if (lang === "ar") {
-    return "font-arabic text-[11px] font-semibold leading-snug tracking-wide text-charcoal max-[380px]:text-[10px] sm:text-xs";
-  }
-  return "font-serif text-[11px] font-medium leading-none tracking-widest text-charcoal max-[380px]:text-[10px] sm:text-xs";
-}
-
-const glassPill =
-  "flex w-full max-w-[min(100vw-2rem,20rem)] min-w-0 items-center justify-between gap-2 rounded-full border border-white/30 bg-white/20 px-5 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.1)] backdrop-blur-3xl max-[380px]:max-w-[min(100vw-1.5rem,18rem)] max-[380px]:px-4 max-[380px]:py-1.5 sm:px-6 sm:py-2.5";
-
-const pillPrimary =
-  "border-white/35 bg-white/25 ring-1 ring-white/15 shadow-[0_10px_36px_rgba(0,0,0,0.12)]";
 
 const trayPanel =
   "w-[min(calc(100vw-2rem),20rem)] max-h-[min(70vh,480px)] origin-bottom overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-white/30 p-3 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-2xl sm:p-3.5";
@@ -494,8 +496,6 @@ export function FloatingContactHub() {
   const menuTransition = reduceMotion ? { duration: 0.2 } : menuSpring;
   const fadeTransition = reduceMotion ? { duration: 0.15 } : { duration: 0.22 };
 
-  const pillLabel = pillTypography(lang);
-
   const menuMotion = {
     initial: reduceMotion
       ? { opacity: 0 }
@@ -618,32 +618,22 @@ export function FloatingContactHub() {
               ) : null}
             </AnimatePresence>
 
-            <motion.button
-              type="button"
-              onClick={toggleA11y}
-              aria-expanded={a11yOpen}
-              aria-haspopup="dialog"
-              aria-label={
-                a11yOpen ? t("hubAriaA11yClose") : t("hubAriaA11yOpen")
-              }
-              whileTap={{ scale: 0.97 }}
-              transition={pillTap}
-              className={`${glassPill} text-start focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25`}
-            >
-              <span
-                className={`min-w-0 flex-1 truncate text-start ${pillLabel}`}
-              >
-                {t("hubPillAccessibility")}
-              </span>
-              <motion.span
-                aria-hidden
-                animate={{ rotate: a11yOpen ? -90 : 0 }}
+            <div className={hitWrap}>
+              <motion.button
+                type="button"
+                onClick={toggleA11y}
+                aria-expanded={a11yOpen}
+                aria-haspopup="dialog"
+                aria-label={
+                  a11yOpen ? t("hubAriaA11yClose") : t("hubAriaA11yOpen")
+                }
+                whileTap={{ scale: 0.94 }}
                 transition={pillTap}
-                className="shrink-0 text-charcoal/70"
+                className={`${glassFab} ${fabGlowCool}`}
               >
-                <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
-              </motion.span>
-            </motion.button>
+                <UserRound className="h-5 w-5" strokeWidth={1.25} aria-hidden />
+              </motion.button>
+            </div>
           </div>
 
           {/* Social */}
@@ -678,30 +668,29 @@ export function FloatingContactHub() {
               ) : null}
             </AnimatePresence>
 
-            <motion.button
-              type="button"
-              onClick={toggleSocial}
-              aria-expanded={socialOpen}
-              aria-haspopup="dialog"
-              aria-label={
-                socialOpen ? t("hubAriaSocialClose") : t("hubAriaSocialOpen")
-              }
-              whileTap={{ scale: 0.97 }}
-              transition={pillTap}
-              className={`${glassPill} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25`}
-            >
-              <span className={`min-w-0 flex-1 truncate text-start ${pillLabel}`}>
-                {t("hubPillSocial")}
-              </span>
-              <motion.span
-                aria-hidden
-                className="shrink-0 text-charcoal/70"
-                animate={{ rotate: socialOpen ? 45 : 0 }}
+            <div className={hitWrap}>
+              <motion.button
+                type="button"
+                onClick={toggleSocial}
+                aria-expanded={socialOpen}
+                aria-haspopup="dialog"
+                aria-label={
+                  socialOpen ? t("hubAriaSocialClose") : t("hubAriaSocialOpen")
+                }
+                whileTap={{ scale: 0.94 }}
                 transition={pillTap}
+                className={`${glassFab} ${fabGlowGold}`}
               >
-                <Plus className="h-4 w-4" strokeWidth={1.5} />
-              </motion.span>
-            </motion.button>
+                <motion.span
+                  aria-hidden
+                  animate={{ rotate: socialOpen ? 45 : 0 }}
+                  transition={pillTap}
+                  className="flex items-center justify-center text-charcoal"
+                >
+                  <Plus className="h-5 w-5" strokeWidth={1.35} />
+                </motion.span>
+              </motion.button>
+            </div>
           </div>
 
           {/* Contact */}
@@ -736,30 +725,32 @@ export function FloatingContactHub() {
               ) : null}
             </AnimatePresence>
 
-            <motion.button
-              type="button"
-              onClick={toggleContact}
-              aria-expanded={contactOpen}
-              aria-haspopup="dialog"
-              aria-label={
-                contactOpen ? t("hubAriaClose") : t("hubAriaOpen")
-              }
-              whileTap={{ scale: 0.98 }}
-              transition={pillTap}
-              className={`${glassPill} ${pillPrimary} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25`}
-            >
-              <span className={`min-w-0 flex-1 truncate text-start ${pillLabel}`}>
-                {t("hubPillContact")}
-              </span>
-              <motion.span
-                aria-hidden
-                animate={{ rotate: contactOpen ? -90 : 0 }}
+            <div className={hitWrap}>
+              <motion.button
+                type="button"
+                onClick={toggleContact}
+                aria-expanded={contactOpen}
+                aria-haspopup="dialog"
+                aria-label={
+                  contactOpen ? t("hubAriaClose") : t("hubAriaOpen")
+                }
+                whileTap={{ scale: 0.94 }}
                 transition={pillTap}
-                className="shrink-0 text-charcoal/70"
+                className={`${glassFab} ring-1 ring-white/15 ${fabGlowGoldStrong}`}
               >
-                <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
-              </motion.span>
-            </motion.button>
+                <span className="flex h-5 w-5 items-center justify-center">
+                  {contactOpen ? (
+                    <X className="h-5 w-5" strokeWidth={1.25} aria-hidden />
+                  ) : (
+                    <MessageCircle
+                      className="h-5 w-5"
+                      strokeWidth={1.25}
+                      aria-hidden
+                    />
+                  )}
+                </span>
+              </motion.button>
+            </div>
           </div>
         </div>
       </div>

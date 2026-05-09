@@ -1,27 +1,42 @@
-/** High-quality placeholders — luxury residential / skyline (rights: Unsplash). */
-export const HERITAGE_GALLERY_IMAGES = [
+/**
+ * Construction / architecture — reliable Unsplash IDs (`ixlib` crop).
+ * Masonry (home): first 3. Slider (about): full set.
+ */
+const u = (photoId: string, w = 1600) =>
+  `https://images.unsplash.com/${photoId}?ixlib=rb-4.0.3&auto=format&fit=crop&w=${w}&q=85`;
+
+/** Compact home masonry — engineering & built form */
+export const HERITAGE_MASONRY_IMAGES = [
   {
-    src: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1600&q=88",
-    alt: "High-rise residential towers at dusk",
+    src: u("photo-1504307651254-35680f356dfd"),
+    alt: "Structural steel and concrete on site",
   },
   {
-    src: "https://images.unsplash.com/photo-1600596542845-be42574aec9a?auto=format&fit=crop&w=1600&q=88",
-    alt: "Contemporary luxury home exterior",
+    src: u("photo-1541888946425-d81bb19240f5"),
+    alt: "Tower crane against high-rise shell",
   },
   {
-    src: "https://images.unsplash.com/photo-1600585154340-fe76e8eadb35?auto=format&fit=crop&w=1600&q=88",
-    alt: "Minimal living space with natural light",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=88",
-    alt: "Double-height interior with glazing",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1600&q=88",
-    alt: "Waterfront skyline and architecture",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1600&q=88",
-    alt: "Residence lounge with refined finishes",
+    src: u("photo-1486406146926-c627a92ad1ab"),
+    alt: "Glass towers converging toward the sky",
   },
 ] as const;
+
+/** About page horizontal strip — architecture & detail */
+export const HERITAGE_SLIDER_IMAGES = [
+  ...HERITAGE_MASONRY_IMAGES,
+  {
+    src: u("photo-1487958449943-2427e23708d7"),
+    alt: "Modern façade rhythm and glazing",
+  },
+  {
+    src: u("photo-1545324418-cc1a3fa10c00"),
+    alt: "Residential towers at dusk",
+  },
+  {
+    src: u("photo-1600585154340-fe76e8eadb35"),
+    alt: "Minimal interior with architectural light",
+  },
+] as const;
+
+/** @deprecated use HERITAGE_SLIDER_IMAGES or HERITAGE_MASONRY_IMAGES */
+export const HERITAGE_GALLERY_IMAGES = HERITAGE_SLIDER_IMAGES;
