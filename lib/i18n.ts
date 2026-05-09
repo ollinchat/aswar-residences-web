@@ -123,6 +123,13 @@ export const copy = {
     hubToolMessenger: "Message on Facebook",
     hubToolInstagram: "Follow on Instagram",
     hubToolTelegram: "Chat on Telegram",
+    hubAriaCloseAll: "Close overlays",
+    hubAriaA11yOpen: "Open accessibility options",
+    hubAriaA11yClose: "Close accessibility options",
+    a11yMenuTitle: "Accessibility",
+    a11yIncreaseText: "Increase text",
+    a11yHighContrast: "High contrast",
+    a11yUnderlineLinks: "Underline links",
   },
   ar: {
     navResidences: "الوحدات",
@@ -244,6 +251,13 @@ export const copy = {
     hubToolMessenger: "مراسلة عبر فيسبوك",
     hubToolInstagram: "متابعة على إنستغرام",
     hubToolTelegram: "محادثة عبر تيليغرام",
+    hubAriaCloseAll: "إغلاق الطبقات",
+    hubAriaA11yOpen: "فتح خيارات إمكانية الوصول",
+    hubAriaA11yClose: "إغلاق خيارات إمكانية الوصول",
+    a11yMenuTitle: "إمكانية الوصول",
+    a11yIncreaseText: "تكبير النص",
+    a11yHighContrast: "تباين عالٍ",
+    a11yUnderlineLinks: "تسطير الروابط",
   },
 } as const;
 

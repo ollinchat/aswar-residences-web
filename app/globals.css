@@ -140,3 +140,20 @@ html[dir="rtl"] body {
       0 0 0 12px rgba(212, 175, 55, 0);
   }
 }
+
+/* Floating hub — accessibility toggles (classes toggled on <html>) */
+html.aswar-a11y-text {
+  font-size: 112.5%;
+}
+
+html.aswar-a11y-contrast body {
+  background-color: #ffffff !important;
+  color: #0a0a0a !important;
+  filter: contrast(1.12) saturate(1.05);
+}
+
+html.aswar-a11y-underline-links a[href] {
+  text-decoration: underline !important;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
