@@ -26,6 +26,7 @@ export const copy = {
     heritageCorpBody:
       "Official mark & credentials — vector PDF supplied for print and digital compliance.",
     downloadPdf: "Download PDF",
+    magazineKicker: "The collection",
     residencesTitle: "The Residences",
     residencesSubtitle:
       "Refine typology, budget, and availability — specifications and media update per layout.",
@@ -56,7 +57,7 @@ export const copy = {
     locationTitle: "Location",
     locationSubtitle: "Business Bay · Dubai, UAE",
     locationMapCaption:
-      "Dark cartography with live ASWAR marker. Final pin follows authority registration.",
+      "Silver-toned cartography with a refined ASWAR marker. Final survey follows authority registration.",
     footerDev: "ASWAR International Development",
     footerLine: "Visionary Architecture · Dubai, UAE",
     headquarters: "Headquarters",
@@ -108,6 +109,7 @@ export const copy = {
     heritageCorpBody:
       "الشعار والاعتمادات الرسمية — ملف PDF متجه للطباعة والامتثال الرقمي.",
     downloadPdf: "تحميل PDF",
+    magazineKicker: "المجموعة",
     residencesTitle: "المساكن",
     residencesSubtitle:
       "صفِّ النوع والميزانية والتوفر — المواصفات والوسائط تتحدث مع كل مخطط.",
@@ -138,7 +140,7 @@ export const copy = {
     locationTitle: "الموقع",
     locationSubtitle: "الخليج التجاري · دبي، الإمارات",
     locationMapCaption:
-      "خريطة داكنة مع علامة ASWAR. النقطة النهائية تتبع تسجيل الجهات.",
+      "خريطة فاتحة مع علامة ASWAR. النقطة النهائية تتبع تسجيل الجهات.",
     footerDev: "ASWAR International Development",
     footerLine: "عمارة رائدة · دبي، الإمارات",
     headquarters: "المقر",

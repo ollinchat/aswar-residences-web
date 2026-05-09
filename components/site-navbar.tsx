@@ -28,32 +28,32 @@ export function SiteNavbar({
   const isLight = variant === "solid" || onLight;
 
   const linkClass = isLight
-    ? "text-charcoal/50 hover:text-charcoal"
-    : "text-white/70 hover:text-white";
+    ? "text-charcoal/55 hover:text-charcoal"
+    : "text-white/80 hover:text-white";
 
   const ctaClass = isLight
-    ? "bg-charcoal text-white hover:bg-charcoal/90"
-    : "bg-white text-charcoal hover:bg-white/90";
+    ? "bg-charcoal text-white hover:bg-charcoal/92"
+    : "bg-white/95 text-charcoal hover:bg-white";
 
   return (
     <nav
-      className={`fixed top-0 z-50 flex w-full items-center justify-between px-6 py-5 transition-colors duration-300 md:px-12 md:py-6 ${
+      className={`fixed top-0 z-50 flex w-full items-center justify-between px-5 py-2.5 transition-[background,backdrop-filter,border-color] duration-500 md:px-10 md:py-3 ${
         isLight
-          ? "border-b border-charcoal/[0.06] bg-[#FAFAFA]/85 text-charcoal backdrop-blur-xl"
-          : "border-b border-white/[0.06] bg-transparent text-white"
+          ? "border-b border-charcoal/[0.07] bg-white/55 backdrop-blur-xl backdrop-saturate-150"
+          : "border-b border-white/[0.08] bg-transparent backdrop-blur-xl backdrop-saturate-150"
       }`}
     >
       <Link
         href="/"
-        className="font-serif text-lg font-medium tracking-[0.28em] text-inherit"
+        className="font-serif text-base font-medium tracking-[0.32em] text-inherit md:text-[1.05rem]"
       >
         ASWAR
       </Link>
       <div
-        className={`flex items-center gap-4 md:gap-6 lg:gap-8 ${isLight ? "text-charcoal/50" : "text-white/70"}`}
+        className={`flex items-center gap-3 md:gap-5 ${isLight ? "text-charcoal/55" : "text-white/80"}`}
       >
         <div
-          className={`hidden items-center gap-8 font-mono text-[10px] uppercase tracking-[0.2em] md:flex lg:gap-10`}
+          className={`hidden items-center gap-7 font-mono text-[9px] uppercase tracking-[0.28em] md:flex lg:gap-9`}
         >
           <Link href="/#the-residences" className={`transition-colors ${linkClass}`}>
             {t("navResidences")}
@@ -70,7 +70,7 @@ export function SiteNavbar({
           <button
             type="button"
             onClick={openBookMeeting}
-            className={`rounded-[4px] px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] transition-colors ${ctaClass}`}
+            className={`rounded-[2px] px-3.5 py-1.5 font-mono text-[9px] uppercase tracking-[0.26em] transition-colors ${ctaClass}`}
           >
             {t("navInquire")}
           </button>
@@ -79,17 +79,17 @@ export function SiteNavbar({
           <button
             type="button"
             onClick={openBookMeeting}
-            className={`rounded-[4px] px-3 py-2 font-mono text-[9px] uppercase tracking-[0.2em] transition-colors md:hidden ${ctaClass}`}
+            className={`rounded-[2px] px-2.5 py-1.5 font-mono text-[8px] uppercase tracking-[0.24em] transition-colors md:hidden ${ctaClass}`}
           >
             {t("navInquire")}
           </button>
           <button
             type="button"
             onClick={() => setLang(lang === "en" ? "ar" : "en")}
-            className={`rounded-[4px] border-2 px-3.5 py-2 font-mono text-[10px] font-medium uppercase tracking-[0.28em] transition-colors ${
+            className={`rounded-[2px] border px-3 py-1.5 font-mono text-[9px] font-medium uppercase tracking-[0.32em] transition-colors ${
               isLight
-                ? "border-charcoal/25 bg-white text-charcoal shadow-sm hover:border-charcoal/45"
-                : "border-white/55 bg-white/10 text-white backdrop-blur-sm hover:bg-white/18"
+                ? "border-charcoal/20 bg-white/80 text-charcoal shadow-sm hover:border-charcoal/35"
+                : "border-white/45 bg-white/12 text-white hover:bg-white/20"
             }`}
             aria-label={lang === "en" ? "Switch to Arabic" : "Switch to English"}
           >

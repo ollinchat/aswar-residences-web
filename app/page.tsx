@@ -20,7 +20,7 @@ const PanoramaViewerModal = dynamic(
   { ssr: false },
 );
 
-const DarkMap = dynamic(() => import("@/components/dark-map"), { ssr: false });
+const LightMap = dynamic(() => import("@/components/light-map"), { ssr: false });
 
 type PriceBand = "all" | "under2" | "2-4" | "over4";
 
@@ -298,7 +298,7 @@ export default function Home() {
                 onClick={() =>
                   open360("/hero-360-panorama.jpg", "ASWAR 01 · Panorama")
                 }
-                className="inline-flex items-center gap-3 rounded-[4px] bg-white/14 px-10 py-4 font-mono text-[10px] uppercase tracking-[0.32em] text-white backdrop-blur-md transition-colors hover:bg-white/22"
+                className="inline-flex items-center gap-3 rounded-[2px] bg-white/14 px-10 py-4 font-mono text-[10px] uppercase tracking-[0.32em] text-white backdrop-blur-md transition-colors hover:bg-white/22"
               >
                 <Play className="h-4 w-4" strokeWidth={1.25} />
                 {t("experience360")}
@@ -312,56 +312,37 @@ export default function Home() {
 
       <section
         id="the-residences"
-        className="scroll-mt-28 px-6 py-48 md:px-12 md:py-56 lg:py-64"
+        className="scroll-mt-24 border-t border-charcoal/[0.06] bg-white px-6 py-32 md:px-12 md:py-40"
       >
-        <div className="mx-auto max-w-[1500px]">
-          <SectionIntro
-            title={t("residencesTitle")}
-            subtitle={t("residencesSubtitle")}
-          />
+        <div className="mx-auto max-w-[1380px]">
+          <header className="mb-12 md:mb-16">
+            <p className="font-mono text-[9px] uppercase tracking-[0.5em] text-charcoal/30">
+              {t("magazineKicker")}
+            </p>
+            <h2 className="mt-5 max-w-2xl font-serif text-4xl font-light tracking-tight text-charcoal md:text-[2.75rem] md:leading-[1.12]">
+              {t("residencesTitle")}
+            </h2>
+            <p className="mt-8 max-w-md font-mono text-[11px] uppercase leading-relaxed tracking-[0.22em] text-charcoal/40">
+              {t("residencesSubtitle")}
+            </p>
+          </header>
 
-          <div className="mb-14 rounded-[4px] bg-white p-8 shadow-[0_1px_0_rgba(26,28,30,0.06)] md:p-10">
-            <div className="mb-10 hidden gap-0 md:grid md:grid-cols-4">
-              {(
-                [
-                  [1, t("stepTypes")],
-                  [2, t("stepBudget")],
-                  [3, t("stepOptions")],
-                  [4, t("stepLayout")],
-                ] as const
-              ).map(([n, label], i) => (
-                <div
-                  key={n}
-                  className={`relative flex items-center gap-3 px-2 ${i < 3 ? "after:absolute after:right-0 after:top-1/2 after:h-px after:w-[calc(100%-2rem)] after:-translate-y-1/2 after:translate-x-1/2 after:bg-charcoal/10" : ""}`}
-                >
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-charcoal/[0.06] font-mono text-[10px] text-charcoal/70">
-                    {n}
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-charcoal/45">
-                    {label}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          <div className="mb-10 rounded-[2px] border border-charcoal/[0.08] bg-[#FAFAFA]/60 px-4 py-5 backdrop-blur-sm md:px-6 md:py-6">
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
               <div>
-                <p className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.35em] text-charcoal/35">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-charcoal text-[8px] text-white md:hidden">
-                    1
-                  </span>
+                <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-charcoal/35">
                   {t("unitTypes")}
                 </p>
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-3 flex flex-wrap gap-1.5">
                   {RESIDENCE_MODELS.map((m) => (
                     <button
                       key={m.id}
                       type="button"
                       onClick={() => toggleTypeFilter(m.id)}
-                      className={`rounded-[4px] px-4 py-2 font-mono text-[9px] uppercase tracking-widest transition-colors ${
+                      className={`rounded-[2px] px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest transition-colors ${
                         typesFilter.has(m.id)
                           ? "bg-charcoal text-white"
-                          : "bg-charcoal/[0.04] text-charcoal/40 hover:bg-charcoal/[0.08] hover:text-charcoal/70"
+                          : "bg-white text-charcoal/40 ring-1 ring-charcoal/[0.08] hover:text-charcoal/70"
                       }`}
                     >
                       {m.label}
@@ -370,13 +351,10 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <p className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.35em] text-charcoal/35">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-charcoal text-[8px] text-white md:hidden">
-                    2
-                  </span>
+                <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-charcoal/35">
                   {t("priceBand")}
                 </p>
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-3 flex flex-wrap gap-1.5">
                   {(
                     [
                       ["all", "All"],
@@ -389,10 +367,10 @@ export default function Home() {
                       key={id}
                       type="button"
                       onClick={() => setPriceBand(id)}
-                      className={`rounded-[4px] px-4 py-2 font-mono text-[9px] uppercase tracking-widest transition-colors ${
+                      className={`rounded-[2px] px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest transition-colors ${
                         priceBand === id
                           ? "bg-charcoal text-white"
-                          : "bg-charcoal/[0.04] text-charcoal/45 hover:bg-charcoal/[0.08]"
+                          : "bg-white text-charcoal/45 ring-1 ring-charcoal/[0.08]"
                       }`}
                     >
                       {label}
@@ -400,43 +378,31 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              <div className="flex flex-col justify-end lg:col-span-1">
-                <p className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.35em] text-charcoal/35">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-charcoal text-[8px] text-white md:hidden">
-                    3
-                  </span>
-                  {t("stepOptions")}
-                </p>
-                <label className="mt-4 flex cursor-pointer items-center gap-3 font-mono text-[10px] uppercase tracking-widest text-charcoal/50">
+              <div className="flex flex-col justify-end">
+                <label className="flex cursor-pointer items-center gap-2.5 font-mono text-[10px] uppercase tracking-widest text-charcoal/45">
                   <input
                     type="checkbox"
                     checked={availableOnly}
                     onChange={(e) => setAvailableOnly(e.target.checked)}
-                    className="h-3.5 w-3.5 rounded-[3px] border-0 accent-charcoal"
+                    className="h-3 w-3 rounded-[2px] border-0 accent-charcoal"
                   />
                   {t("availableOnly")}
                 </label>
               </div>
-              <div className="flex flex-col justify-end border-t border-charcoal/[0.06] pt-8 font-mono text-[10px] uppercase leading-relaxed tracking-[0.18em] text-charcoal/50 lg:border-t-0 lg:pt-0">
-                <p className="mb-1 flex items-center gap-2 text-charcoal/35">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-charcoal text-[8px] text-white md:hidden">
-                    4
-                  </span>
-                  {t("stepLayout")}
-                </p>
+              <div className="flex flex-col justify-end font-mono text-[10px] uppercase leading-relaxed tracking-[0.16em] text-charcoal/45">
                 {filteredModels.length === 0 ? (
-                  <span className="text-charcoal/35">{t("noMatch")}</span>
+                  <span>{t("noMatch")}</span>
                 ) : (
                   <>
                     <span className="text-charcoal">
                       {bookingSummary.avail} {t("summaryAvail")}
                     </span>
-                    <span className="mt-2 block text-[9px] text-charcoal/40">
+                    <span className="mt-1.5 block text-[9px] text-charcoal/38">
                       {t("summaryFrom")}{" "}
                       {formatAed(bookingSummary.pMin, lang)} {t("summaryTo")}{" "}
                       {formatAed(bookingSummary.pMax, lang)}
                     </span>
-                    <span className="mt-1 block text-[9px] text-charcoal/35">
+                    <span className="mt-0.5 block text-[9px] text-charcoal/32">
                       {filteredModels.length} {t("summaryTypologies")}
                     </span>
                   </>
@@ -445,16 +411,16 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mb-12 flex flex-wrap items-center justify-center gap-2 md:mb-14">
+          <div className="mb-10 flex flex-wrap gap-2 border-b border-charcoal/[0.06] pb-8">
             {filteredModels.map((m) => (
               <button
                 key={m.id}
                 type="button"
                 onClick={() => setResidenceId(m.id)}
-                className={`shrink-0 rounded-[4px] px-8 py-3.5 font-mono text-[10px] uppercase tracking-[0.22em] transition-all ${
+                className={`rounded-[2px] px-6 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] transition-all ${
                   activeResidenceId === m.id
-                    ? "bg-charcoal text-white shadow-sm"
-                    : "bg-white text-charcoal/40 shadow-[0_1px_0_rgba(26,28,30,0.06)] hover:text-charcoal/80"
+                    ? "bg-charcoal text-white"
+                    : "bg-transparent text-charcoal/38 ring-1 ring-charcoal/[0.1] hover:text-charcoal/70"
                 }`}
               >
                 {m.label}
@@ -462,103 +428,102 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="mb-12 flex flex-wrap items-center justify-center gap-2">
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-charcoal/30">
-              {t("view")}
-            </span>
-            <button
-              type="button"
-              onClick={() => setViewMode("lifestyle")}
-              className={`rounded-[4px] px-5 py-2 font-mono text-[9px] uppercase tracking-widest transition-colors ${
-                viewMode === "lifestyle"
-                  ? "bg-charcoal text-white"
-                  : "text-charcoal/40 hover:text-charcoal"
-              }`}
-            >
-              {t("lifestyleGallery")}
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode("engineering")}
-              className={`rounded-[4px] px-5 py-2 font-mono text-[9px] uppercase tracking-widest transition-colors ${
-                viewMode === "engineering"
-                  ? "bg-charcoal text-white"
-                  : "text-charcoal/40 hover:text-charcoal"
-              }`}
-            >
-              {t("technicalBlueprint")}
-            </button>
-          </div>
-
           <AnimatePresence mode="wait">
-            <motion.div
+            <motion.article
               key={`${activeResidenceId}-${viewMode}`}
-              initial={{ opacity: 0, y: 14 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-16"
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="grid items-start gap-12 lg:grid-cols-12 lg:gap-14"
             >
-              <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
-                <div className="lg:col-span-4">
-                  <h3 className="font-serif text-3xl font-medium tracking-tight text-charcoal md:text-4xl">
-                    {activeResidence.label}
-                  </h3>
-                  <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-charcoal/40">
-                    {activeResidence.booking.availableUnits}{" "}
-                    {t("remainingOf")}{" "}
-                    {activeResidence.booking.totalUnits} {t("remaining")} ·{" "}
-                    {formatAed(activeResidence.booking.priceMin, lang)} –{" "}
-                    {formatAed(activeResidence.booking.priceMax, lang)}
-                  </p>
-                  <div className="mt-12 space-y-6 font-mono text-[11px] uppercase tracking-[0.18em] text-charcoal/55">
-                    <div className="flex justify-between gap-6 border-b border-charcoal/[0.08] pb-5">
-                      <span className="text-charcoal/35">{t("totalArea")}</span>
-                      <span className="text-charcoal">
-                        {activeResidence.specs.totalArea}
-                      </span>
-                    </div>
-                    <div className="flex justify-between gap-6 border-b border-charcoal/[0.08] pb-5">
-                      <span className="text-charcoal/35">{t("balcony")}</span>
-                      <span className="text-charcoal">
-                        {activeResidence.specs.balcony}
-                      </span>
-                    </div>
-                    <div className="flex justify-between gap-6 pb-2">
-                      <span className="text-charcoal/35">{t("parking")}</span>
-                      <span className="text-charcoal">
-                        {activeResidence.specs.parking}
-                      </span>
-                    </div>
-                  </div>
-                  <MagneticButton
-                    type="button"
-                    onClick={() =>
+              <div className="lg:col-span-7">
+                {viewMode === "lifestyle" ? (
+                  <ResidenceGallerySlider
+                    images={activeResidence.images}
+                    label={activeResidence.label}
+                    on360={() =>
                       open360(
                         activeResidence.pano,
                         `${activeResidence.label} · 360°`,
                       )
                     }
-                    className="mt-12 w-full rounded-[4px] bg-charcoal py-5 font-mono text-[10px] uppercase tracking-[0.28em] text-white transition-colors hover:bg-charcoal/90 md:max-w-xs"
+                  />
+                ) : (
+                  <div className="overflow-hidden rounded-[2px] border border-charcoal/[0.06] bg-white">
+                    <EngineeringFloorPlan unitId={activeResidence.id} />
+                  </div>
+                )}
+              </div>
+
+              <aside className="space-y-8 lg:col-span-5 lg:sticky lg:top-28 lg:self-start">
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setViewMode("lifestyle")}
+                    className={`rounded-[2px] px-4 py-2 font-mono text-[9px] uppercase tracking-[0.2em] transition-colors ${
+                      viewMode === "lifestyle"
+                        ? "bg-charcoal text-white"
+                        : "text-charcoal/40 ring-1 ring-charcoal/[0.1] hover:text-charcoal"
+                    }`}
                   >
-                    {t("enterWalkthrough")}
-                  </MagneticButton>
+                    {t("lifestyleGallery")}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setViewMode("engineering")}
+                    className={`rounded-[2px] px-4 py-2 font-mono text-[9px] uppercase tracking-[0.2em] transition-colors ${
+                      viewMode === "engineering"
+                        ? "bg-charcoal text-white"
+                        : "text-charcoal/40 ring-1 ring-charcoal/[0.1] hover:text-charcoal"
+                    }`}
+                  >
+                    {t("technicalBlueprint")}
+                  </button>
                 </div>
 
-                <div className="lg:col-span-8">
-                  {viewMode === "lifestyle" ? (
-                    <ResidenceGallerySlider
-                      images={activeResidence.images}
-                      label={activeResidence.label}
-                    />
-                  ) : (
-                    <div className="overflow-hidden rounded-[4px] bg-white shadow-[0_1px_0_rgba(26,28,30,0.06)]">
-                      <EngineeringFloorPlan unitId={activeResidence.id} />
-                    </div>
-                  )}
+                <div>
+                  <h3 className="font-serif text-[clamp(2rem,3.5vw,3.25rem)] font-light leading-[1.08] tracking-tight text-charcoal">
+                    {activeResidence.label}
+                  </h3>
+                  <p className="mt-5 font-mono text-[10px] uppercase leading-relaxed tracking-[0.22em] text-charcoal/42">
+                    {activeResidence.booking.availableUnits} {t("remainingOf")}{" "}
+                    {activeResidence.booking.totalUnits} {t("remaining")}
+                    <span className="mx-2 text-charcoal/20">·</span>
+                    {formatAed(activeResidence.booking.priceMin, lang)} –{" "}
+                    {formatAed(activeResidence.booking.priceMax, lang)}
+                  </p>
                 </div>
-              </div>
-            </motion.div>
+
+                <dl className="divide-y divide-charcoal/[0.08] border-y border-charcoal/[0.08]">
+                  <div className="flex justify-between gap-8 py-4">
+                    <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-charcoal/38">
+                      {t("totalArea")}
+                    </dt>
+                    <dd className="text-end font-mono text-[11px] uppercase tracking-wider text-charcoal">
+                      {activeResidence.specs.totalArea}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between gap-8 py-4">
+                    <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-charcoal/38">
+                      {t("balcony")}
+                    </dt>
+                    <dd className="text-end font-mono text-[11px] uppercase tracking-wider text-charcoal">
+                      {activeResidence.specs.balcony}
+                    </dd>
+                  </div>
+                  <div className="flex justify-between gap-8 py-4">
+                    <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-charcoal/38">
+                      {t("parking")}
+                    </dt>
+                    <dd className="text-end font-mono text-[11px] uppercase tracking-wider text-charcoal">
+                      {activeResidence.specs.parking}
+                    </dd>
+                  </div>
+                </dl>
+
+              </aside>
+            </motion.article>
           </AnimatePresence>
         </div>
       </section>
@@ -571,29 +536,41 @@ export default function Home() {
             align="center"
           />
 
-          <div className="relative hidden md:block">
-            <div className="absolute left-0 right-0 top-[3px] h-px bg-charcoal/12" />
-            <div className="grid grid-cols-3 gap-6 lg:gap-12">
+          <div className="relative mx-auto hidden max-w-4xl md:block">
+            <div className="grid grid-cols-3 gap-2">
               {PAYMENT_PHASES.map((ph) => (
-                <div key={ph.title} className="relative pt-0 text-center">
-                  <div className="mx-auto h-1.5 w-1.5 rounded-full bg-charcoal ring-4 ring-white" />
-                  <p className="mt-10 font-mono text-[10px] font-normal uppercase tracking-[0.32em] text-charcoal/35">
-                    {ph.when}
-                  </p>
-                  <p className="mt-3 font-serif text-2xl font-light tracking-tight text-charcoal">
+                <div key={ph.title} className="text-center">
+                  <p className="font-serif text-3xl font-light tabular-nums tracking-tight text-charcoal md:text-[2.35rem]">
                     {ph.pct}%
                   </p>
-                  <p className="mt-2 font-serif text-lg font-normal text-charcoal/90">
+                </div>
+              ))}
+            </div>
+            <div className="relative -mt-1 mb-1 h-10">
+              <div
+                className="absolute start-[16%] end-[16%] top-1/2 h-px -translate-y-1/2 bg-charcoal/18"
+                aria-hidden
+              />
+              <div className="relative grid h-full grid-cols-3">
+                {PAYMENT_PHASES.map((ph) => (
+                  <div key={ph.title} className="flex justify-center">
+                    <span
+                      className="relative z-10 mt-0.5 block h-2 w-2 rounded-full bg-charcoal ring-[3px] ring-white"
+                      aria-hidden
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-4 px-1">
+              {PAYMENT_PHASES.map((ph) => (
+                <div key={ph.title} className="text-center">
+                  <p className="font-mono text-[10px] uppercase leading-relaxed tracking-[0.2em] text-charcoal/48">
                     {ph.title}
                   </p>
-                  <p className="mx-auto mt-6 max-w-[220px] font-sans text-[13px] font-normal leading-relaxed text-charcoal/45">
+                  <p className="mx-auto mt-5 hidden max-w-[220px] font-sans text-[13px] font-normal leading-relaxed text-charcoal/40 lg:block">
                     {ph.body}
                   </p>
-                  <ul className="mx-auto mt-6 max-w-[220px] space-y-1.5 text-left font-mono text-[8px] uppercase tracking-[0.12em] text-charcoal/35">
-                    {ph.bullets.map((b) => (
-                      <li key={b}>{b}</li>
-                    ))}
-                  </ul>
                 </div>
               ))}
             </div>
@@ -623,8 +600,8 @@ export default function Home() {
             title={t("locationTitle")}
             subtitle={t("locationSubtitle")}
           />
-          <div className="overflow-hidden rounded-[4px] shadow-[0_1px_0_rgba(26,28,30,0.08)]">
-            <DarkMap />
+          <div className="overflow-hidden rounded-[2px] border border-charcoal/[0.08] shadow-sm">
+            <LightMap />
           </div>
           <p className="mt-10 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-charcoal/35">
             {t("locationMapCaption")}
@@ -667,14 +644,14 @@ export default function Home() {
               href="https://www.sami-najami.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex rounded-[4px] bg-charcoal px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-charcoal/90"
+              className="inline-flex rounded-[2px] bg-charcoal px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-charcoal/90"
             >
               {t("heritageSite")} ↗
             </a>
             <a
               href="/partners/sami-najami-brand.pdf"
               download
-              className="inline-flex rounded-[4px] border border-charcoal/15 bg-white px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-charcoal/70 transition-colors hover:border-charcoal/30 hover:text-charcoal"
+              className="inline-flex rounded-[2px] border border-charcoal/15 bg-white px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-charcoal/70 transition-colors hover:border-charcoal/30 hover:text-charcoal"
             >
               {t("downloadPdf")}
             </a>

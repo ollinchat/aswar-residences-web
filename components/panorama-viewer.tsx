@@ -110,7 +110,7 @@ export function PanoramaViewerModal({
             onClick={onClose}
           />
           <motion.div
-            className="relative z-10 flex max-h-[min(88vh,920px)] w-full max-w-5xl flex-col overflow-hidden rounded-[4px] bg-charcoal shadow-[0_24px_80px_rgba(0,0,0,0.35)]"
+            className="relative z-10 flex max-h-[min(88vh,920px)] w-full max-w-5xl flex-col overflow-hidden rounded-[2px] bg-charcoal shadow-[0_24px_80px_rgba(0,0,0,0.35)]"
             initial={{ opacity: 0, y: 12, scale: 0.985 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.99 }}
@@ -124,7 +124,7 @@ export function PanoramaViewerModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex h-9 w-9 items-center justify-center rounded-[4px] text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                className="flex h-9 w-9 items-center justify-center rounded-[2px] text-white/80 transition-colors hover:bg-white/10 hover:text-white"
                 aria-label="Close"
               >
                 <X className="h-4 w-4" strokeWidth={1.25} />

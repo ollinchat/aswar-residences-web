@@ -13,12 +13,12 @@ export function PartnerMarquee() {
   const doubled = [...PLACEHOLDERS, ...PLACEHOLDERS];
 
   return (
-    <div className="relative overflow-hidden bg-[#EEEEEC] py-16 md:py-20">
-      <div className="flex w-max animate-marquee gap-16 md:gap-24 will-change-transform">
+    <div className="relative overflow-hidden bg-white py-14 md:py-16">
+      <div className="flex w-max animate-marquee gap-16 grayscale md:gap-24 will-change-transform">
         {doubled.map((name, i) => (
           <span
             key={`${name}-${i}`}
-            className="whitespace-nowrap font-serif text-xl font-light tracking-[0.2em] text-charcoal/35 md:text-2xl"
+            className="whitespace-nowrap font-serif text-xl font-light tracking-[0.28em] text-charcoal/45 opacity-70 md:text-2xl"
           >
             {name}
           </span>
