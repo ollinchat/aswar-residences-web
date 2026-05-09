@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
@@ -11,7 +11,6 @@ import { EngineeringFloorPlan } from "@/components/engineering-floor-plan";
 import { ResidenceGallerySlider } from "@/components/residence-gallery-slider";
 import { useLang } from "@/components/language-provider";
 import type { Lang } from "@/lib/i18n";
-import type { ResidenceModel } from "@/lib/residence-models";
 import { RESIDENCE_MODELS } from "@/lib/residence-models";
 
 const PanoramaViewerModal = dynamic(
@@ -21,8 +20,6 @@ const PanoramaViewerModal = dynamic(
 );
 
 const LightMap = dynamic(() => import("@/components/light-map"), { ssr: false });
-
-type PriceBand = "all" | "under2" | "2-4" | "over4";
 
 const PAYMENT_PHASES = [
   {
@@ -48,22 +45,24 @@ const PAYMENT_PHASES = [
   },
 ];
 
-function matchesPriceBand(m: ResidenceModel, band: PriceBand): boolean {
-  if (band === "all") return true;
-  const lo = m.booking.priceMin;
-  const hi = m.booking.priceMax;
-  if (band === "under2") return hi <= 2_000_000;
-  if (band === "2-4") return lo <= 4_000_000 && hi >= 1_800_000;
-  if (band === "over4") return lo >= 3_800_000;
-  return true;
-}
-
 function formatAed(n: number, lang: Lang) {
   return new Intl.NumberFormat(lang === "ar" ? "ar-AE" : "en-AE", {
     style: "currency",
     currency: "AED",
     maximumFractionDigits: 0,
   }).format(n);
+}
+
+/** Compact “From AED 1.1M” for luxury tabs. */
+function formatStartingFrom(minAed: number, lang: Lang) {
+  const m = Math.round((minAed / 1_000_000) * 100) / 100;
+  const amount = Number.isInteger(m)
+    ? String(m)
+    : m.toFixed(2).replace(/\.?0+$/, "");
+  if (lang === "ar") {
+    return `من ${amount}M د.إ`;
+  }
+  return `From AED ${amount}M`;
 }
 
 type MagneticButtonProps = {
@@ -138,7 +137,7 @@ function SectionIntro({
       </h2>
       {subtitle ? (
         <p
-          className={`mt-10 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-[0.25em] text-charcoal/45 ${
+          className={`mt-10 max-w-xl font-sans text-[11px] font-medium uppercase leading-relaxed tracking-[0.28em] text-charcoal/42 ${
             align === "center" ? "mx-auto" : ""
           }`}
         >
@@ -182,11 +181,6 @@ export default function Home() {
   const [viewMode, setViewMode] = useState<"lifestyle" | "engineering">(
     "lifestyle",
   );
-  const [priceBand, setPriceBand] = useState<PriceBand>("all");
-  const [availableOnly, setAvailableOnly] = useState(false);
-  const [typesFilter, setTypesFilter] = useState<Set<string>>(
-    () => new Set(RESIDENCE_MODELS.map((m) => m.id)),
-  );
 
   useEffect(() => {
     if (!viewerOpen) return;
@@ -197,52 +191,13 @@ export default function Home() {
     return () => window.removeEventListener("keydown", onKey);
   }, [viewerOpen]);
 
-  const filteredModels = useMemo(
-    () =>
-      RESIDENCE_MODELS.filter((m) => {
-        if (!typesFilter.has(m.id)) return false;
-        if (availableOnly && m.booking.availableUnits === 0) return false;
-        return matchesPriceBand(m, priceBand);
-      }),
-    [typesFilter, availableOnly, priceBand],
-  );
-
-  const activeResidenceId = useMemo(() => {
-    if (filteredModels.some((m) => m.id === residenceId)) return residenceId;
-    return filteredModels[0]?.id ?? RESIDENCE_MODELS[0].id;
-  }, [filteredModels, residenceId]);
-
   const activeResidence =
-    RESIDENCE_MODELS.find((m) => m.id === activeResidenceId) ??
-    RESIDENCE_MODELS[0];
-
-  const bookingSummary = useMemo(() => {
-    if (filteredModels.length === 0) {
-      return { avail: 0, pMin: 0, pMax: 0 };
-    }
-    const avail = filteredModels.reduce(
-      (s, m) => s + m.booking.availableUnits,
-      0,
-    );
-    const pMin = Math.min(...filteredModels.map((m) => m.booking.priceMin));
-    const pMax = Math.max(...filteredModels.map((m) => m.booking.priceMax));
-    return { avail, pMin, pMax };
-  }, [filteredModels]);
+    RESIDENCE_MODELS.find((m) => m.id === residenceId) ?? RESIDENCE_MODELS[0];
 
   const open360 = (src: string, title: string) => {
     setViewerSrc(src);
     setViewerTitle(title);
     setViewerOpen(true);
-  };
-
-  const toggleTypeFilter = (id: string) => {
-    setTypesFilter((prev) => {
-      const n = new Set(prev);
-      if (n.has(id) && n.size === 1) return prev;
-      if (n.has(id)) n.delete(id);
-      else n.add(id);
-      return n;
-    });
   };
 
   return (
@@ -312,125 +267,64 @@ export default function Home() {
 
       <section
         id="the-residences"
-        className="scroll-mt-24 border-t border-charcoal/[0.06] bg-white px-6 py-32 md:px-12 md:py-40"
+        className="scroll-mt-24 bg-[#FFFFFF] px-6 py-28 md:px-14 md:py-36"
       >
-        <div className="mx-auto max-w-[1380px]">
-          <header className="mb-12 md:mb-16">
-            <p className="font-mono text-[9px] uppercase tracking-[0.5em] text-charcoal/30">
+        <div className="mx-auto max-w-[1360px]">
+          <header className="mb-14 md:mb-16">
+            <p className="font-sans text-[9px] font-medium uppercase tracking-[0.52em] text-charcoal/32">
               {t("magazineKicker")}
             </p>
-            <h2 className="mt-5 max-w-2xl font-serif text-4xl font-light tracking-tight text-charcoal md:text-[2.75rem] md:leading-[1.12]">
+            <h2 className="mt-5 max-w-2xl font-serif text-4xl font-light tracking-tight text-charcoal md:text-[2.85rem] md:leading-[1.1]">
               {t("residencesTitle")}
             </h2>
-            <p className="mt-8 max-w-md font-mono text-[11px] uppercase leading-relaxed tracking-[0.22em] text-charcoal/40">
+            <p className="mt-7 max-w-md font-sans text-[11px] font-medium uppercase leading-relaxed tracking-[0.26em] text-charcoal/38">
               {t("residencesSubtitle")}
             </p>
           </header>
 
-          <div className="mb-10 rounded-[2px] border border-charcoal/[0.08] bg-[#FAFAFA]/60 px-4 py-5 backdrop-blur-sm md:px-6 md:py-6">
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-              <div>
-                <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-charcoal/35">
-                  {t("unitTypes")}
-                </p>
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {RESIDENCE_MODELS.map((m) => (
-                    <button
-                      key={m.id}
-                      type="button"
-                      onClick={() => toggleTypeFilter(m.id)}
-                      className={`rounded-[2px] px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest transition-colors ${
-                        typesFilter.has(m.id)
-                          ? "bg-charcoal text-white"
-                          : "bg-white text-charcoal/40 ring-1 ring-charcoal/[0.08] hover:text-charcoal/70"
+          <div className="mb-14 border-b border-charcoal/[0.08]">
+            <div className="scrollbar-none flex gap-8 overflow-x-auto pb-px md:flex-wrap md:gap-x-12 md:gap-y-6 lg:gap-x-14">
+              {RESIDENCE_MODELS.map((m) => {
+                const active = residenceId === m.id;
+                return (
+                  <button
+                    key={m.id}
+                    type="button"
+                    onClick={() => setResidenceId(m.id)}
+                    className="group relative shrink-0 pb-4 text-start transition-opacity hover:opacity-90"
+                  >
+                    <span
+                      className={`block font-sans text-[13px] font-semibold tracking-[0.12em] transition-colors ${
+                        active ? "text-charcoal" : "text-charcoal/45"
                       }`}
                     >
                       {m.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="font-mono text-[9px] uppercase tracking-[0.32em] text-charcoal/35">
-                  {t("priceBand")}
-                </p>
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {(
-                    [
-                      ["all", "All"],
-                      ["under2", "≤ 2M"],
-                      ["2-4", "2M – 4M"],
-                      ["over4", "4M+"],
-                    ] as const
-                  ).map(([id, label]) => (
-                    <button
-                      key={id}
-                      type="button"
-                      onClick={() => setPriceBand(id)}
-                      className={`rounded-[2px] px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest transition-colors ${
-                        priceBand === id
-                          ? "bg-charcoal text-white"
-                          : "bg-white text-charcoal/45 ring-1 ring-charcoal/[0.08]"
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col justify-end">
-                <label className="flex cursor-pointer items-center gap-2.5 font-mono text-[10px] uppercase tracking-widest text-charcoal/45">
-                  <input
-                    type="checkbox"
-                    checked={availableOnly}
-                    onChange={(e) => setAvailableOnly(e.target.checked)}
-                    className="h-3 w-3 rounded-[2px] border-0 accent-charcoal"
-                  />
-                  {t("availableOnly")}
-                </label>
-              </div>
-              <div className="flex flex-col justify-end font-mono text-[10px] uppercase leading-relaxed tracking-[0.16em] text-charcoal/45">
-                {filteredModels.length === 0 ? (
-                  <span>{t("noMatch")}</span>
-                ) : (
-                  <>
-                    <span className="text-charcoal">
-                      {bookingSummary.avail} {t("summaryAvail")}
                     </span>
-                    <span className="mt-1.5 block text-[9px] text-charcoal/38">
-                      {t("summaryFrom")}{" "}
-                      {formatAed(bookingSummary.pMin, lang)} {t("summaryTo")}{" "}
-                      {formatAed(bookingSummary.pMax, lang)}
+                    <span className="mt-1.5 block font-sans text-[11px] font-normal tracking-[0.06em] text-charcoal/32">
+                      {formatStartingFrom(m.booking.priceMin, lang)}
                     </span>
-                    <span className="mt-0.5 block text-[9px] text-charcoal/32">
-                      {filteredModels.length} {t("summaryTypologies")}
-                    </span>
-                  </>
-                )}
-              </div>
+                    {active ? (
+                      <motion.span
+                        layoutId="residence-tab-underline"
+                        className="absolute inset-x-0 bottom-0 h-px bg-charcoal"
+                        transition={{
+                          type: "spring",
+                          stiffness: 380,
+                          damping: 34,
+                        }}
+                      />
+                    ) : (
+                      <span className="absolute inset-x-0 bottom-0 h-px bg-transparent group-hover:bg-charcoal/10" />
+                    )}
+                  </button>
+                );
+              })}
             </div>
-          </div>
-
-          <div className="mb-10 flex flex-wrap gap-2 border-b border-charcoal/[0.06] pb-8">
-            {filteredModels.map((m) => (
-              <button
-                key={m.id}
-                type="button"
-                onClick={() => setResidenceId(m.id)}
-                className={`rounded-[2px] px-6 py-2.5 font-mono text-[10px] uppercase tracking-[0.24em] transition-all ${
-                  activeResidenceId === m.id
-                    ? "bg-charcoal text-white"
-                    : "bg-transparent text-charcoal/38 ring-1 ring-charcoal/[0.1] hover:text-charcoal/70"
-                }`}
-              >
-                {m.label}
-              </button>
-            ))}
           </div>
 
           <AnimatePresence mode="wait">
             <motion.article
-              key={`${activeResidenceId}-${viewMode}`}
+              key={`${residenceId}-${viewMode}`}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
@@ -456,15 +350,15 @@ export default function Home() {
                 )}
               </div>
 
-              <aside className="space-y-8 lg:col-span-5 lg:sticky lg:top-28 lg:self-start">
-                <div className="flex flex-wrap gap-2">
+              <aside className="space-y-10 lg:col-span-5 lg:sticky lg:top-28 lg:self-start">
+                <div className="flex gap-3">
                   <button
                     type="button"
                     onClick={() => setViewMode("lifestyle")}
-                    className={`rounded-[2px] px-4 py-2 font-mono text-[9px] uppercase tracking-[0.2em] transition-colors ${
+                    className={`rounded-[2px] px-4 py-2 font-sans text-[9px] font-medium uppercase tracking-[0.22em] transition-colors ${
                       viewMode === "lifestyle"
                         ? "bg-charcoal text-white"
-                        : "text-charcoal/40 ring-1 ring-charcoal/[0.1] hover:text-charcoal"
+                        : "text-charcoal/42 ring-1 ring-charcoal/[0.1] hover:text-charcoal"
                     }`}
                   >
                     {t("lifestyleGallery")}
@@ -472,10 +366,10 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={() => setViewMode("engineering")}
-                    className={`rounded-[2px] px-4 py-2 font-mono text-[9px] uppercase tracking-[0.2em] transition-colors ${
+                    className={`rounded-[2px] px-4 py-2 font-sans text-[9px] font-medium uppercase tracking-[0.22em] transition-colors ${
                       viewMode === "engineering"
                         ? "bg-charcoal text-white"
-                        : "text-charcoal/40 ring-1 ring-charcoal/[0.1] hover:text-charcoal"
+                        : "text-charcoal/42 ring-1 ring-charcoal/[0.1] hover:text-charcoal"
                     }`}
                   >
                     {t("technicalBlueprint")}
@@ -483,92 +377,106 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <h3 className="font-serif text-[clamp(2rem,3.5vw,3.25rem)] font-light leading-[1.08] tracking-tight text-charcoal">
+                  <h3 className="font-serif text-[clamp(1.85rem,3.2vw,2.85rem)] font-light leading-[1.06] tracking-tight text-charcoal">
                     {activeResidence.label}
                   </h3>
-                  <p className="mt-5 font-mono text-[10px] uppercase leading-relaxed tracking-[0.22em] text-charcoal/42">
+                  <p className="mt-4 font-sans text-[10px] font-medium uppercase leading-relaxed tracking-[0.24em] text-charcoal/38">
                     {activeResidence.booking.availableUnits} {t("remainingOf")}{" "}
                     {activeResidence.booking.totalUnits} {t("remaining")}
-                    <span className="mx-2 text-charcoal/20">·</span>
-                    {formatAed(activeResidence.booking.priceMin, lang)} –{" "}
-                    {formatAed(activeResidence.booking.priceMax, lang)}
                   </p>
+                  <div className="mt-8 space-y-1">
+                    <p className="font-sans text-[9px] font-medium uppercase tracking-[0.28em] text-charcoal/32">
+                      {t("priceStartingLabel")}
+                    </p>
+                    <p className="font-serif text-[clamp(1.75rem,2.8vw,2.35rem)] font-light tabular-nums tracking-tight text-charcoal">
+                      {formatAed(activeResidence.booking.priceMin, lang)}
+                    </p>
+                    <p className="font-serif text-lg font-light tabular-nums text-charcoal/42">
+                      — {formatAed(activeResidence.booking.priceMax, lang)}
+                    </p>
+                  </div>
                 </div>
 
-                <dl className="divide-y divide-charcoal/[0.08] border-y border-charcoal/[0.08]">
-                  <div className="flex justify-between gap-8 py-4">
-                    <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-charcoal/38">
+                <dl className="space-y-0 border-t border-charcoal/[0.08]">
+                  <div className="flex justify-between gap-6 border-b border-charcoal/[0.08] py-3.5">
+                    <dt className="max-w-[55%] font-sans text-[10px] font-medium uppercase leading-snug tracking-[0.14em] text-charcoal/40">
                       {t("totalArea")}
                     </dt>
-                    <dd className="text-end font-mono text-[11px] uppercase tracking-wider text-charcoal">
+                    <dd className="text-end font-sans text-[11px] font-semibold tracking-[0.04em] text-charcoal">
                       {activeResidence.specs.totalArea}
                     </dd>
                   </div>
-                  <div className="flex justify-between gap-8 py-4">
-                    <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-charcoal/38">
+                  <div className="flex justify-between gap-6 border-b border-charcoal/[0.08] py-3.5">
+                    <dt className="max-w-[55%] font-sans text-[10px] font-medium uppercase leading-snug tracking-[0.14em] text-charcoal/40">
                       {t("balcony")}
                     </dt>
-                    <dd className="text-end font-mono text-[11px] uppercase tracking-wider text-charcoal">
+                    <dd className="text-end font-sans text-[11px] font-semibold tracking-[0.04em] text-charcoal">
                       {activeResidence.specs.balcony}
                     </dd>
                   </div>
-                  <div className="flex justify-between gap-8 py-4">
-                    <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-charcoal/38">
+                  <div className="flex justify-between gap-6 py-3.5">
+                    <dt className="max-w-[55%] font-sans text-[10px] font-medium uppercase leading-snug tracking-[0.14em] text-charcoal/40">
                       {t("parking")}
                     </dt>
-                    <dd className="text-end font-mono text-[11px] uppercase tracking-wider text-charcoal">
+                    <dd className="text-end font-sans text-[11px] font-semibold tracking-[0.04em] text-charcoal">
                       {activeResidence.specs.parking}
                     </dd>
                   </div>
                 </dl>
-
               </aside>
             </motion.article>
           </AnimatePresence>
         </div>
       </section>
 
-      <section className="bg-white px-6 py-48 md:px-12 md:py-56 lg:py-64">
-        <div className="mx-auto max-w-5xl">
+      <section className="bg-[#FFFFFF] px-6 py-40 md:px-12 md:py-48 lg:py-56">
+        <div className="mx-auto max-w-6xl">
           <SectionIntro
             title={t("paymentTitle")}
             subtitle={t("paymentSubtitle")}
             align="center"
           />
 
-          <div className="relative mx-auto hidden max-w-4xl md:block">
-            <div className="grid grid-cols-3 gap-2">
+          <div className="relative mx-auto hidden w-full max-w-[1100px] md:block">
+            <div className="grid grid-cols-3 gap-4">
               {PAYMENT_PHASES.map((ph) => (
                 <div key={ph.title} className="text-center">
-                  <p className="font-serif text-3xl font-light tabular-nums tracking-tight text-charcoal md:text-[2.35rem]">
+                  <p className="font-serif text-[clamp(2.25rem,5vw,3.5rem)] font-extralight tabular-nums leading-none tracking-[-0.02em] text-charcoal">
                     {ph.pct}%
                   </p>
                 </div>
               ))}
             </div>
-            <div className="relative -mt-1 mb-1 h-10">
+
+            <div className="relative my-8 h-12">
               <div
-                className="absolute start-[16%] end-[16%] top-1/2 h-px -translate-y-1/2 bg-charcoal/18"
+                className="absolute start-0 end-0 top-1/2 h-px -translate-y-1/2 bg-charcoal/14"
                 aria-hidden
               />
               <div className="relative grid h-full grid-cols-3">
                 {PAYMENT_PHASES.map((ph) => (
                   <div key={ph.title} className="flex justify-center">
                     <span
-                      className="relative z-10 mt-0.5 block h-2 w-2 rounded-full bg-charcoal ring-[3px] ring-white"
+                      className="relative z-10 mt-[1.125rem] flex h-[11px] w-[11px] items-center justify-center rounded-full border border-charcoal/20 bg-white shadow-sm"
                       aria-hidden
-                    />
+                    >
+                      <span className="h-[5px] w-[5px] rounded-full bg-charcoal" />
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-4 px-1">
+
+            <div className="grid grid-cols-3 gap-6 px-1">
               {PAYMENT_PHASES.map((ph) => (
                 <div key={ph.title} className="text-center">
-                  <p className="font-mono text-[10px] uppercase leading-relaxed tracking-[0.2em] text-charcoal/48">
-                    {ph.title}
+                  <p className="font-sans text-[10px] font-semibold uppercase leading-snug tracking-[0.22em] text-charcoal">
+                    {ph.title
+                      .split(" ")
+                      .map((w) => w.toUpperCase())
+                      .join(" ")}
                   </p>
-                  <p className="mx-auto mt-5 hidden max-w-[220px] font-sans text-[13px] font-normal leading-relaxed text-charcoal/40 lg:block">
+                  <p className="mx-auto mt-6 hidden max-w-[240px] font-sans text-[13px] font-normal leading-relaxed text-charcoal/38 lg:block">
                     {ph.body}
                   </p>
                 </div>
@@ -578,14 +486,17 @@ export default function Home() {
 
           <div className="space-y-10 md:hidden">
             {PAYMENT_PHASES.map((ph) => (
-              <div key={ph.title} className="border-l border-charcoal/15 pl-6">
-                <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-charcoal/35">
-                  {ph.pct}% · {ph.when}
+              <div key={ph.title} className="border-s border-charcoal/12 ps-6">
+                <p className="font-serif text-3xl font-extralight tabular-nums text-charcoal">
+                  {ph.pct}%
                 </p>
-                <p className="mt-2 font-serif text-xl font-light text-charcoal">
-                  {ph.title}
+                <p className="mt-3 font-sans text-[10px] font-semibold uppercase tracking-[0.22em] text-charcoal">
+                  {ph.title
+                    .split(" ")
+                    .map((w) => w.toUpperCase())
+                    .join(" ")}
                 </p>
-                <p className="mt-3 text-[13px] leading-relaxed text-charcoal/45">
+                <p className="mt-3 font-sans text-[13px] leading-relaxed text-charcoal/40">
                   {ph.body}
                 </p>
               </div>

@@ -14,7 +14,7 @@ module.exports = {
       fontFamily: {
         serif: ["var(--font-cormorant)", "Georgia", "serif"],
         mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
-        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
+        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       colors: {
         charcoal: "#1A1C1E",

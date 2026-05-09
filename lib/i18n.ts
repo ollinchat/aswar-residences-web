@@ -26,6 +26,7 @@ export const copy = {
     heritageCorpBody:
       "Official mark & credentials — vector PDF supplied for print and digital compliance.",
     downloadPdf: "Download PDF",
+    priceStartingLabel: "Starting from",
     magazineKicker: "The collection",
     residencesTitle: "The Residences",
     residencesSubtitle:
@@ -109,6 +110,7 @@ export const copy = {
     heritageCorpBody:
       "الشعار والاعتمادات الرسمية — ملف PDF متجه للطباعة والامتثال الرقمي.",
     downloadPdf: "تحميل PDF",
+    priceStartingLabel: "يبدأ من",
     magazineKicker: "المجموعة",
     residencesTitle: "المساكن",
     residencesSubtitle:
