@@ -980,7 +980,7 @@ export default function Home() {
               <HeritageProjectGallery variant="masonry" />
             </div>
           </div>
-          <p className="mx-auto mt-8 max-w-2xl font-sans text-sm font-normal leading-relaxed text-charcoal/50 md:mt-10 md:text-[15px]">
+          <p className="mx-auto mt-8 max-w-2xl font-sans text-sm font-normal leading-relaxed text-charcoal/50 md:mt-10 md:text-[15px] rtl:font-arabic rtl:leading-[1.72]">
             {t("engineeringSealLine")}
           </p>
           <div className="mt-6 flex flex-wrap gap-4">

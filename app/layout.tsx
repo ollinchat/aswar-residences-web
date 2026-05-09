@@ -28,7 +28,8 @@ const cormorant = Cormorant_Garamond({
 const notoArabic = Noto_Sans_Arabic({
   variable: "--font-arabic",
   subsets: ["arabic"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 const siteUrl =
@@ -62,6 +63,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      dir="ltr"
+      suppressHydrationWarning
       className={`${inter.variable} ${geistMono.variable} ${cormorant.variable} ${notoArabic.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">

@@ -42,10 +42,10 @@ export function HeritageProjectGallery({ variant = "slider" }: { variant?: Varia
 
   return (
     <div
-      className="grid grid-cols-3 gap-2 sm:gap-2.5"
+      className="grid grid-cols-3 grid-rows-2 items-stretch gap-2 sm:gap-2.5"
       aria-label="Project photography"
     >
-      <div className="relative col-span-2 row-span-2 min-h-[160px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[200px] md:min-h-[220px]">
+      <div className="relative col-span-2 row-span-2 min-h-[168px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[208px] md:min-h-[228px]">
         <Image
           src={a.src}
           alt={a.alt}
@@ -57,7 +57,7 @@ export function HeritageProjectGallery({ variant = "slider" }: { variant?: Varia
           priority
         />
       </div>
-      <div className="relative min-h-[76px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[96px]">
+      <div className="relative col-start-3 row-start-1 min-h-[76px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[96px]">
         <Image
           src={b.src}
           alt={b.alt}
@@ -68,7 +68,7 @@ export function HeritageProjectGallery({ variant = "slider" }: { variant?: Varia
           blurDataURL={REMOTE_IMAGE_BLUR_DATA_URL}
         />
       </div>
-      <div className="relative min-h-[76px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[96px]">
+      <div className="relative col-start-3 row-start-2 min-h-[76px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[96px]">
         <Image
           src={c.src}
           alt={c.alt}

@@ -51,8 +51,8 @@ export const DISTRICT_ATTRACTIONS_ALL: DistrictAttraction[] = [
     alt: "Skyline silhouette at sunset",
   },
   {
-    src: u("photo-1541976670076-97cf35056154"),
-    alt: "Sculptural staircase and atrium light",
+    src: u("photo-1600216884354-e6e2b9fea3ae"),
+    alt: "Minimal interior with warm daylight",
   },
 ];
 

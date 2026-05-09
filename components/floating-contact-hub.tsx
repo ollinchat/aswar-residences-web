@@ -27,14 +27,17 @@ import type { CopyKey, Lang } from "@/lib/i18n";
 const glassFab =
   "relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/40 text-charcoal shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-2xl transition-[box-shadow,border-color,transform] duration-300 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25";
 
-const fabGlowCool =
-  "motion-safe:hover:border-blue-200/45 motion-safe:hover:shadow-[0_0_26px_rgba(96,165,250,0.38),0_8px_28px_rgba(0,0,0,0.1)]";
+/** Accessibility — cool silver halo */
+const fabGlowSilver =
+  "motion-safe:hover:border-slate-200/55 motion-safe:hover:shadow-[0_0_28px_rgba(192,198,210,0.5),0_8px_28px_rgba(0,0,0,0.08)]";
 
-const fabGlowGold =
-  "motion-safe:hover:border-champagne/35 motion-safe:hover:shadow-[0_0_26px_rgba(212,175,55,0.42),0_8px_28px_rgba(0,0,0,0.1)]";
+/** Social — soft platinum between silver and gold */
+const fabGlowPlatinum =
+  "motion-safe:hover:border-stone-200/50 motion-safe:hover:shadow-[0_0_26px_rgba(210,205,198,0.45),0_8px_28px_rgba(0,0,0,0.09)]";
 
+/** Contact — champagne gold */
 const fabGlowGoldStrong =
-  "motion-safe:hover:border-champagne/40 motion-safe:hover:shadow-[0_0_30px_rgba(212,175,55,0.48),0_8px_28px_rgba(0,0,0,0.11)]";
+  "motion-safe:hover:border-champagne/45 motion-safe:hover:shadow-[0_0_32px_rgba(212,175,55,0.5),0_8px_28px_rgba(0,0,0,0.11)]";
 
 const hitWrap =
   "flex min-h-[52px] min-w-[52px] items-center justify-center rounded-full";
@@ -213,7 +216,7 @@ function writeTextSize(size: TextSize) {
 }
 
 const trayPanel =
-  "w-[min(calc(100vw-2rem),20rem)] max-h-[min(70vh,480px)] origin-bottom overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-white/30 p-3 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-2xl sm:p-3.5";
+  "w-[min(calc(100vw-2rem),20rem)] max-h-[min(70vh,480px)] origin-bottom-left overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-white/30 p-3 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-2xl sm:p-3.5 rtl:origin-bottom-right";
 
 function SectionLabel({
   id,
@@ -226,7 +229,7 @@ function SectionLabel({
 }) {
   const cls =
     lang === "ar"
-      ? "font-arabic text-[10px] font-semibold text-charcoal/55 sm:text-[11px]"
+      ? "font-arabic text-[10px] font-semibold leading-[1.72] text-charcoal/55 sm:text-[11px]"
       : "font-serif text-[9px] font-semibold uppercase tracking-[0.2em] text-charcoal/55 sm:text-[10px]";
   return (
     <p id={id} className={`border-b border-white/10 pb-1.5 ${cls}`}>
@@ -252,7 +255,7 @@ function ToggleRow({
       onClick={() => onChange(!checked)}
       className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/25 px-3 py-2 text-start backdrop-blur-md transition-colors hover:bg-white/40"
     >
-      <span className="font-sans text-[11px] font-medium leading-snug tracking-wide text-charcoal sm:text-xs">
+      <span className="font-sans text-[11px] font-medium leading-snug tracking-wide text-charcoal rtl:leading-[1.65] sm:text-xs">
         {label}
       </span>
       <span
@@ -292,7 +295,7 @@ function TextSizeRadios({
     <div
       role="radiogroup"
       aria-labelledby={labelledBy}
-      className="flex gap-1.5"
+      className="flex gap-1.5 rtl:flex-row-reverse"
     >
       {sizes.map((sz) => (
         <button
@@ -493,17 +496,38 @@ export function FloatingContactHub() {
   }, [contactOpen, socialOpen, a11yOpen, closeAll]);
 
   const overlayOpen = contactOpen || socialOpen || a11yOpen;
-  const menuTransition = reduceMotion ? { duration: 0.2 } : menuSpring;
-  const fadeTransition = reduceMotion ? { duration: 0.15 } : { duration: 0.22 };
+  const menuTransition = useMemo(
+    () => (reduceMotion ? { duration: 0.2 } : menuSpring),
+    [reduceMotion],
+  );
+  const fadeTransition = useMemo(
+    () => (reduceMotion ? { duration: 0.15 } : { duration: 0.22 }),
+    [reduceMotion],
+  );
 
-  const menuMotion = {
-    initial: reduceMotion
-      ? { opacity: 0 }
-      : { opacity: 0, y: 32, scale: 0.92 },
-    animate: { opacity: 1, y: 0, scale: 1 },
-    exit: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 22, scale: 0.94 },
-    transition: menuTransition,
-  };
+  const menuMotion = useMemo(
+    () => ({
+      initial: reduceMotion
+        ? { opacity: 0 }
+        : {
+            opacity: 0,
+            y: 28,
+            scale: 0.94,
+            x: lang === "ar" ? 16 : -16,
+          },
+      animate: { opacity: 1, y: 0, scale: 1, x: 0 },
+      exit: reduceMotion
+        ? { opacity: 0 }
+        : {
+            opacity: 0,
+            y: 14,
+            scale: 0.95,
+            x: lang === "ar" ? 10 : -10,
+          },
+      transition: menuTransition,
+    }),
+    [reduceMotion, lang, menuTransition],
+  );
 
   const tree = (
     <>
@@ -523,8 +547,8 @@ export function FloatingContactHub() {
         ) : null}
       </AnimatePresence>
 
-      <div className="aswar-floating-hub-root z-[9999] flex flex-col items-start gap-2">
-        <div className="pointer-events-auto flex w-full flex-col gap-2">
+      <div className="aswar-floating-hub-root z-[9999] flex flex-col items-start gap-2.5">
+        <div className="pointer-events-auto flex flex-col gap-2.5">
           {/* Accessibility */}
           <div className="flex w-full flex-col items-start gap-1.5">
             <AnimatePresence>
@@ -541,7 +565,7 @@ export function FloatingContactHub() {
                     id={a11yMenuTitleId}
                     className={
                       lang === "ar"
-                        ? "mb-2 font-arabic text-xs font-semibold text-charcoal"
+                        ? "mb-2 font-arabic text-xs font-semibold leading-[1.72] text-charcoal"
                         : "mb-2 font-serif text-[10px] font-semibold uppercase tracking-[0.24em] text-charcoal sm:text-[11px]"
                     }
                   >
@@ -629,7 +653,7 @@ export function FloatingContactHub() {
                 }
                 whileTap={{ scale: 0.94 }}
                 transition={pillTap}
-                className={`${glassFab} ${fabGlowCool}`}
+                className={`${glassFab} ${fabGlowSilver}`}
               >
                 <UserRound className="h-5 w-5" strokeWidth={1.25} aria-hidden />
               </motion.button>
@@ -652,7 +676,7 @@ export function FloatingContactHub() {
                     id={socialMenuTitleId}
                     className={
                       lang === "ar"
-                        ? "mb-2 font-arabic text-xs font-semibold text-charcoal"
+                        ? "mb-2 font-arabic text-xs font-semibold leading-[1.72] text-charcoal"
                         : "mb-2 font-serif text-[9px] font-semibold uppercase tracking-[0.22em] text-charcoal/60 sm:text-[10px]"
                     }
                   >
@@ -679,7 +703,7 @@ export function FloatingContactHub() {
                 }
                 whileTap={{ scale: 0.94 }}
                 transition={pillTap}
-                className={`${glassFab} ${fabGlowGold}`}
+                className={`${glassFab} ${fabGlowPlatinum}`}
               >
                 <motion.span
                   aria-hidden
@@ -709,7 +733,7 @@ export function FloatingContactHub() {
                     id={contactMenuTitleId}
                     className={
                       lang === "ar"
-                        ? "mb-2 font-arabic text-xs font-semibold text-charcoal"
+                        ? "mb-2 font-arabic text-xs font-semibold leading-[1.72] text-charcoal"
                         : "mb-2 font-serif text-[9px] font-semibold uppercase tracking-[0.22em] text-charcoal/60 sm:text-[10px]"
                     }
                   >
