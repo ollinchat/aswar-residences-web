@@ -603,7 +603,7 @@ export default function Home() {
                           )}
                         </span>
                         <div
-                          className="inline-flex shrink-0 rounded-[2px] bg-white/5 p-0.5 ring-1 ring-white/15"
+                          className="inline-flex shrink-0 rounded-[2px] bg-zinc-950/35 p-0.5 ring-1 ring-zinc-400/25"
                           role="group"
                           aria-label="Area unit"
                         >
@@ -613,7 +613,7 @@ export default function Home() {
                             className={`rounded-[1px] px-2.5 py-1 font-sans text-[8px] font-medium uppercase tracking-[0.16em] transition-colors sm:px-3 sm:text-[9px] ${
                               areaMetric === "sqm"
                                 ? "bg-white text-charcoal"
-                                : "text-white/55 hover:text-white"
+                                : "text-zinc-300 hover:text-zinc-100"
                             }`}
                           >
                             {t("metricSqm")}
@@ -624,7 +624,7 @@ export default function Home() {
                             className={`rounded-[1px] px-2.5 py-1 font-sans text-[8px] font-medium uppercase tracking-[0.16em] transition-colors sm:px-3 sm:text-[9px] ${
                               areaMetric === "sqft"
                                 ? "bg-white text-charcoal"
-                                : "text-white/55 hover:text-white"
+                                : "text-zinc-300 hover:text-zinc-100"
                             }`}
                           >
                             {t("metricSqft")}

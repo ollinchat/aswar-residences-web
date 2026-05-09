@@ -33,7 +33,7 @@ export function PaymentSection({
   const tabBtn = (active: boolean) =>
     `relative min-h-[44px] flex-1 rounded-full px-4 py-2.5 font-sans text-[10px] font-medium tracking-[0.1em] transition-[color,box-shadow,background,border-color] duration-300 sm:text-[11px] rtl:font-arabic rtl:leading-[1.72] ${
       active
-        ? "border-[0.5px] border-amber-200/60 bg-white text-zinc-900 shadow-[0_8px_28px_rgba(180,160,120,0.22),0_0_24px_rgba(251,191,36,0.12)] ring-1 ring-amber-200/45"
+        ? "border border-zinc-300/90 bg-white text-zinc-900 shadow-[0_6px_20px_rgba(0,0,0,0.06)] ring-1 ring-zinc-200/80"
         : "border border-transparent bg-transparent text-zinc-400 hover:text-zinc-600"
     }`;
 
@@ -85,8 +85,8 @@ export function PaymentSection({
                 onClick={() => setCashTier(pct)}
                 className={`group flex flex-col items-center rounded-2xl border px-5 py-8 text-center transition-[box-shadow,background,border-color] duration-300 md:py-10 ${
                   active
-                    ? "border-[0.5px] border-amber-200/55 bg-white/95 shadow-[0_20px_50px_rgba(180,160,120,0.12)] ring-1 ring-amber-200/40 backdrop-blur-xl"
-                    : "border-zinc-200/80 bg-zinc-50/80 backdrop-blur-md hover:border-amber-200/35 hover:bg-white/90"
+                    ? "border-zinc-300/90 bg-white/95 shadow-[0_12px_32px_rgba(0,0,0,0.06)] ring-1 ring-zinc-200/80 backdrop-blur-xl"
+                    : "border-zinc-200/80 bg-zinc-50/80 backdrop-blur-md hover:border-zinc-300/80 hover:bg-white/90"
                 }`}
               >
                 <span className="font-serif text-[clamp(2.5rem,6vw,3.25rem)] font-extralight tabular-nums leading-none tracking-[-0.03em] text-charcoal">
@@ -105,7 +105,7 @@ export function PaymentSection({
           id="payment-panel-installments"
           role="tabpanel"
           aria-labelledby="payment-tab-installments"
-          className="mt-10"
+          className="mx-auto mt-10 max-w-md"
         >
           <PaymentCalculator
             lang={lang}
