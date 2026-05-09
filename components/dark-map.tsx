@@ -23,7 +23,7 @@ export default function DarkMap() {
     <MapContainer
       center={CENTER}
       zoom={13}
-      className="z-0 h-[min(440px,55vh)] w-full min-h-[320px] overflow-hidden rounded-sm md:h-[440px]"
+      className="z-0 h-[min(480px,58vh)] w-full min-h-[360px] overflow-hidden md:h-[480px]"
       scrollWheelZoom={false}
       attributionControl
     >

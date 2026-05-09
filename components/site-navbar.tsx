@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useLang } from "@/components/language-provider";
 
 type NavVariant = "hero" | "solid";
 
@@ -10,6 +11,7 @@ export function SiteNavbar({
 }: {
   variant?: NavVariant;
 }) {
+  const { lang, setLang, t } = useLang();
   const [onLight, setOnLight] = useState(variant === "solid");
 
   useEffect(() => {
@@ -24,15 +26,19 @@ export function SiteNavbar({
   const isLight = variant === "solid" || onLight;
 
   const linkClass = isLight
-    ? "text-charcoal/55 hover:text-charcoal"
-    : "text-white/75 hover:text-white";
+    ? "text-charcoal/50 hover:text-charcoal"
+    : "text-white/70 hover:text-white";
+
+  const ctaClass = isLight
+    ? "bg-charcoal text-white hover:bg-charcoal/90"
+    : "bg-white text-charcoal hover:bg-white/90";
 
   return (
     <nav
-      className={`fixed top-0 z-50 flex w-full items-center justify-between px-6 py-6 transition-colors duration-300 md:px-12 md:py-7 ${
+      className={`fixed top-0 z-50 flex w-full items-center justify-between px-6 py-5 transition-colors duration-300 md:px-12 md:py-6 ${
         isLight
-          ? "border-b border-charcoal/8 bg-parchment/90 text-charcoal backdrop-blur-md"
-          : "border-b border-white/10 bg-transparent text-white"
+          ? "border-b border-charcoal/[0.06] bg-[#FAFAFA]/85 text-charcoal backdrop-blur-xl"
+          : "border-b border-white/[0.06] bg-transparent text-white"
       }`}
     >
       <Link
@@ -42,30 +48,42 @@ export function SiteNavbar({
         ASWAR
       </Link>
       <div
-        className={`hidden items-center gap-8 font-mono text-[10px] uppercase tracking-[0.2em] md:flex lg:gap-10 ${isLight ? "text-charcoal/55" : "text-white/75"}`}
+        className={`flex items-center gap-4 md:gap-6 lg:gap-8 ${isLight ? "text-charcoal/50" : "text-white/70"}`}
       >
-        <Link href="/#the-residences" className={`transition-colors ${linkClass}`}>
-          Residences
-        </Link>
-        <Link href="/gallery" className={`transition-colors ${linkClass}`}>
-          Gallery
-        </Link>
-        <Link href="/location" className={`transition-colors ${linkClass}`}>
-          Location
-        </Link>
-        <Link href="/about-najami" className={`transition-colors ${linkClass}`}>
-          About Najami
-        </Link>
-        <a
-          href="#inquire"
-          className={`border-b border-champagne pb-0.5 transition-colors ${
-            isLight
-              ? "text-champagne hover:text-charcoal"
-              : "text-white hover:text-white"
-          }`}
+        <div
+          className={`hidden items-center gap-8 font-mono text-[10px] uppercase tracking-[0.2em] md:flex lg:gap-10`}
         >
-          Inquire
-        </a>
+          <Link href="/#the-residences" className={`transition-colors ${linkClass}`}>
+            {t("navResidences")}
+          </Link>
+          <Link href="/gallery" className={`transition-colors ${linkClass}`}>
+            {t("navGallery")}
+          </Link>
+          <Link href="/location" className={`transition-colors ${linkClass}`}>
+            {t("navLocation")}
+          </Link>
+          <Link href="/about-najami" className={`transition-colors ${linkClass}`}>
+            {t("navAbout")}
+          </Link>
+          <a
+            href="#inquire"
+            className={`rounded-[4px] px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] transition-colors ${ctaClass}`}
+          >
+            {t("navInquire")}
+          </a>
+        </div>
+        <button
+          type="button"
+          onClick={() => setLang(lang === "en" ? "ar" : "en")}
+          className={`rounded-[4px] px-3 py-2 font-mono text-[10px] uppercase tracking-[0.25em] transition-colors ${
+            isLight
+              ? "text-charcoal/60 hover:bg-charcoal/[0.06]"
+              : "text-white/75 hover:bg-white/10"
+          }`}
+          aria-label={lang === "en" ? "Switch to Arabic" : "Switch to English"}
+        >
+          {t("langShort")}
+        </button>
       </div>
     </nav>
   );

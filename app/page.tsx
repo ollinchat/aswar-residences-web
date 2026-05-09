@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
@@ -8,10 +8,12 @@ import { Play } from "lucide-react";
 import { SiteNavbar } from "@/components/site-navbar";
 import { PartnerMarquee } from "@/components/partner-marquee";
 import { EngineeringFloorPlan } from "@/components/engineering-floor-plan";
+import { useLang } from "@/components/language-provider";
+import type { Lang } from "@/lib/i18n";
 
 const PanoramaViewerModal = dynamic(
   () =>
-    import("@/components/panorama-viewer").then((m) => m.PanoramaViewerModal),
+    import("@/components/fullscreen-360").then((m) => m.PanoramaViewerModal),
   { ssr: false },
 );
 
@@ -154,8 +156,8 @@ function matchesPriceBand(m: ResidenceModel, band: PriceBand): boolean {
   return true;
 }
 
-function formatAed(n: number) {
-  return new Intl.NumberFormat("en-AE", {
+function formatAed(n: number, lang: Lang) {
+  return new Intl.NumberFormat(lang === "ar" ? "ar-AE" : "en-AE", {
     style: "currency",
     currency: "AED",
     maximumFractionDigits: 0,
@@ -270,6 +272,7 @@ function ScrollBreath() {
 }
 
 export default function Home() {
+  const { t, lang } = useLang();
   const [residenceId, setResidenceId] = useState<string>(RESIDENCE_MODELS[2].id);
   const [viewerOpen, setViewerOpen] = useState(false);
   const [viewerSrc, setViewerSrc] = useState("/hero-360-panorama.jpg");
@@ -282,6 +285,15 @@ export default function Home() {
   const [typesFilter, setTypesFilter] = useState<Set<string>>(
     () => new Set(RESIDENCE_MODELS.map((m) => m.id)),
   );
+
+  useEffect(() => {
+    if (!viewerOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setViewerOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [viewerOpen]);
 
   const filteredModels = useMemo(
     () =>
@@ -332,7 +344,7 @@ export default function Home() {
   };
 
   return (
-    <main className="bg-parchment text-charcoal selection:bg-champagne/25">
+    <main className="bg-[#FAFAFA] text-charcoal selection:bg-champagne/20">
       <SiteNavbar variant="hero" />
       <PanoramaViewerModal
         open={viewerOpen}
@@ -376,7 +388,7 @@ export default function Home() {
               aria-hidden
             />
             <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.42em] text-white/80">
-              Private Residences · Dubai
+              {t("heroSubtitle")}
             </p>
             <div className="mt-14 flex justify-center">
               <MagneticButton
@@ -384,10 +396,10 @@ export default function Home() {
                 onClick={() =>
                   open360("/hero-360-panorama.jpg", "ASWAR 01 · Panorama")
                 }
-                className="inline-flex items-center gap-3 border border-white/45 bg-white/10 px-10 py-4 font-mono text-[10px] uppercase tracking-[0.32em] text-white backdrop-blur-md transition-colors hover:border-white/70 hover:bg-white/20"
+                className="inline-flex items-center gap-3 rounded-[4px] bg-white/14 px-10 py-4 font-mono text-[10px] uppercase tracking-[0.32em] text-white backdrop-blur-md transition-colors hover:bg-white/22"
               >
                 <Play className="h-4 w-4" strokeWidth={1.25} />
-                Experience 360°
+                {t("experience360")}
               </MagneticButton>
             </div>
           </motion.div>
@@ -396,102 +408,47 @@ export default function Home() {
         <ScrollBreath />
       </section>
 
-      {/* Heritage — industrial seal of quality */}
-      <section
-        id="heritage"
-        className="relative overflow-hidden bg-[#2b2e32] px-6 py-48 text-parchment md:px-12 md:py-56 lg:py-64"
-      >
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.06]"
-          style={{
-            backgroundImage: `linear-gradient(rgba(244,241,234,0.5) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(244,241,234,0.5) 1px, transparent 1px)`,
-            backgroundSize: "44px 44px",
-          }}
-          aria-hidden
-        />
-        <div className="relative mx-auto max-w-6xl">
-          <div className="max-w-2xl">
-            <p className="font-mono text-[9px] uppercase tracking-[0.55em] text-parchment/40">
-              Seal of quality
-            </p>
-            <h2 className="mt-8 font-serif text-4xl font-medium tracking-tight text-parchment md:text-5xl">
-              Heritage
-            </h2>
-            <p className="mt-12 font-serif text-xl font-normal leading-[1.65] text-parchment/60 md:text-2xl">
-              <span className="text-parchment/90">Sami Najami</span> carries a
-              multi-decade record of structural delivery across the UAE — the
-              industrial backbone that de-risks ASWAR 01 from foundation to
-              façade.
-            </p>
-            <p className="mt-8 font-mono text-[11px] uppercase leading-relaxed tracking-[0.22em] text-parchment/38">
-              Engineering · High-rise contracting · Programme governance
-            </p>
-            <a
-              href="https://www.sami-najami.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-12 inline-flex font-mono text-[10px] uppercase tracking-[0.28em] text-champagne transition-colors hover:text-parchment"
-            >
-              sami-najami.com ↗
-            </a>
-          </div>
-
-          <div className="mt-20 grid gap-12 border border-parchment/10 bg-charcoal/40 p-10 backdrop-blur-sm md:grid-cols-2 md:p-14 lg:gap-16">
-            <div className="flex flex-col justify-center grayscale">
-              <Image
-                src="/partners/sami-najami-logo.svg"
-                alt="Sami Najami"
-                width={300}
-                height={52}
-                className="h-auto w-full max-w-xs opacity-90 [filter:brightness(0)_invert(1)]"
-              />
-              <p className="mt-10 font-mono text-[10px] uppercase leading-relaxed tracking-[0.2em] text-parchment/35">
-                Certified delivery partner · Principal contractor to ASWAR
-                International Development.
-              </p>
-            </div>
-            <div className="flex flex-col border-t border-parchment/10 pt-10 md:border-l md:border-t-0 md:pl-12 md:pt-0">
-              <p className="font-mono text-[9px] uppercase tracking-[0.4em] text-parchment/45">
-                Corporate identity
-              </p>
-              <p className="mt-4 font-mono text-[10px] uppercase leading-relaxed text-parchment/50">
-                Official mark &amp; credentials — vector PDF supplied for print
-                and digital compliance.
-              </p>
-              <embed
-                title="Sami Najami brand PDF"
-                src="/partners/sami-najami-brand.pdf#view=FitH"
-                type="application/pdf"
-                className="mt-6 h-[220px] w-full rounded-sm border border-parchment/10 opacity-90"
-              />
-              <a
-                href="/partners/sami-najami-brand.pdf"
-                download
-                className="mt-4 font-mono text-[9px] uppercase tracking-widest text-champagne hover:text-parchment"
-              >
-                Download PDF
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section
         id="the-residences"
         className="scroll-mt-28 px-6 py-48 md:px-12 md:py-56 lg:py-64"
       >
         <div className="mx-auto max-w-[1500px]">
           <SectionIntro
-            title="The Residences"
-            subtitle="Filter by typology, price band, and availability. Specifications and galleries update instantly per layout."
+            title={t("residencesTitle")}
+            subtitle={t("residencesSubtitle")}
           />
 
-          <div className="mb-16 space-y-10 rounded-sm border border-charcoal/8 bg-parchment p-8 md:p-10">
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+          <div className="mb-14 rounded-[4px] bg-white p-8 shadow-[0_1px_0_rgba(26,28,30,0.06)] md:p-10">
+            <div className="mb-10 hidden gap-0 md:grid md:grid-cols-4">
+              {(
+                [
+                  [1, t("stepTypes")],
+                  [2, t("stepBudget")],
+                  [3, t("stepOptions")],
+                  [4, t("stepLayout")],
+                ] as const
+              ).map(([n, label], i) => (
+                <div
+                  key={n}
+                  className={`relative flex items-center gap-3 px-2 ${i < 3 ? "after:absolute after:right-0 after:top-1/2 after:h-px after:w-[calc(100%-2rem)] after:-translate-y-1/2 after:translate-x-1/2 after:bg-charcoal/10" : ""}`}
+                >
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-charcoal/[0.06] font-mono text-[10px] text-charcoal/70">
+                    {n}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-charcoal/45">
+                    {label}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
               <div>
-                <p className="font-mono text-[9px] uppercase tracking-[0.35em] text-charcoal/40">
-                  Unit types
+                <p className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.35em] text-charcoal/35">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-charcoal text-[8px] text-white md:hidden">
+                    1
+                  </span>
+                  {t("unitTypes")}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {RESIDENCE_MODELS.map((m) => (
@@ -499,10 +456,10 @@ export default function Home() {
                       key={m.id}
                       type="button"
                       onClick={() => toggleTypeFilter(m.id)}
-                      className={`rounded-sm px-4 py-2 font-mono text-[9px] uppercase tracking-widest transition-colors ${
+                      className={`rounded-[4px] px-4 py-2 font-mono text-[9px] uppercase tracking-widest transition-colors ${
                         typesFilter.has(m.id)
-                          ? "bg-charcoal text-parchment"
-                          : "bg-charcoal/5 text-charcoal/40 hover:bg-charcoal/10"
+                          ? "bg-charcoal text-white"
+                          : "bg-charcoal/[0.04] text-charcoal/40 hover:bg-charcoal/[0.08] hover:text-charcoal/70"
                       }`}
                     >
                       {m.label}
@@ -511,8 +468,11 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <p className="font-mono text-[9px] uppercase tracking-[0.35em] text-charcoal/40">
-                  Price band (AED)
+                <p className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.35em] text-charcoal/35">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-charcoal text-[8px] text-white md:hidden">
+                    2
+                  </span>
+                  {t("priceBand")}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {(
@@ -527,10 +487,10 @@ export default function Home() {
                       key={id}
                       type="button"
                       onClick={() => setPriceBand(id)}
-                      className={`rounded-sm px-4 py-2 font-mono text-[9px] uppercase tracking-widest transition-colors ${
+                      className={`rounded-[4px] px-4 py-2 font-mono text-[9px] uppercase tracking-widest transition-colors ${
                         priceBand === id
-                          ? "bg-champagne/25 text-charcoal ring-1 ring-champagne/50"
-                          : "bg-charcoal/5 text-charcoal/45 hover:bg-charcoal/10"
+                          ? "bg-charcoal text-white"
+                          : "bg-charcoal/[0.04] text-charcoal/45 hover:bg-charcoal/[0.08]"
                       }`}
                     >
                       {label}
@@ -538,48 +498,61 @@ export default function Home() {
                   ))}
                 </div>
               </div>
-              <label className="flex cursor-pointer items-center gap-3 font-mono text-[10px] uppercase tracking-widest text-charcoal/50">
-                <input
-                  type="checkbox"
-                  checked={availableOnly}
-                  onChange={(e) => setAvailableOnly(e.target.checked)}
-                  className="h-3.5 w-3.5 rounded border-charcoal/30 accent-charcoal"
-                />
-                Available only
-              </label>
-            </div>
-            <div className="border-t border-charcoal/8 pt-8 font-mono text-[10px] uppercase leading-relaxed tracking-[0.2em] text-charcoal/55">
-              {filteredModels.length === 0 ? (
-                <span className="text-charcoal/40">
-                  No layouts match — widen filters.
-                </span>
-              ) : (
-                <>
-                  <span className="text-champagne">
-                    {bookingSummary.avail} units available
+              <div className="flex flex-col justify-end lg:col-span-1">
+                <p className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.35em] text-charcoal/35">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-charcoal text-[8px] text-white md:hidden">
+                    3
                   </span>
-                  <span className="mx-3 text-charcoal/25">·</span>
-                  <span>
-                    From {formatAed(bookingSummary.pMin)} to{" "}
-                    {formatAed(bookingSummary.pMax)}
+                  {t("stepOptions")}
+                </p>
+                <label className="mt-4 flex cursor-pointer items-center gap-3 font-mono text-[10px] uppercase tracking-widest text-charcoal/50">
+                  <input
+                    type="checkbox"
+                    checked={availableOnly}
+                    onChange={(e) => setAvailableOnly(e.target.checked)}
+                    className="h-3.5 w-3.5 rounded-[3px] border-0 accent-charcoal"
+                  />
+                  {t("availableOnly")}
+                </label>
+              </div>
+              <div className="flex flex-col justify-end border-t border-charcoal/[0.06] pt-8 font-mono text-[10px] uppercase leading-relaxed tracking-[0.18em] text-charcoal/50 lg:border-t-0 lg:pt-0">
+                <p className="mb-1 flex items-center gap-2 text-charcoal/35">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-charcoal text-[8px] text-white md:hidden">
+                    4
                   </span>
-                  <span className="mx-3 text-charcoal/25">·</span>
-                  <span>{filteredModels.length} typologies shown</span>
-                </>
-              )}
+                  {t("stepLayout")}
+                </p>
+                {filteredModels.length === 0 ? (
+                  <span className="text-charcoal/35">{t("noMatch")}</span>
+                ) : (
+                  <>
+                    <span className="text-charcoal">
+                      {bookingSummary.avail} {t("summaryAvail")}
+                    </span>
+                    <span className="mt-2 block text-[9px] text-charcoal/40">
+                      {t("summaryFrom")}{" "}
+                      {formatAed(bookingSummary.pMin, lang)} {t("summaryTo")}{" "}
+                      {formatAed(bookingSummary.pMax, lang)}
+                    </span>
+                    <span className="mt-1 block text-[9px] text-charcoal/35">
+                      {filteredModels.length} {t("summaryTypologies")}
+                    </span>
+                  </>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="mb-12 flex flex-wrap items-center justify-center gap-3 md:mb-16">
+          <div className="mb-12 flex flex-wrap items-center justify-center gap-2 md:mb-14">
             {filteredModels.map((m) => (
               <button
                 key={m.id}
                 type="button"
                 onClick={() => setResidenceId(m.id)}
-                className={`shrink-0 rounded-sm px-8 py-3.5 font-mono text-[10px] uppercase tracking-[0.22em] transition-all ${
+                className={`shrink-0 rounded-[4px] px-8 py-3.5 font-mono text-[10px] uppercase tracking-[0.22em] transition-all ${
                   activeResidenceId === m.id
-                    ? "bg-charcoal text-parchment"
-                    : "bg-parchment text-charcoal/45 ring-1 ring-charcoal/10 hover:text-charcoal"
+                    ? "bg-charcoal text-white shadow-sm"
+                    : "bg-white text-charcoal/40 shadow-[0_1px_0_rgba(26,28,30,0.06)] hover:text-charcoal/80"
                 }`}
               >
                 {m.label}
@@ -587,31 +560,31 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="mb-10 flex flex-wrap items-center justify-center gap-3">
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-charcoal/35">
-              View
+          <div className="mb-12 flex flex-wrap items-center justify-center gap-2">
+            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-charcoal/30">
+              {t("view")}
             </span>
             <button
               type="button"
               onClick={() => setViewMode("lifestyle")}
-              className={`rounded-sm px-5 py-2 font-mono text-[9px] uppercase tracking-widest ${
+              className={`rounded-[4px] px-5 py-2 font-mono text-[9px] uppercase tracking-widest transition-colors ${
                 viewMode === "lifestyle"
-                  ? "bg-charcoal text-parchment"
-                  : "text-charcoal/45 hover:text-charcoal"
+                  ? "bg-charcoal text-white"
+                  : "text-charcoal/40 hover:text-charcoal"
               }`}
             >
-              Lifestyle gallery
+              {t("lifestyleGallery")}
             </button>
             <button
               type="button"
               onClick={() => setViewMode("engineering")}
-              className={`rounded-sm px-5 py-2 font-mono text-[9px] uppercase tracking-widest ${
+              className={`rounded-[4px] px-5 py-2 font-mono text-[9px] uppercase tracking-widest transition-colors ${
                 viewMode === "engineering"
-                  ? "bg-charcoal text-parchment"
-                  : "text-charcoal/45 hover:text-charcoal"
+                  ? "bg-charcoal text-white"
+                  : "text-charcoal/40 hover:text-charcoal"
               }`}
             >
-              Engineering view
+              {t("technicalBlueprint")}
             </button>
           </div>
 
@@ -626,30 +599,31 @@ export default function Home() {
             >
               <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
                 <div className="lg:col-span-4">
-                  <h3 className="font-serif text-3xl font-medium text-charcoal md:text-4xl">
+                  <h3 className="font-serif text-3xl font-medium tracking-tight text-charcoal md:text-4xl">
                     {activeResidence.label}
                   </h3>
                   <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-charcoal/40">
-                    {activeResidence.booking.availableUnits} of{" "}
-                    {activeResidence.booking.totalUnits} remaining ·{" "}
-                    {formatAed(activeResidence.booking.priceMin)} –{" "}
-                    {formatAed(activeResidence.booking.priceMax)}
+                    {activeResidence.booking.availableUnits}{" "}
+                    {t("remainingOf")}{" "}
+                    {activeResidence.booking.totalUnits} {t("remaining")} ·{" "}
+                    {formatAed(activeResidence.booking.priceMin, lang)} –{" "}
+                    {formatAed(activeResidence.booking.priceMax, lang)}
                   </p>
                   <div className="mt-12 space-y-6 font-mono text-[11px] uppercase tracking-[0.18em] text-charcoal/55">
-                    <div className="flex justify-between gap-6 border-b border-charcoal/10 pb-5">
-                      <span className="text-charcoal/40">Total Area</span>
+                    <div className="flex justify-between gap-6 border-b border-charcoal/[0.08] pb-5">
+                      <span className="text-charcoal/35">{t("totalArea")}</span>
                       <span className="text-charcoal">
                         {activeResidence.specs.totalArea}
                       </span>
                     </div>
-                    <div className="flex justify-between gap-6 border-b border-charcoal/10 pb-5">
-                      <span className="text-charcoal/40">Balcony</span>
+                    <div className="flex justify-between gap-6 border-b border-charcoal/[0.08] pb-5">
+                      <span className="text-charcoal/35">{t("balcony")}</span>
                       <span className="text-charcoal">
                         {activeResidence.specs.balcony}
                       </span>
                     </div>
                     <div className="flex justify-between gap-6 pb-2">
-                      <span className="text-charcoal/40">Parking</span>
+                      <span className="text-charcoal/35">{t("parking")}</span>
                       <span className="text-charcoal">
                         {activeResidence.specs.parking}
                       </span>
@@ -660,43 +634,49 @@ export default function Home() {
                     onClick={() =>
                       open360(
                         activeResidence.pano,
-                        `${activeResidence.label} · 3D Walkthrough`,
+                        `${activeResidence.label} · 360°`,
                       )
                     }
-                    className="mt-12 w-full border border-charcoal bg-charcoal py-5 font-mono text-[10px] uppercase tracking-[0.28em] text-parchment transition-colors hover:bg-charcoal/90 md:max-w-xs"
+                    className="mt-12 w-full rounded-[4px] bg-charcoal py-5 font-mono text-[10px] uppercase tracking-[0.28em] text-white transition-colors hover:bg-charcoal/90 md:max-w-xs"
                   >
-                    Enter 3D Walkthrough
+                    {t("enterWalkthrough")}
                   </MagneticButton>
                 </div>
 
                 <div className="lg:col-span-8">
                   {viewMode === "lifestyle" ? (
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      {activeResidence.images.map((src, i) => (
-                        <div
-                          key={src}
-                          className={`relative overflow-hidden bg-charcoal/[0.04] ${
-                            i === 0 ? "sm:col-span-2" : ""
-                          }`}
-                        >
+                    <div className="space-y-3">
+                      <div className="relative min-h-[min(52vh,520px)] w-full overflow-hidden rounded-[4px] bg-charcoal/[0.03]">
+                        <Image
+                          src={activeResidence.images[0]}
+                          alt={`${activeResidence.label} — primary`}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 1024px) 100vw, 66vw"
+                          priority
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+                        {activeResidence.images.slice(1).map((src, i) => (
                           <div
-                            className={`relative w-full ${
-                              i === 0 ? "aspect-[21/10]" : "aspect-[4/3]"
-                            }`}
+                            key={src}
+                            className="relative aspect-[4/3] overflow-hidden rounded-[4px] bg-charcoal/[0.03]"
                           >
                             <Image
                               src={src}
-                              alt={`${activeResidence.label} interior ${i + 1}`}
+                              alt={`${activeResidence.label} interior ${i + 2}`}
                               fill
                               className="object-cover"
-                              sizes="(max-width: 1024px) 100vw, 66vw"
+                              sizes="(max-width: 1024px) 50vw, 22vw"
                             />
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   ) : (
-                    <EngineeringFloorPlan unitId={activeResidence.id} />
+                    <div className="overflow-hidden rounded-[4px] bg-white shadow-[0_1px_0_rgba(26,28,30,0.06)]">
+                      <EngineeringFloorPlan unitId={activeResidence.id} />
+                    </div>
                   )}
                 </div>
               </div>
@@ -705,39 +685,35 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-charcoal/[0.04] px-6 py-48 md:px-12 md:py-56 lg:py-64">
-        <div className="mx-auto max-w-6xl">
+      <section className="bg-white px-6 py-48 md:px-12 md:py-56 lg:py-64">
+        <div className="mx-auto max-w-5xl">
           <SectionIntro
-            title="Payment plan"
-            subtitle="Three-phase equity curve with milestone alignment from reservation through handover."
+            title={t("paymentTitle")}
+            subtitle={t("paymentSubtitle")}
             align="center"
           />
 
           <div className="relative hidden md:block">
-            <div className="absolute left-[8%] right-[8%] top-[2.75rem] h-[0.5px] bg-charcoal/12" />
-            <div className="grid grid-cols-3 gap-10">
+            <div className="absolute left-0 right-0 top-[3px] h-px bg-charcoal/12" />
+            <div className="grid grid-cols-3 gap-6 lg:gap-12">
               {PAYMENT_PHASES.map((ph) => (
-                <div key={ph.title} className="relative text-center">
-                  <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full border border-champagne/60 bg-parchment shadow-[0_0_0_6px_rgba(244,241,234,0.9)]">
-                    <span className="font-mono text-[9px] uppercase tracking-widest text-champagne">
-                      {ph.pct}%
-                    </span>
-                  </div>
-                  <p className="mt-10 font-mono text-[10px] uppercase tracking-[0.28em] text-charcoal/40">
+                <div key={ph.title} className="relative pt-0 text-center">
+                  <div className="mx-auto h-1.5 w-1.5 rounded-full bg-charcoal ring-4 ring-white" />
+                  <p className="mt-10 font-mono text-[10px] font-normal uppercase tracking-[0.32em] text-charcoal/35">
                     {ph.when}
                   </p>
-                  <p className="mt-4 font-serif text-xl font-medium text-charcoal">
+                  <p className="mt-3 font-serif text-2xl font-light tracking-tight text-charcoal">
+                    {ph.pct}%
+                  </p>
+                  <p className="mt-2 font-serif text-lg font-normal text-charcoal/90">
                     {ph.title}
                   </p>
-                  <p className="mx-auto mt-6 max-w-xs font-mono text-[10px] uppercase leading-relaxed tracking-wider text-charcoal/45">
+                  <p className="mx-auto mt-6 max-w-[220px] font-sans text-[13px] font-normal leading-relaxed text-charcoal/45">
                     {ph.body}
                   </p>
-                  <ul className="mx-auto mt-6 max-w-xs space-y-2 text-left font-mono text-[9px] uppercase tracking-wider text-charcoal/38">
+                  <ul className="mx-auto mt-6 max-w-[220px] space-y-1.5 text-left font-mono text-[8px] uppercase tracking-[0.12em] text-charcoal/35">
                     {ph.bullets.map((b) => (
-                      <li key={b} className="flex gap-2">
-                        <span className="text-champagne">·</span>
-                        {b}
-                      </li>
+                      <li key={b}>{b}</li>
                     ))}
                   </ul>
                 </div>
@@ -745,14 +721,16 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="space-y-12 md:hidden">
+          <div className="space-y-10 md:hidden">
             {PAYMENT_PHASES.map((ph) => (
-              <div key={ph.title} className="border-l-2 border-champagne/40 pl-6">
-                <p className="font-mono text-[10px] uppercase tracking-widest text-champagne">
+              <div key={ph.title} className="border-l border-charcoal/15 pl-6">
+                <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-charcoal/35">
                   {ph.pct}% · {ph.when}
                 </p>
-                <p className="mt-2 font-serif text-xl text-charcoal">{ph.title}</p>
-                <p className="mt-4 font-mono text-[10px] uppercase leading-relaxed text-charcoal/45">
+                <p className="mt-2 font-serif text-xl font-light text-charcoal">
+                  {ph.title}
+                </p>
+                <p className="mt-3 text-[13px] leading-relaxed text-charcoal/45">
                   {ph.body}
                 </p>
               </div>
@@ -764,36 +742,101 @@ export default function Home() {
       <section className="px-6 py-48 md:px-12 md:py-56 lg:py-64">
         <div className="mx-auto max-w-6xl">
           <SectionIntro
-            title="Location"
-            subtitle="Business Bay · Dubai, UAE"
+            title={t("locationTitle")}
+            subtitle={t("locationSubtitle")}
           />
-          <div className="overflow-hidden rounded-sm ring-1 ring-charcoal/10">
+          <div className="overflow-hidden rounded-[4px] shadow-[0_1px_0_rgba(26,28,30,0.08)]">
             <DarkMap />
           </div>
-          <p className="mt-12 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-charcoal/40">
-            Dark cartography with live ASWAR pulse marker. Final survey pin
-            tracks authority registration.
+          <p className="mt-10 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-charcoal/35">
+            {t("locationMapCaption")}
           </p>
         </div>
       </section>
 
       <PartnerMarquee />
 
-      <footer id="inquire" className="px-8 py-32 md:px-12 md:py-40">
+      <section
+        id="heritage"
+        className="border-t border-charcoal/[0.06] bg-[#F5F5F4] px-6 py-32 text-charcoal md:px-12 md:py-40"
+      >
+        <div className="relative mx-auto max-w-6xl">
+          <div className="max-w-2xl">
+            <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-charcoal/35">
+              {t("sealQuality")}
+            </p>
+            <h2 className="mt-6 font-serif text-4xl font-light tracking-tight md:text-5xl">
+              {t("heritageTitle")}
+            </h2>
+            <p className="mt-10 font-sans text-lg font-normal leading-[1.7] text-charcoal/65 md:text-xl">
+              {t("heritageLead")}
+            </p>
+            <p className="mt-6 font-mono text-[10px] uppercase leading-relaxed tracking-[0.2em] text-charcoal/40">
+              {t("heritageTags")}
+            </p>
+            <a
+              href="https://www.sami-najami.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex rounded-[4px] bg-charcoal px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-charcoal/90"
+            >
+              {t("heritageSite")} ↗
+            </a>
+          </div>
+
+          <div className="mt-16 grid gap-12 md:grid-cols-2 md:gap-16">
+            <div className="flex flex-col justify-center grayscale">
+              <Image
+                src="/partners/sami-najami-logo.svg"
+                alt="Sami Najami"
+                width={280}
+                height={48}
+                className="h-auto w-full max-w-[280px] opacity-80"
+              />
+              <p className="mt-8 font-mono text-[10px] uppercase leading-relaxed tracking-[0.18em] text-charcoal/45">
+                {t("heritagePartnerBlurb")}
+              </p>
+            </div>
+            <div className="flex flex-col border-t border-charcoal/10 pt-10 md:border-l md:border-t-0 md:pl-12 md:pt-0">
+              <p className="font-mono text-[9px] uppercase tracking-[0.35em] text-charcoal/40">
+                {t("heritageCorp")}
+              </p>
+              <p className="mt-3 font-sans text-sm leading-relaxed text-charcoal/55">
+                {t("heritageCorpBody")}
+              </p>
+              <embed
+                title="Sami Najami brand PDF"
+                src="/partners/sami-najami-brand.pdf#view=FitH"
+                type="application/pdf"
+                className="mt-6 h-[200px] w-full rounded-[4px] bg-white opacity-90"
+              />
+              <a
+                href="/partners/sami-najami-brand.pdf"
+                download
+                className="mt-4 inline-flex w-fit font-mono text-[9px] uppercase tracking-widest text-charcoal/60 hover:text-charcoal"
+              >
+                {t("downloadPdf")}
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer id="inquire" className="border-t border-charcoal/[0.06] bg-[#FAFAFA] px-8 py-28 md:px-12 md:py-36">
         <div className="mx-auto grid max-w-7xl gap-16 md:grid-cols-4 md:gap-12">
           <div className="space-y-8 md:col-span-2">
             <div className="font-serif text-lg font-medium tracking-[0.28em] text-charcoal">
               ASWAR
             </div>
             <p className="max-w-xs font-mono text-[10px] uppercase leading-relaxed tracking-[0.22em] text-charcoal/40">
-              ASWAR International Development
+              {t("footerDev")}
               <br />
-              Visionary Architecture · Dubai, UAE
+              {t("footerLine")}
             </p>
           </div>
           <div className="space-y-5">
-            <h4 className="font-serif text-xs font-medium uppercase tracking-[0.2em] text-champagne">
-              Headquarters
+            <h4 className="font-serif text-xs font-normal uppercase tracking-[0.2em] text-charcoal/50">
+              {t("headquarters")}
             </h4>
             <p className="font-mono text-[11px] uppercase leading-loose tracking-wider text-charcoal/45">
               Business Bay, Dubai
@@ -802,8 +845,8 @@ export default function Home() {
             </p>
           </div>
           <div className="space-y-5">
-            <h4 className="font-serif text-xs font-medium uppercase tracking-[0.2em] text-champagne">
-              Inquiries
+            <h4 className="font-serif text-xs font-normal uppercase tracking-[0.2em] text-charcoal/50">
+              {t("inquiries")}
             </h4>
             <p className="font-mono text-[11px] uppercase leading-loose tracking-wider text-charcoal/45 transition-colors hover:text-charcoal">
               <a href="mailto:sales@aswar.ae">sales@aswar.ae</a>
@@ -812,16 +855,16 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <div className="mx-auto mt-24 flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
+        <div className="mx-auto mt-20 flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
           <p className="font-mono text-[9px] uppercase tracking-widest text-charcoal/30">
-            © 2026 ASWAR International Development. All rights reserved.
+            © 2026 {t("footerDev")}. All rights reserved.
           </p>
           <div className="flex gap-10 font-mono text-[9px] uppercase tracking-widest text-charcoal/30">
             <a href="#" className="transition-colors hover:text-charcoal">
-              Privacy Policy
+              {t("privacy")}
             </a>
             <a href="#" className="transition-colors hover:text-charcoal">
-              Terms of Service
+              {t("terms")}
             </a>
           </div>
         </div>
