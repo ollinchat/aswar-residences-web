@@ -3,7 +3,13 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from "framer-motion";
 import {
   GraduationCap,
   Play,
@@ -14,13 +20,18 @@ import {
 import { SiteNavbar } from "@/components/site-navbar";
 import { PartnerMarquee } from "@/components/partner-marquee";
 import { EngineeringFloorPlan } from "@/components/engineering-floor-plan";
-import { FacebookFeed } from "@/components/facebook-feed";
+import { HeritageProjectGallery } from "@/components/heritage-project-gallery";
 import { ResidenceGallerySlider } from "@/components/residence-gallery-slider";
 import { useLang } from "@/components/language-provider";
 import type { Lang } from "@/lib/i18n";
 import { RESIDENCE_MODELS } from "@/lib/residence-models";
 import type { AreaMetric } from "@/lib/area-format";
 import { formatAreaValue } from "@/lib/area-format";
+import {
+  DISTRICT_ATTRACTIONS_ALL,
+  DISTRICT_ATTRACTIONS_INITIAL,
+  DISTRICT_ATTRACTIONS_PAGE,
+} from "@/lib/district-attractions";
 
 const PanoramaViewerModal = dynamic(
   () =>
@@ -56,25 +67,6 @@ const PAYMENT_PHASES = [
     bullets: ["Title readiness coordination", "Move-in concierge available"],
   },
 ];
-
-const DISTRICT_GALLERY = [
-  {
-    src: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1400&q=88",
-    alt: "Dubai skyline toward Business Bay",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1582672060674-884a8839a85f?auto=format&fit=crop&w=1400&q=88",
-    alt: "Dubai waterfront promenade",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1400&q=88",
-    alt: "Urban boulevard at dusk",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1518684079-b4a468aebefc?auto=format&fit=crop&w=1400&q=88",
-    alt: "Contemporary district architecture",
-  },
-] as const;
 
 function monthlyMortgagePayment(
   principal: number,
@@ -243,6 +235,30 @@ export default function Home() {
   const [ratePct, setRatePct] = useState(4.99);
   const [termYears, setTermYears] = useState(25);
   const [mapBasemap, setMapBasemap] = useState<"light" | "dark">("light");
+  const [districtVisibleCount, setDistrictVisibleCount] = useState(
+    DISTRICT_ATTRACTIONS_INITIAL,
+  );
+  const [districtExpandBaseline, setDistrictExpandBaseline] = useState<
+    number | null
+  >(null);
+  const reduceDistrictMotion = useReducedMotion();
+
+  const visibleDistrictAttractions = useMemo(
+    () => DISTRICT_ATTRACTIONS_ALL.slice(0, districtVisibleCount),
+    [districtVisibleCount],
+  );
+  const canLoadMoreDistrict =
+    districtVisibleCount < DISTRICT_ATTRACTIONS_ALL.length;
+
+  const loadMoreDistrict = () => {
+    setDistrictExpandBaseline(visibleDistrictAttractions.length);
+    setDistrictVisibleCount((n) =>
+      Math.min(
+        n + DISTRICT_ATTRACTIONS_PAGE,
+        DISTRICT_ATTRACTIONS_ALL.length,
+      ),
+    );
+  };
 
   useEffect(() => {
     if (!viewerOpen) return;
@@ -775,21 +791,53 @@ export default function Home() {
             subtitle={t("districtSubtitle")}
           />
           <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
-            {DISTRICT_GALLERY.map((img) => (
-              <div
-                key={img.src}
-                className="relative aspect-[4/3] overflow-hidden rounded-[2px] bg-charcoal/[0.04]"
-              >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover"
-                />
-              </div>
-            ))}
+            {visibleDistrictAttractions.map((img, idx) => {
+              const from = districtExpandBaseline;
+              const isNew = from != null && idx >= from;
+              return (
+                <motion.div
+                  key={img.src}
+                  className="relative aspect-[4/3] overflow-hidden rounded-[2px] bg-charcoal/[0.04]"
+                  initial={
+                    isNew
+                      ? { opacity: 0, y: 22 }
+                      : false
+                  }
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={
+                    reduceDistrictMotion
+                      ? { duration: 0.2 }
+                      : {
+                          type: "spring",
+                          stiffness: 280,
+                          damping: 26,
+                          delay: isNew ? (idx - from) * 0.055 : 0,
+                        }
+                  }
+                >
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                </motion.div>
+              );
+            })}
           </div>
+
+          {canLoadMoreDistrict ? (
+            <div className="mt-8 flex justify-center md:mt-10">
+              <button
+                type="button"
+                onClick={loadMoreDistrict}
+                className="rounded-full border border-charcoal/12 bg-white px-8 py-2.5 font-serif text-[11px] font-medium uppercase tracking-[0.28em] text-charcoal/70 transition-colors hover:border-charcoal/25 hover:text-charcoal"
+              >
+                {t("districtLoadMore")}
+              </button>
+            </div>
+          ) : null}
 
           <div className="mt-12 grid grid-cols-2 gap-5 md:mt-14 md:grid-cols-4 md:gap-6">
             {(
@@ -901,68 +949,46 @@ export default function Home() {
         id="heritage"
         className="border-t border-charcoal/[0.06] bg-white px-6 py-20 text-charcoal md:px-12"
       >
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-charcoal/35">
-            {t("engineeringSealTitle")}
-          </p>
-          <div className="mx-auto mt-10 flex h-28 w-28 items-center justify-center rounded-full border border-charcoal/[0.1] bg-[#FAFAFA] shadow-[inset_0_0_0_1px_rgba(26,28,30,0.04)]">
-            <span className="font-serif text-[10px] font-medium tracking-[0.55em] text-charcoal/30">
-              ASWAR
-            </span>
-          </div>
-          <p className="mt-4 font-mono text-[8px] uppercase tracking-[0.5em] text-charcoal/25">
-            {t("engineeringSealParent")}
-          </p>
-          <div className="mx-auto mt-12 max-w-md opacity-[0.85] grayscale">
-            <Image
-              src="/partners/sami-najami-logo.svg"
-              alt="Sami Najami"
-              width={220}
-              height={40}
-              className="mx-auto h-auto w-full max-w-[200px]"
-            />
-          </div>
-          <p className="mx-auto mt-10 max-w-xl font-sans text-sm font-normal leading-relaxed text-charcoal/50 md:text-base">
-            {t("engineeringSealLine")}
-          </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <a
-              href="https://www.sami-najami.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex rounded-[2px] bg-charcoal px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-charcoal/90"
-            >
-              {t("heritageSite")} ↗
-            </a>
-            <a
-              href="/partners/sami-najami-brand.pdf"
-              download
-              className="inline-flex rounded-[2px] border border-charcoal/15 bg-white px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-charcoal/70 transition-colors hover:border-charcoal/30 hover:text-charcoal"
-            >
-              {t("downloadPdf")}
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="live-updates"
-        className="scroll-mt-24 bg-[#FFFFFF] py-20 sm:px-6 md:px-12"
-      >
-        <div className="w-full sm:mx-auto sm:max-w-[500px]">
-          <header className="px-6 text-center sm:px-0">
-            <p className="font-sans text-[9px] font-medium uppercase tracking-[0.42em] text-charcoal/35">
-              {t("liveUpdatesKicker")}
-            </p>
-            <h2 className="mt-4 font-serif text-3xl font-light tracking-tight text-charcoal md:text-[2.125rem] md:leading-tight">
-              {t("liveUpdatesTitle")}
-            </h2>
-            <p className="mx-auto mt-4 max-w-md font-sans text-[13px] font-normal leading-relaxed text-charcoal/52">
-              {t("liveUpdatesSubtitle")}
-            </p>
-          </header>
-          <div className="mt-10 overflow-hidden rounded-none border-y border-charcoal/[0.08] bg-white shadow-[0_12px_44px_-18px_rgba(26,28,30,0.16)] sm:mt-12 sm:rounded-[2px] sm:border sm:shadow-[0_12px_44px_-18px_rgba(26,28,30,0.18)]">
-            <FacebookFeed />
+        <div className="mx-auto max-w-6xl">
+          <div className="grid gap-14 lg:grid-cols-12 lg:items-start lg:gap-20">
+            <div className="space-y-10 lg:col-span-5 lg:sticky lg:top-28">
+              <div>
+                <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-charcoal/35">
+                  {t("engineeringSealTitle")}
+                </p>
+                <div className="mt-8 flex h-24 w-24 items-center justify-center rounded-full border border-charcoal/[0.1] bg-[#FAFAFA] shadow-[inset_0_0_0_1px_rgba(26,28,30,0.04)] md:mt-10 md:h-28 md:w-28">
+                  <span className="font-serif text-[9px] font-medium tracking-[0.55em] text-charcoal/30 md:text-[10px]">
+                    ASWAR
+                  </span>
+                </div>
+                <p className="mt-3 font-mono text-[8px] uppercase tracking-[0.5em] text-charcoal/25">
+                  {t("engineeringSealParent")}
+                </p>
+              </div>
+              <p className="max-w-md font-sans text-sm font-normal leading-relaxed text-charcoal/50 md:text-[15px]">
+                {t("engineeringSealLine")}
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <a
+                  href="https://www.sami-najami.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex rounded-[2px] bg-charcoal px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-charcoal/90"
+                >
+                  {t("heritageSite")} ↗
+                </a>
+                <a
+                  href="/partners/sami-najami-brand.pdf"
+                  download
+                  className="inline-flex rounded-[2px] border border-charcoal/15 bg-white px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-charcoal/70 transition-colors hover:border-charcoal/30 hover:text-charcoal"
+                >
+                  {t("downloadPdf")}
+                </a>
+              </div>
+            </div>
+            <div className="lg:col-span-7">
+              <HeritageProjectGallery variant="masonry" />
+            </div>
           </div>
         </div>
       </section>

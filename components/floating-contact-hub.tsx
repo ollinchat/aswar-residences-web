@@ -20,7 +20,6 @@ import {
   BrandIconWhatsApp,
   BrandIconX,
   BrandIconYouTube,
-  IconInternationalAccess,
 } from "@/components/contact-brand-icons";
 import { useLang } from "@/components/language-provider";
 import type { CopyKey, Lang } from "@/lib/i18n";
@@ -202,14 +201,14 @@ function pillTypography(lang: Lang) {
   if (lang === "ar") {
     return "font-arabic text-[11px] font-semibold leading-snug tracking-wide text-charcoal max-[380px]:text-[10px] sm:text-xs";
   }
-  return "font-serif text-[10px] font-semibold uppercase leading-snug tracking-[0.2em] text-charcoal max-[380px]:text-[9px] max-[380px]:tracking-[0.16em] sm:text-[11px] sm:tracking-[0.22em]";
+  return "font-serif text-[11px] font-medium leading-none tracking-widest text-charcoal max-[380px]:text-[10px] sm:text-xs";
 }
 
 const glassPill =
-  "flex w-full max-w-[min(100vw-2rem,20rem)] min-w-0 items-center justify-between gap-2 rounded-full border border-white/10 bg-white/30 px-4 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-2xl max-[380px]:max-w-[min(100vw-1.5rem,18rem)] max-[380px]:px-3.5 max-[380px]:py-1.5 sm:px-6 sm:py-3";
+  "flex w-full max-w-[min(100vw-2rem,20rem)] min-w-0 items-center justify-between gap-2 rounded-full border border-white/30 bg-white/20 px-5 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.1)] backdrop-blur-3xl max-[380px]:max-w-[min(100vw-1.5rem,18rem)] max-[380px]:px-4 max-[380px]:py-1.5 sm:px-6 sm:py-2.5";
 
 const pillPrimary =
-  "border-white/15 bg-white/35 ring-1 ring-white/10 shadow-[0_10px_36px_rgba(0,0,0,0.14)]";
+  "border-white/35 bg-white/25 ring-1 ring-white/15 shadow-[0_10px_36px_rgba(0,0,0,0.12)]";
 
 const trayPanel =
   "w-[min(calc(100vw-2rem),20rem)] max-h-[min(70vh,480px)] origin-bottom overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-white/30 p-3 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-2xl sm:p-3.5";
@@ -631,11 +630,10 @@ export function FloatingContactHub() {
               transition={pillTap}
               className={`${glassPill} text-start focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25`}
             >
-              <span className="flex min-w-0 flex-1 items-center gap-2">
-                <IconInternationalAccess className="!h-[18px] !w-[18px] shrink-0 sm:!h-5 sm:!w-5" />
-                <span className={`min-w-0 flex-1 truncate ${pillLabel}`}>
-                  {t("hubPillAccessibility")}
-                </span>
+              <span
+                className={`min-w-0 flex-1 truncate text-start ${pillLabel}`}
+              >
+                {t("hubPillAccessibility")}
               </span>
               <motion.span
                 aria-hidden
