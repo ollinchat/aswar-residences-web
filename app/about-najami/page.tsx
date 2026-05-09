@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { HeritageProjectGallery } from "@/components/heritage-project-gallery";
 import { SiteNavbar } from "@/components/site-navbar";
@@ -18,7 +19,18 @@ export default function AboutNajamiPage() {
           <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-charcoal/45">
             Heritage
           </p>
-          <h1 className="mt-6 max-w-3xl font-serif text-4xl font-medium tracking-tight md:text-6xl">
+          <div className="mt-8 max-w-md rounded-lg border border-charcoal/[0.08] bg-white px-5 py-4 md:mt-10 md:max-w-lg md:px-6 md:py-5">
+            <Image
+              src="/partners/sami-najami-logo.png"
+              alt="Sami Najami Engineering & Projects L.T.D"
+              width={560}
+              height={160}
+              className="h-auto w-full object-contain object-start"
+              sizes="(max-width: 768px) 100vw, 32rem"
+              priority
+            />
+          </div>
+          <h1 className="mt-8 max-w-3xl font-serif text-4xl font-medium tracking-tight md:mt-10 md:text-6xl">
             Sami Najami
           </h1>
           <p className="mt-4 max-w-xl font-mono text-[11px] uppercase tracking-widest text-charcoal/45">

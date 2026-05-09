@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { CopyKey, Lang } from "@/lib/i18n";
 
 const MIN_INITIAL_DOWN = 550_000;
@@ -45,6 +45,11 @@ export function PaymentCalculator({
   const [purchasePrice, setPurchasePrice] = useState(initialPurchasePrice);
   const [initialDown, setInitialDown] = useState(MIN_INITIAL_DOWN);
   const [termYears, setTermYears] = useState<(typeof TERM_YEARS)[number]>(5);
+
+  /** Parent passes `key={initialPurchasePrice}` so state resets when the default price changes. */
+  useEffect(() => {
+    void initialPurchasePrice;
+  }, [initialPurchasePrice]);
 
   const maxInitialDown = useMemo(() => {
     const cap = Math.floor(purchasePrice - MIN_LOAN_AFTER_DOWN);

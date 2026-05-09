@@ -958,11 +958,23 @@ export default function Home() {
                 <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-charcoal/35">
                   {t("engineeringSealTitle")}
                 </p>
-                <div className="mt-5 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full border border-charcoal/[0.1] bg-[#FAFAFA] shadow-[inset_0_0_0_1px_rgba(26,28,30,0.04)] md:h-20 md:w-20">
-                  <span className="font-serif text-[8px] font-medium tracking-[0.5em] text-charcoal/30 md:text-[9px]">
-                    ASWAR
-                  </span>
-                </div>
+                <a
+                  href="https://www.sami-najami.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 block w-full max-w-[min(100%,280px)] rounded-lg border border-charcoal/[0.1] bg-white px-4 py-3 shadow-[inset_0_0_0_1px_rgba(26,28,30,0.04)] transition-opacity hover:opacity-90 sm:max-w-[300px] md:px-5 md:py-4"
+                  aria-label="Sami Najami — official site"
+                >
+                  <Image
+                    src="/partners/sami-najami-logo.png"
+                    alt="Sami Najami Engineering & Projects L.T.D"
+                    width={560}
+                    height={160}
+                    className="h-auto w-full object-contain object-left"
+                    sizes="(max-width: 768px) 280px, 300px"
+                    priority={false}
+                  />
+                </a>
                 <p className="mt-2 font-mono text-[8px] uppercase tracking-[0.5em] text-charcoal/25">
                   {t("engineeringSealParent")}
                 </p>

@@ -108,6 +108,7 @@ export function PaymentSection({
           className="mx-auto mt-10 max-w-md"
         >
           <PaymentCalculator
+            key={initialPurchasePrice}
             lang={lang}
             t={t}
             initialPurchasePrice={initialPurchasePrice}
