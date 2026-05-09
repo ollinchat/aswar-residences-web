@@ -16,8 +16,39 @@ export default function LightMap() {
     const el = rootRef.current;
     if (!el || !(el instanceof HTMLElement)) return;
 
-    setMapReady(true);
+    let cancelled = false;
+
+    const tryInit = () => {
+      if (cancelled) return false;
+      const r = el.getBoundingClientRect();
+      if (r.width >= 32 && r.height >= 32) {
+        setMapReady(true);
+        return true;
+      }
+      return false;
+    };
+
+    const ro = new ResizeObserver(() => {
+      if (tryInit()) ro.disconnect();
+    });
+    ro.observe(el);
+
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      if (tryInit()) {
+        ro.disconnect();
+        return;
+      }
+      raf2 = requestAnimationFrame(() => {
+        if (tryInit()) ro.disconnect();
+      });
+    });
+
     return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      ro.disconnect();
       setMapReady(false);
     };
   }, []);
@@ -36,14 +67,14 @@ export default function LightMap() {
   return (
     <div
       ref={rootRef}
-      className="relative z-0 h-[min(480px,58vh)] w-full min-h-[360px] overflow-hidden md:h-[480px]"
+      className="relative z-0 h-[300px] w-full min-h-[300px] overflow-hidden sm:h-[min(480px,58vh)] sm:min-h-[360px] md:h-[480px]"
     >
       {mapReady ? (
         <MapContainer
           key="aswar-light-map"
           center={CENTER}
           zoom={13}
-          className="light-map-container z-0 h-full w-full min-h-[360px] overflow-hidden"
+          className="light-map-container z-0 h-full w-full min-h-[300px] overflow-hidden sm:min-h-[360px]"
           style={{ height: "100%", width: "100%" }}
           scrollWheelZoom={false}
           attributionControl
@@ -57,7 +88,7 @@ export default function LightMap() {
         </MapContainer>
       ) : (
         <div
-          className="flex h-full min-h-[360px] w-full items-center justify-center bg-[#f4f4f5]"
+          className="flex h-[300px] w-full min-h-[300px] items-center justify-center bg-[#f4f4f5] sm:h-full sm:min-h-[360px]"
           aria-busy="true"
         />
       )}

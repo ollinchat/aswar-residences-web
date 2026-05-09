@@ -33,8 +33,9 @@ function formatMoney(n: number, lang: Lang, currency: string) {
   }).format(n);
 }
 
+/** `text-base` (16px) avoids iOS focus zoom on number inputs. */
 const inputClass =
-  "rounded-lg border border-zinc-200/90 bg-zinc-50 px-2.5 py-2 font-sans text-[13px] tabular-nums text-zinc-900 outline-none transition-[background-color,border-color,box-shadow] placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white focus:ring-1 focus:ring-zinc-900/10";
+  "min-h-[44px] rounded-lg border border-zinc-200/90 bg-zinc-50 px-3 py-2.5 font-sans text-base tabular-nums text-zinc-900 outline-none transition-[background-color,border-color,box-shadow] placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white focus:ring-1 focus:ring-zinc-900/10";
 
 export function PaymentCalculator({
   lang,
@@ -82,11 +83,11 @@ export function PaymentCalculator({
 
   return (
     <div
-      className="w-full rounded-2xl bg-gradient-to-br from-amber-200/50 via-amber-100/40 to-amber-300/45 p-[0.5px] shadow-[0_20px_50px_rgba(180,160,120,0.15)] backdrop-blur-xl"
+      className="w-full max-w-full overflow-hidden rounded-2xl bg-gradient-to-br from-amber-200/50 via-amber-100/40 to-amber-300/45 p-[0.5px] shadow-[0_20px_50px_rgba(180,160,120,0.15)] backdrop-blur-xl"
       role="presentation"
     >
       <div
-        className="rounded-[calc(1rem-0.5px)] bg-white/95 px-4 py-5 backdrop-blur-xl md:px-5 md:py-6"
+        className="rounded-[calc(1rem-0.5px)] bg-white/95 px-3 py-5 backdrop-blur-xl sm:px-4 md:px-5 md:py-6"
         role="region"
         aria-labelledby="payment-calc-heading"
       >
@@ -139,11 +140,14 @@ export function PaymentCalculator({
                   if (Number.isNaN(v)) return;
                   setInitialDown(Math.min(Math.max(v, sliderMin), sliderMax));
                 }}
-                className={`w-32 text-end sm:w-40 rtl:text-start ${inputClass} py-1.5 text-[12px]`}
+                className={`w-full max-w-[11rem] text-end sm:w-40 rtl:text-start ${inputClass}`}
                 aria-label={t("paymentLblDownPayment")}
               />
             </div>
-            <div dir="ltr">
+            <div
+              className="flex min-h-[44px] items-center py-1"
+              dir="ltr"
+            >
               <input
                 type="range"
                 min={sliderMin}
@@ -155,7 +159,7 @@ export function PaymentCalculator({
                 aria-valuemax={sliderMax}
                 aria-valuenow={effectiveInitialDown}
                 aria-label={t("paymentLblDownPayment")}
-                className="h-1 w-full cursor-pointer appearance-none rounded-full bg-zinc-200 accent-zinc-700 [&::-webkit-slider-thumb]:h-2.5 [&::-webkit-slider-thumb]:w-2.5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-zinc-400 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-sm"
+                className="h-2.5 w-full cursor-pointer appearance-none rounded-full bg-zinc-200 accent-zinc-700 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-zinc-500 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-md"
               />
             </div>
             <p className="font-sans text-[8px] tabular-nums text-zinc-400">
@@ -180,7 +184,7 @@ export function PaymentCalculator({
                     key={y}
                     type="button"
                     onClick={() => setTermYears(y)}
-                    className={`min-h-[36px] rounded-lg border px-2 py-1.5 font-sans text-[9px] font-medium tracking-[0.12em] transition-[color,box-shadow,border-color,background] sm:text-[10px] ${
+                    className={`min-h-[44px] rounded-lg border px-2 py-2 font-sans text-[10px] font-medium tracking-[0.12em] transition-[color,box-shadow,border-color,background] sm:min-h-[44px] sm:text-[11px] ${
                       active
                         ? "border-zinc-400/80 bg-white text-zinc-900 shadow-sm ring-1 ring-zinc-200/90"
                         : "border-zinc-200/90 bg-zinc-50 text-zinc-500 hover:border-zinc-300 hover:text-zinc-700"

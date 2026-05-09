@@ -28,7 +28,7 @@ export function PaymentSection({
   const [cashTier, setCashTier] = useState<CashTier>(20);
 
   const tabBarClass =
-    "flex w-full max-w-md gap-1 rounded-full border border-zinc-200/80 bg-zinc-100/60 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] backdrop-blur-xl sm:max-w-lg";
+    "flex w-full max-w-full gap-1 rounded-full border border-zinc-200/80 bg-zinc-100/60 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)] backdrop-blur-xl sm:max-w-lg";
 
   const tabBtn = (active: boolean) =>
     `relative min-h-[44px] flex-1 rounded-full px-4 py-2.5 font-sans text-[10px] font-medium tracking-[0.1em] transition-[color,box-shadow,background,border-color] duration-300 sm:text-[11px] rtl:font-arabic rtl:leading-[1.72] ${
@@ -38,8 +38,8 @@ export function PaymentSection({
     }`;
 
   return (
-    <div className="mx-auto mt-12 max-w-5xl md:mt-14">
-      <div className="flex justify-center px-1">
+    <div className="mx-auto mt-12 w-full max-w-5xl px-3 sm:px-4 md:mt-14 md:px-0">
+      <div className="flex justify-center">
         <div className={tabBarClass} role="tablist" aria-label={t("paymentTitle")}>
         <button
           type="button"
@@ -71,7 +71,7 @@ export function PaymentSection({
           id="payment-panel-cash"
           role="tabpanel"
           aria-labelledby="payment-tab-cash"
-          className="mt-10 grid gap-4 md:grid-cols-3 md:gap-5"
+          className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5"
         >
           <p className="md:col-span-3 text-center font-sans text-[11px] font-medium leading-relaxed tracking-[0.08em] text-charcoal/42 uppercase rtl:normal-case rtl:font-arabic rtl:leading-[1.72]">
             {t("paymentCashIntro")}
@@ -83,7 +83,7 @@ export function PaymentSection({
                 key={pct}
                 type="button"
                 onClick={() => setCashTier(pct)}
-                className={`group flex flex-col items-center rounded-2xl border px-5 py-8 text-center transition-[box-shadow,background,border-color] duration-300 md:py-10 ${
+                className={`group flex min-h-[44px] flex-col items-center rounded-2xl border px-5 py-8 text-center transition-[box-shadow,background,border-color] duration-300 md:py-10 ${
                   active
                     ? "border-zinc-300/90 bg-white/95 shadow-[0_12px_32px_rgba(0,0,0,0.06)] ring-1 ring-zinc-200/80 backdrop-blur-xl"
                     : "border-zinc-200/80 bg-zinc-50/80 backdrop-blur-md hover:border-zinc-300/80 hover:bg-white/90"
@@ -105,7 +105,7 @@ export function PaymentSection({
           id="payment-panel-installments"
           role="tabpanel"
           aria-labelledby="payment-tab-installments"
-          className="mx-auto mt-10 max-w-md"
+          className="mx-auto mt-10 w-full max-w-md px-1 sm:px-0"
         >
           <PaymentCalculator
             key={initialPurchasePrice}

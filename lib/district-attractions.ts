@@ -11,15 +11,15 @@ export const DISTRICT_ATTRACTIONS_ALL: DistrictAttraction[] = [
     alt: "Dubai skyline toward Business Bay",
   },
   {
-    src: u("photo-1582672060674-884a8839a85f"),
+    src: u("photo-1600607687644-c7171b42498f"),
     alt: "Waterfront promenade at golden hour",
   },
   {
-    src: u("photo-1518684079-b4a468aebefc"),
+    src: u("photo-1600585154526-990dced4db0d"),
     alt: "Contemporary boulevard and towers",
   },
   {
-    src: u("photo-1526498460520-4c246339543c"),
+    src: u("photo-1600210492486-724fe5c67fb0"),
     alt: "Urban beach and city backdrop",
   },
   {
@@ -51,7 +51,7 @@ export const DISTRICT_ATTRACTIONS_ALL: DistrictAttraction[] = [
     alt: "Skyline silhouette at sunset",
   },
   {
-    src: u("photo-1600216884354-e6e2b9fea3ae"),
+    src: u("photo-1600585154340-be6161a56a0c"),
     alt: "Minimal interior with warm daylight",
   },
 ];

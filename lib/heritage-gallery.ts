@@ -25,7 +25,7 @@ export const HERITAGE_MASONRY_IMAGES = [
 export const HERITAGE_SLIDER_IMAGES = [
   ...HERITAGE_MASONRY_IMAGES,
   {
-    src: u("photo-1487958449943-2427e23708d7"),
+    src: u("photo-1493809842364-78817add7ffb"),
     alt: "Modern façade rhythm and glazing",
   },
   {
@@ -33,7 +33,7 @@ export const HERITAGE_SLIDER_IMAGES = [
     alt: "Residential towers at dusk",
   },
   {
-    src: u("photo-1600585154340-fe76e8eadb35"),
+    src: u("photo-1600585154340-be6161a56a0c"),
     alt: "Minimal interior with architectural light",
   },
 ] as const;
