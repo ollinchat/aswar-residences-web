@@ -11,9 +11,13 @@ import {
   useSpring,
 } from "framer-motion";
 import {
+  Accessibility,
+  ArrowUpDown,
+  CircleParking,
   GraduationCap,
   Play,
   ShoppingBag,
+  Sofa,
   TrainFront,
   Trees,
 } from "lucide-react";
@@ -23,7 +27,7 @@ import { EngineeringFloorPlan } from "@/components/engineering-floor-plan";
 import { HeritageProjectGallery } from "@/components/heritage-project-gallery";
 import { ResidenceGallerySlider } from "@/components/residence-gallery-slider";
 import { useLang } from "@/components/language-provider";
-import type { Lang } from "@/lib/i18n";
+import type { CopyKey, Lang } from "@/lib/i18n";
 import { RESIDENCE_MODELS } from "@/lib/residence-models";
 import type { AreaMetric } from "@/lib/area-format";
 import { formatAreaValue } from "@/lib/area-format";
@@ -102,6 +106,11 @@ function formatStartingFrom(minAed: number, lang: Lang) {
     return `من ${amount}M د.إ`;
   }
   return `From AED ${amount}M`;
+}
+
+function formatParkingBaysLine(n: number, t: (key: CopyKey) => string): string {
+  if (n === 1) return t("residenceParkingBaysOne");
+  return t("residenceParkingBaysMany").replace(/\{\{n\}\}/g, String(n));
 }
 
 type MagneticButtonProps = {
@@ -227,7 +236,7 @@ export default function Home() {
   const [viewMode, setViewMode] = useState<
     "lifestyle" | "engineering" | "financing"
   >("lifestyle");
-  const [areaMetric, setAreaMetric] = useState<AreaMetric>("sqft");
+  const [areaMetric, setAreaMetric] = useState<AreaMetric>("sqm");
   /** When null, financing uses the active unit's starting price. */
   const [financingPriceOverride, setFinancingPriceOverride] = useState<
     number | null
@@ -626,17 +635,6 @@ export default function Home() {
                     >
                       <button
                         type="button"
-                        onClick={() => setAreaMetric("sqft")}
-                        className={`rounded-[1px] px-3 py-1.5 font-sans text-[9px] font-medium uppercase tracking-[0.18em] transition-colors ${
-                          areaMetric === "sqft"
-                            ? "bg-charcoal text-white"
-                            : "text-charcoal/45 hover:text-charcoal"
-                        }`}
-                      >
-                        {t("metricSqft")}
-                      </button>
-                      <button
-                        type="button"
                         onClick={() => setAreaMetric("sqm")}
                         className={`rounded-[1px] px-3 py-1.5 font-sans text-[9px] font-medium uppercase tracking-[0.18em] transition-colors ${
                           areaMetric === "sqm"
@@ -646,43 +644,126 @@ export default function Home() {
                       >
                         {t("metricSqm")}
                       </button>
+                      <button
+                        type="button"
+                        onClick={() => setAreaMetric("sqft")}
+                        className={`rounded-[1px] px-3 py-1.5 font-sans text-[9px] font-medium uppercase tracking-[0.18em] transition-colors ${
+                          areaMetric === "sqft"
+                            ? "bg-charcoal text-white"
+                            : "text-charcoal/45 hover:text-charcoal"
+                        }`}
+                      >
+                        {t("metricSqft")}
+                      </button>
                     </div>
                   </div>
 
                   <dl className="mt-5 space-y-0">
-                  <div className="flex justify-between gap-6 border-b border-charcoal/[0.08] py-3.5">
-                    <dt className="max-w-[55%] font-sans text-[10px] font-medium uppercase leading-snug tracking-[0.14em] text-charcoal/40">
-                      {t("totalArea")}
-                    </dt>
-                    <dd className="text-end font-sans text-[11px] font-semibold tracking-[0.04em] text-charcoal">
-                      {formatAreaValue(
-                        activeResidence.areas.totalSqft,
-                        areaMetric,
-                        lang,
-                      )}
-                    </dd>
-                  </div>
-                  <div className="flex justify-between gap-6 border-b border-charcoal/[0.08] py-3.5">
-                    <dt className="max-w-[55%] font-sans text-[10px] font-medium uppercase leading-snug tracking-[0.14em] text-charcoal/40">
-                      {t("balcony")}
-                    </dt>
-                    <dd className="text-end font-sans text-[11px] font-semibold tracking-[0.04em] text-charcoal">
-                      {formatAreaValue(
-                        activeResidence.areas.balconySqft,
-                        areaMetric,
-                        lang,
-                      )}
-                    </dd>
-                  </div>
-                  <div className="flex justify-between gap-6 py-3.5">
-                    <dt className="max-w-[55%] font-sans text-[10px] font-medium uppercase leading-snug tracking-[0.14em] text-charcoal/40">
-                      {t("parking")}
-                    </dt>
-                    <dd className="text-end font-sans text-[11px] font-semibold tracking-[0.04em] text-charcoal">
-                      {activeResidence.specs.parking}
-                    </dd>
-                  </div>
+                    <div className="flex justify-between gap-6 border-b border-charcoal/[0.08] py-3.5">
+                      <dt className="max-w-[55%] font-serif text-[10px] font-medium uppercase leading-snug tracking-[0.2em] text-charcoal/42 rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                        {t("totalArea")}
+                      </dt>
+                      <dd className="text-end font-sans text-[11px] font-semibold tabular-nums tracking-[0.06em] text-charcoal rtl:leading-[1.72]">
+                        {formatAreaValue(
+                          activeResidence.areas.totalSqft,
+                          areaMetric,
+                          lang,
+                        )}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-6 border-b border-charcoal/[0.08] py-3.5">
+                      <dt className="max-w-[55%] font-serif text-[10px] font-medium uppercase leading-snug tracking-[0.2em] text-charcoal/42 rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                        {t("balcony")}
+                      </dt>
+                      <dd className="text-end font-sans text-[11px] font-semibold tabular-nums tracking-[0.06em] text-charcoal rtl:leading-[1.72]">
+                        {formatAreaValue(
+                          activeResidence.areas.balconySqft,
+                          areaMetric,
+                          lang,
+                        )}
+                      </dd>
+                    </div>
                   </dl>
+
+                  <ul className="mt-8 grid grid-cols-2 gap-x-8 gap-y-7 border-t border-charcoal/[0.08] pt-7 lg:grid-cols-4 lg:gap-y-6">
+                    {activeResidence.specs.elevator ? (
+                      <li className="min-w-0">
+                        <div className="flex items-start gap-2.5 rtl:flex-row-reverse">
+                          <ArrowUpDown
+                            className="mt-0.5 h-4 w-4 shrink-0 text-charcoal/45"
+                            strokeWidth={1.25}
+                            aria-hidden
+                          />
+                          <div className="min-w-0 flex-1 space-y-1.5 text-start">
+                            <p className="font-serif text-[9px] font-medium uppercase tracking-[0.22em] text-charcoal/42 rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                              {t("residenceLblElevator")}
+                            </p>
+                            <p className="font-sans text-[11px] font-medium leading-snug tracking-[0.08em] text-charcoal rtl:leading-[1.72]">
+                              {t("residenceValElevator")}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    ) : null}
+                    {activeResidence.specs.accessibility ? (
+                      <li className="min-w-0">
+                        <div className="flex items-start gap-2.5 rtl:flex-row-reverse">
+                          <Accessibility
+                            className="mt-0.5 h-4 w-4 shrink-0 text-charcoal/45"
+                            strokeWidth={1.25}
+                            aria-hidden
+                          />
+                          <div className="min-w-0 flex-1 space-y-1.5 text-start">
+                            <p className="font-serif text-[9px] font-medium uppercase tracking-[0.22em] text-charcoal/42 rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                              {t("residenceLblAccessibility")}
+                            </p>
+                            <p className="font-sans text-[11px] font-medium leading-snug tracking-[0.08em] text-charcoal rtl:leading-[1.72]">
+                              {t("residenceValAccessibility")}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    ) : null}
+                    {activeResidence.specs.furnishing === "full" ? (
+                      <li className="min-w-0">
+                        <div className="flex items-start gap-2.5 rtl:flex-row-reverse">
+                          <Sofa
+                            className="mt-0.5 h-4 w-4 shrink-0 text-charcoal/45"
+                            strokeWidth={1.25}
+                            aria-hidden
+                          />
+                          <div className="min-w-0 flex-1 space-y-1.5 text-start">
+                            <p className="font-serif text-[9px] font-medium uppercase tracking-[0.22em] text-charcoal/42 rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                              {t("residenceLblFurnishing")}
+                            </p>
+                            <p className="font-sans text-[11px] font-medium leading-snug tracking-[0.08em] text-charcoal rtl:leading-[1.72]">
+                              {t("residenceValFurnishing")}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    ) : null}
+                    <li className="min-w-0">
+                      <div className="flex items-start gap-2.5 rtl:flex-row-reverse">
+                        <CircleParking
+                          className="mt-0.5 h-4 w-4 shrink-0 text-charcoal/45"
+                          strokeWidth={1.25}
+                          aria-hidden
+                        />
+                        <div className="min-w-0 flex-1 space-y-1.5 text-start">
+                          <p className="font-serif text-[9px] font-medium uppercase tracking-[0.22em] text-charcoal/42 rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                            {t("residenceLblParking")}
+                          </p>
+                          <p className="font-sans text-[11px] font-semibold tabular-nums tracking-[0.06em] text-charcoal rtl:leading-[1.72]">
+                            {formatParkingBaysLine(
+                              activeResidence.specs.parkingBays,
+                              t,
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
 
                 {viewMode === "financing" ? (

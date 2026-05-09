@@ -3,9 +3,15 @@ import type { Lang } from "@/lib/i18n";
 export type AreaMetric = "sqft" | "sqm";
 
 const SQFT_TO_SQM = 0.09290304;
+const SQM_TO_SQFT = 1 / SQFT_TO_SQM;
 
 export function sqftToSqm(sqft: number): number {
   return Math.round(sqft * SQFT_TO_SQM * 10) / 10;
+}
+
+/** Inverse of `sqftToSqm` for validation / tooling (source data remains sqft). */
+export function sqmToSqft(sqm: number): number {
+  return Math.round(sqm * SQM_TO_SQFT * 10) / 10;
 }
 
 export function formatAreaValue(
