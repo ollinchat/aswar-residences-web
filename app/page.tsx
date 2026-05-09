@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
@@ -14,6 +14,7 @@ import {
 import { SiteNavbar } from "@/components/site-navbar";
 import { PartnerMarquee } from "@/components/partner-marquee";
 import { EngineeringFloorPlan } from "@/components/engineering-floor-plan";
+import { FacebookFeed } from "@/components/facebook-feed";
 import { ResidenceGallerySlider } from "@/components/residence-gallery-slider";
 import { useLang } from "@/components/language-provider";
 import type { Lang } from "@/lib/i18n";
@@ -27,7 +28,10 @@ const PanoramaViewerModal = dynamic(
   { ssr: false },
 );
 
-const LightMap = dynamic(() => import("@/components/light-map"), { ssr: false });
+const LightMap = dynamic(() => import("@/components/light-map"), {
+  ssr: false,
+});
+const DarkMap = dynamic(() => import("@/components/dark-map"), { ssr: false });
 
 const PAYMENT_PHASES = [
   {
@@ -163,25 +167,32 @@ function SectionIntro({
   title,
   subtitle,
   align = "left",
+  tone = "default",
 }: {
   title: string;
   subtitle?: string;
   align?: "left" | "center";
+  tone?: "default" | "onDark";
 }) {
+  const isDark = tone === "onDark";
   return (
     <div
       className={`mb-10 md:mb-12 lg:mb-14 ${
         align === "center" ? "mx-auto max-w-3xl text-center" : ""
       }`}
     >
-      <h2 className="max-w-3xl font-serif text-3xl font-medium tracking-tight text-charcoal md:text-5xl">
+      <h2
+        className={`max-w-3xl font-serif text-3xl font-medium tracking-tight md:text-5xl ${
+          isDark ? "text-white" : "text-charcoal"
+        }`}
+      >
         {title}
       </h2>
       {subtitle ? (
         <p
-          className={`mt-6 max-w-xl font-sans text-[11px] font-medium uppercase leading-relaxed tracking-[0.28em] text-charcoal/42 ${
-            align === "center" ? "mx-auto" : ""
-          }`}
+          className={`mt-6 max-w-xl font-sans text-[11px] font-medium uppercase leading-relaxed tracking-[0.28em] ${
+            isDark ? "text-white/48" : "text-charcoal/42"
+          } ${align === "center" ? "mx-auto" : ""}`}
         >
           {subtitle}
         </p>
@@ -231,6 +242,7 @@ export default function Home() {
   const [downPct, setDownPct] = useState(20);
   const [ratePct, setRatePct] = useState(4.99);
   const [termYears, setTermYears] = useState(25);
+  const [mapBasemap, setMapBasemap] = useState<"light" | "dark">("light");
 
   useEffect(() => {
     if (!viewerOpen) return;
@@ -241,8 +253,11 @@ export default function Home() {
     return () => window.removeEventListener("keydown", onKey);
   }, [viewerOpen]);
 
-  const activeResidence =
-    RESIDENCE_MODELS.find((m) => m.id === residenceId) ?? RESIDENCE_MODELS[0];
+  const activeResidence = useMemo(
+    () =>
+      RESIDENCE_MODELS.find((m) => m.id === residenceId) ?? RESIDENCE_MODELS[0],
+    [residenceId],
+  );
 
   const purchasePrice =
     financingPriceOverride ?? activeResidence.booking.priceMin;
@@ -822,16 +837,59 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-[#ebebeb] px-6 py-20 md:px-12">
+      <section
+        className={`px-6 py-20 transition-colors duration-300 md:px-12 ${
+          mapBasemap === "dark" ? "bg-[#1a1a1a]" : "bg-[#ebebeb]"
+        }`}
+      >
         <div className="mx-auto max-w-6xl">
           <SectionIntro
             title={t("locationTitle")}
             subtitle={t("locationSubtitle")}
+            tone={mapBasemap === "dark" ? "onDark" : "default"}
           />
-          <div className="overflow-hidden rounded-[2px] bg-[#ebebeb]">
-            <LightMap />
+          <div className="mb-4 flex flex-wrap justify-end gap-2">
+            <button
+              type="button"
+              onClick={() => setMapBasemap("light")}
+              className={`rounded-[2px] px-3 py-1.5 font-sans text-[9px] font-medium uppercase tracking-[0.2em] transition-colors ${
+                mapBasemap === "light"
+                  ? "bg-charcoal text-white"
+                  : mapBasemap === "dark"
+                    ? "text-white/55 ring-1 ring-white/15 hover:text-white"
+                    : "text-charcoal/42 ring-1 ring-charcoal/[0.1] hover:text-charcoal"
+              }`}
+            >
+              {t("mapBasemapLight")}
+            </button>
+            <button
+              type="button"
+              onClick={() => setMapBasemap("dark")}
+              className={`rounded-[2px] px-3 py-1.5 font-sans text-[9px] font-medium uppercase tracking-[0.2em] transition-colors ${
+                mapBasemap === "dark"
+                  ? "bg-white text-charcoal"
+                  : "text-charcoal/42 ring-1 ring-charcoal/[0.1] hover:text-charcoal"
+              }`}
+            >
+              {t("mapBasemapDark")}
+            </button>
           </div>
-          <p className="mt-8 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] text-charcoal/40">
+          <div
+            className={`overflow-hidden rounded-[2px] transition-colors duration-300 ${
+              mapBasemap === "dark" ? "bg-[#1c1c1c]" : "bg-[#ebebeb]"
+            }`}
+          >
+            {mapBasemap === "light" ? (
+              <LightMap key="map-light" />
+            ) : (
+              <DarkMap key="map-dark" />
+            )}
+          </div>
+          <p
+            className={`mt-8 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-[0.2em] transition-colors ${
+              mapBasemap === "dark" ? "text-white/45" : "text-charcoal/40"
+            }`}
+          >
             {t("locationMapCaption")}
           </p>
         </div>
@@ -883,6 +941,28 @@ export default function Home() {
             >
               {t("downloadPdf")}
             </a>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="live-updates"
+        className="scroll-mt-24 bg-[#FFFFFF] py-20 sm:px-6 md:px-12"
+      >
+        <div className="w-full sm:mx-auto sm:max-w-[500px]">
+          <header className="px-6 text-center sm:px-0">
+            <p className="font-sans text-[9px] font-medium uppercase tracking-[0.42em] text-charcoal/35">
+              {t("liveUpdatesKicker")}
+            </p>
+            <h2 className="mt-4 font-serif text-3xl font-light tracking-tight text-charcoal md:text-[2.125rem] md:leading-tight">
+              {t("liveUpdatesTitle")}
+            </h2>
+            <p className="mx-auto mt-4 max-w-md font-sans text-[13px] font-normal leading-relaxed text-charcoal/52">
+              {t("liveUpdatesSubtitle")}
+            </p>
+          </header>
+          <div className="mt-10 overflow-hidden rounded-none border-y border-charcoal/[0.08] bg-white shadow-[0_12px_44px_-18px_rgba(26,28,30,0.16)] sm:mt-12 sm:rounded-[2px] sm:border sm:shadow-[0_12px_44px_-18px_rgba(26,28,30,0.18)]">
+            <FacebookFeed />
           </div>
         </div>
       </section>
