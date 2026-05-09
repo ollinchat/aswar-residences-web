@@ -77,6 +77,7 @@ export const copy = {
     paymentLblTotalRepayment: "Total repayment",
     paymentCalcAmortNote:
       "Equal monthly instalments on the remaining balance after your initial payment; your bank’s rates, fees, and eligibility apply.",
+    paymentCalcDownStartsAt: "Starts at",
     locationTitle: "Location",
     locationSubtitle: "Business Bay · Dubai, UAE",
     locationMapCaption:
@@ -266,6 +267,7 @@ export const copy = {
     paymentLblTotalRepayment: "إجمالي السداد",
     paymentCalcAmortNote:
       "أقساطٌ شهريةٌ متساويةٌ على الرصيد بعد الدفعة الأولى؛ تنطبق شروطُ البنك من نسبٍ ورسومٍ وأهليّةٍ.",
+    paymentCalcDownStartsAt: "يبدأ من",
     locationTitle: "الموقع",
     locationSubtitle: "الخليج التجاري · دبي، الإمارات العربية المتحدة",
     locationMapCaption:
