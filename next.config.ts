@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /** Hides the default floating dev indicator (often shown as “N”) in development. */
   devIndicators: false,
   images: {
     remotePatterns: [

@@ -6,14 +6,16 @@ import {
   motion,
   useReducedMotion,
 } from "framer-motion";
-import { CircleUser, MessageCircle, Phone, X } from "lucide-react";
+import { MessageCircle, X } from "lucide-react";
 import type { ReactNode } from "react";
 import {
   BrandIconGmail,
   BrandIconInstagram,
   BrandIconMessenger,
+  BrandIconPhone,
   BrandIconTelegram,
   BrandIconWhatsApp,
+  IconInternationalAccess,
 } from "@/components/contact-brand-icons";
 import { useLang } from "@/components/language-provider";
 import type { CopyKey } from "@/lib/i18n";
@@ -23,6 +25,8 @@ const A11Y_CONTRAST = "aswar-a11y-contrast";
 const A11Y_UNDERLINE = "aswar-a11y-underline";
 
 const spring = { type: "spring" as const, stiffness: 420, damping: 28 };
+
+const fabHover = { y: -4, scale: 1.05 };
 
 type Channel = {
   id: string;
@@ -55,13 +59,7 @@ function buildChannels(): Channel[] {
       id: "phone",
       href: tel.startsWith("tel:") ? tel : `tel:${tel}`,
       labelKey: "hubToolPhone",
-      node: (
-        <Phone
-          className="h-[19px] w-[19px] text-charcoal"
-          strokeWidth={1.35}
-          aria-hidden
-        />
-      ),
+      node: <BrandIconPhone />,
     },
     {
       id: "email",
@@ -119,9 +117,9 @@ function ToggleRow({
       role="switch"
       aria-checked={checked}
       onClick={() => onChange(!checked)}
-      className="flex w-full items-center justify-between gap-4 rounded-[2px] border border-charcoal/[0.06] bg-white/90 px-3 py-2.5 text-start transition-colors hover:bg-white"
+      className="flex w-full items-center justify-between gap-4 rounded-[2px] border border-charcoal/[0.08] bg-white px-3 py-2.5 text-start transition-colors hover:bg-neutral-50/90"
     >
-      <span className="font-sans text-[11px] font-medium tracking-wide text-charcoal">
+      <span className="font-sans text-[11px] font-medium leading-snug tracking-wide text-charcoal">
         {label}
       </span>
       <span
@@ -210,7 +208,11 @@ export function FloatingContactHub() {
     : { type: "spring" as const, stiffness: 380, damping: 26, mass: 0.85 };
 
   const fabShell =
-    "border border-charcoal/[0.08] bg-white/95 text-charcoal shadow-[0_8px_32px_-12px_rgba(26,28,30,0.28)] backdrop-blur-md backdrop-saturate-150 transition-shadow hover:shadow-[0_12px_36px_-12px_rgba(26,28,30,0.32)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25";
+    "flex h-10 w-10 items-center justify-center rounded-full border border-charcoal/10 bg-white text-charcoal shadow-[0_6px_28px_-10px_rgba(26,28,30,0.22)] backdrop-blur-md backdrop-saturate-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/20";
+
+  const hoverProps = reduceMotion
+    ? {}
+    : { whileHover: fabHover, transition: spring };
 
   return (
     <>
@@ -224,17 +226,17 @@ export function FloatingContactHub() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={reduceMotion ? { duration: 0.15 } : transition}
-            className="pointer-events-auto fixed inset-0 z-[84] bg-charcoal/[0.06] backdrop-blur-[2px]"
+            className="pointer-events-auto fixed inset-0 z-[99] bg-charcoal/[0.06] backdrop-blur-[2px]"
             onClick={closeAll}
           />
         ) : null}
       </AnimatePresence>
 
       {/*
-        Physical left edge (left-6) — not logical start — so position stays the same in RTL (Arabic).
+        Viewport-fixed stack (not inside scrolling layout) — z-[100], physical left/bottom for RTL+LTR.
       */}
-      <div className="pointer-events-none fixed bottom-[max(1.5rem,env(safe-area-inset-bottom,0px))] left-6 z-[85] flex flex-col items-start gap-3 md:bottom-[max(2rem,env(safe-area-inset-bottom,0px))] md:left-8">
-        {/* Accessibility */}
+      <div className="pointer-events-none fixed bottom-6 left-6 z-[100] flex flex-col items-start gap-3">
+        {/* Accessibility — top; menu slides up from the button */}
         <div className="pointer-events-auto flex flex-col items-start gap-2">
           <AnimatePresence>
             {a11yOpen ? (
@@ -246,20 +248,20 @@ export function FloatingContactHub() {
                 initial={
                   reduceMotion
                     ? { opacity: 0 }
-                    : { opacity: 0, scale: 0.94, y: 10 }
+                    : { opacity: 0, y: 28, scale: 0.96 }
                 }
-                animate={{ opacity: 1, scale: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={
                   reduceMotion
                     ? { opacity: 0 }
-                    : { opacity: 0, scale: 0.94, y: 8 }
+                    : { opacity: 0, y: 20, scale: 0.96 }
                 }
                 transition={transition}
-                className="w-[min(100vw-3rem,220px)] rounded-[2px] border border-charcoal/[0.08] bg-white/95 p-2.5 shadow-[0_12px_40px_-14px_rgba(26,28,30,0.22)] backdrop-blur-md backdrop-saturate-150"
+                className="w-[min(100vw-3rem,220px)] origin-bottom rounded-[2px] border border-charcoal/10 bg-white/90 p-2.5 shadow-[0_12px_40px_-14px_rgba(26,28,30,0.18)] backdrop-blur-md backdrop-saturate-150"
               >
                 <p
                   id={a11yMenuTitleId}
-                  className="border-b border-charcoal/[0.06] pb-2 font-sans text-[9px] font-semibold uppercase tracking-[0.22em] text-charcoal/45"
+                  className="border-b border-charcoal/[0.08] pb-2 font-sans text-[9px] font-semibold uppercase tracking-[0.22em] text-charcoal/45"
                 >
                   {t("a11yMenuTitle")}
                 </p>
@@ -291,14 +293,14 @@ export function FloatingContactHub() {
             aria-haspopup="dialog"
             aria-label={a11yOpen ? t("hubAriaA11yClose") : t("hubAriaA11yOpen")}
             whileTap={{ scale: 0.96 }}
-            transition={spring}
-            className={`flex h-12 w-12 items-center justify-center rounded-full ${fabShell}`}
+            {...hoverProps}
+            className={fabShell}
           >
-            <CircleUser className="h-6 w-6" strokeWidth={1.25} aria-hidden />
+            <IconInternationalAccess />
           </motion.button>
         </div>
 
-        {/* Contact */}
+        {/* Contact — bottom */}
         <div className="pointer-events-auto flex flex-col items-start gap-2">
           <AnimatePresence>
             {contactOpen ? (
@@ -310,16 +312,16 @@ export function FloatingContactHub() {
                 initial={
                   reduceMotion
                     ? { opacity: 0 }
-                    : { opacity: 0, scale: 0.94, y: 12 }
+                    : { opacity: 0, y: 28, scale: 0.96 }
                 }
-                animate={{ opacity: 1, scale: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={
                   reduceMotion
                     ? { opacity: 0 }
-                    : { opacity: 0, scale: 0.94, y: 10 }
+                    : { opacity: 0, y: 20, scale: 0.96 }
                 }
                 transition={transition}
-                className="flex flex-col-reverse gap-2 rounded-[2px] border border-charcoal/[0.08] bg-white/95 p-2.5 shadow-[0_12px_40px_-14px_rgba(26,28,30,0.22)] backdrop-blur-md backdrop-saturate-150"
+                className="flex origin-bottom flex-col-reverse gap-2 rounded-[2px] border border-charcoal/10 bg-white/90 p-2.5 shadow-[0_12px_40px_-14px_rgba(26,28,30,0.18)] backdrop-blur-md backdrop-saturate-150"
               >
                 <p id={contactMenuTitleId} className="sr-only">
                   {t("hubMenuTitle")}
@@ -350,18 +352,20 @@ export function FloatingContactHub() {
                     >
                       {t(ch.labelKey)}
                     </span>
-                    <a
+                    <motion.a
                       href={ch.href}
                       title={t(ch.labelKey)}
                       {...(ch.external
                         ? { target: "_blank", rel: "noopener noreferrer" }
                         : {})}
-                      className="flex h-11 w-11 items-center justify-center rounded-[2px] bg-white shadow-[inset_0_0_0_1px_rgba(26,28,30,0.06)] transition-transform hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25"
+                      className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-charcoal/[0.08] bg-white shadow-[inset_0_0_0_1px_rgba(26,28,30,0.04)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25"
                       aria-label={t(ch.labelKey)}
                       onClick={() => setContactOpen(false)}
+                      whileTap={{ scale: 0.95 }}
+                      {...(reduceMotion ? {} : { whileHover: fabHover, transition: spring })}
                     >
                       {ch.node}
-                    </a>
+                    </motion.a>
                   </motion.div>
                 ))}
               </motion.div>
@@ -373,12 +377,10 @@ export function FloatingContactHub() {
             onClick={toggleContact}
             aria-expanded={contactOpen}
             aria-haspopup="dialog"
-            aria-label={
-              contactOpen ? t("hubAriaClose") : t("hubAriaOpen")
-            }
+            aria-label={contactOpen ? t("hubAriaClose") : t("hubAriaOpen")}
             whileTap={{ scale: 0.96 }}
-            transition={spring}
-            className={`flex h-14 w-14 items-center justify-center rounded-full ${fabShell}`}
+            {...hoverProps}
+            className={fabShell}
           >
             <motion.span
               animate={{ rotate: contactOpen ? 90 : 0 }}
@@ -386,9 +388,9 @@ export function FloatingContactHub() {
               className="flex items-center justify-center"
             >
               {contactOpen ? (
-                <X className="h-6 w-6" strokeWidth={1} aria-hidden />
+                <X className="h-5 w-5" strokeWidth={1} aria-hidden />
               ) : (
-                <MessageCircle className="h-6 w-6" strokeWidth={1} aria-hidden />
+                <MessageCircle className="h-5 w-5" strokeWidth={1} aria-hidden />
               )}
             </motion.span>
           </motion.button>
