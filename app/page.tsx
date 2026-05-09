@@ -8,8 +8,11 @@ import { Play } from "lucide-react";
 import { SiteNavbar } from "@/components/site-navbar";
 import { PartnerMarquee } from "@/components/partner-marquee";
 import { EngineeringFloorPlan } from "@/components/engineering-floor-plan";
+import { ResidenceGallerySlider } from "@/components/residence-gallery-slider";
 import { useLang } from "@/components/language-provider";
 import type { Lang } from "@/lib/i18n";
+import type { ResidenceModel } from "@/lib/residence-models";
+import { RESIDENCE_MODELS } from "@/lib/residence-models";
 
 const PanoramaViewerModal = dynamic(
   () =>
@@ -20,107 +23,6 @@ const PanoramaViewerModal = dynamic(
 const DarkMap = dynamic(() => import("@/components/dark-map"), { ssr: false });
 
 type PriceBand = "all" | "under2" | "2-4" | "over4";
-
-type ResidenceModel = {
-  id: string;
-  label: string;
-  specs: {
-    totalArea: string;
-    balcony: string;
-    parking: string;
-  };
-  images: string[];
-  pano: string;
-  booking: {
-    availableUnits: number;
-    totalUnits: number;
-    priceMin: number;
-    priceMax: number;
-  };
-};
-
-const RESIDENCE_MODELS: ResidenceModel[] = [
-  {
-    id: "studio",
-    label: "Studio",
-    specs: {
-      totalArea: "548 SQ.FT",
-      balcony: "52 SQ.FT",
-      parking: "1 Reserved bay",
-    },
-    images: [
-      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=88",
-    ],
-    pano: "/hero-360-panorama.jpg",
-    booking: { availableUnits: 14, totalUnits: 42, priceMin: 1_100_000, priceMax: 1_550_000 },
-  },
-  {
-    id: "1br",
-    label: "1BR",
-    specs: {
-      totalArea: "892 SQ.FT",
-      balcony: "118 SQ.FT",
-      parking: "1 Reserved bay",
-    },
-    images: [
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=88",
-    ],
-    pano: "/hero-360-panorama.jpg",
-    booking: { availableUnits: 11, totalUnits: 56, priceMin: 1_650_000, priceMax: 2_350_000 },
-  },
-  {
-    id: "2br",
-    label: "2BR",
-    specs: {
-      totalArea: "1,420 SQ.FT",
-      balcony: "186 SQ.FT",
-      parking: "2 Reserved bays",
-    },
-    images: [
-      "https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=1800&q=88",
-    ],
-    pano: "/hero-360-panorama.jpg",
-    booking: { availableUnits: 9, totalUnits: 48, priceMin: 2_750_000, priceMax: 3_950_000 },
-  },
-  {
-    id: "3br",
-    label: "3BR",
-    specs: {
-      totalArea: "2,180 SQ.FT",
-      balcony: "240 SQ.FT",
-      parking: "2 Reserved bays",
-    },
-    images: [
-      "https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1800&q=88",
-    ],
-    pano: "/hero-360-panorama.jpg",
-    booking: { availableUnits: 6, totalUnits: 32, priceMin: 4_100_000, priceMax: 5_850_000 },
-  },
-  {
-    id: "penthouse",
-    label: "Penthouse",
-    specs: {
-      totalArea: "4,850 SQ.FT",
-      balcony: "620 SQ.FT",
-      parking: "3 Reserved bays",
-    },
-    images: [
-      "https://images.unsplash.com/photo-1600047509355-9dc75507daeb?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1800&q=88",
-    ],
-    pano: "/hero-360-panorama.jpg",
-    booking: { availableUnits: 3, totalUnits: 8, priceMin: 8_200_000, priceMax: 16_500_000 },
-  },
-];
 
 const PAYMENT_PHASES = [
   {
@@ -645,34 +547,10 @@ export default function Home() {
 
                 <div className="lg:col-span-8">
                   {viewMode === "lifestyle" ? (
-                    <div className="space-y-3">
-                      <div className="relative min-h-[min(52vh,520px)] w-full overflow-hidden rounded-[4px] bg-charcoal/[0.03]">
-                        <Image
-                          src={activeResidence.images[0]}
-                          alt={`${activeResidence.label} — primary`}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 1024px) 100vw, 66vw"
-                          priority
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                        {activeResidence.images.slice(1).map((src, i) => (
-                          <div
-                            key={src}
-                            className="relative aspect-[4/3] overflow-hidden rounded-[4px] bg-charcoal/[0.03]"
-                          >
-                            <Image
-                              src={src}
-                              alt={`${activeResidence.label} interior ${i + 2}`}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 1024px) 50vw, 22vw"
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                    <ResidenceGallerySlider
+                      images={activeResidence.images}
+                      label={activeResidence.label}
+                    />
                   ) : (
                     <div className="overflow-hidden rounded-[4px] bg-white shadow-[0_1px_0_rgba(26,28,30,0.06)]">
                       <EngineeringFloorPlan unitId={activeResidence.id} />
@@ -758,71 +636,53 @@ export default function Home() {
 
       <section
         id="heritage"
-        className="border-t border-charcoal/[0.06] bg-[#F5F5F4] px-6 py-32 text-charcoal md:px-12 md:py-40"
+        className="border-t border-charcoal/[0.06] bg-white px-6 py-24 text-charcoal md:px-12 md:py-32"
       >
-        <div className="relative mx-auto max-w-6xl">
-          <div className="max-w-2xl">
-            <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-charcoal/35">
-              {t("sealQuality")}
-            </p>
-            <h2 className="mt-6 font-serif text-4xl font-light tracking-tight md:text-5xl">
-              {t("heritageTitle")}
-            </h2>
-            <p className="mt-10 font-sans text-lg font-normal leading-[1.7] text-charcoal/65 md:text-xl">
-              {t("heritageLead")}
-            </p>
-            <p className="mt-6 font-mono text-[10px] uppercase leading-relaxed tracking-[0.2em] text-charcoal/40">
-              {t("heritageTags")}
-            </p>
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-charcoal/35">
+            {t("engineeringSealTitle")}
+          </p>
+          <div className="mx-auto mt-10 flex h-28 w-28 items-center justify-center rounded-full border border-charcoal/[0.1] bg-[#FAFAFA] shadow-[inset_0_0_0_1px_rgba(26,28,30,0.04)]">
+            <span className="font-serif text-[10px] font-medium tracking-[0.55em] text-charcoal/30">
+              ASWAR
+            </span>
+          </div>
+          <p className="mt-4 font-mono text-[8px] uppercase tracking-[0.5em] text-charcoal/25">
+            {t("engineeringSealParent")}
+          </p>
+          <div className="mx-auto mt-12 max-w-md opacity-[0.85] grayscale">
+            <Image
+              src="/partners/sami-najami-logo.svg"
+              alt="Sami Najami"
+              width={220}
+              height={40}
+              className="mx-auto h-auto w-full max-w-[200px]"
+            />
+          </div>
+          <p className="mx-auto mt-10 max-w-xl font-sans text-sm font-normal leading-relaxed text-charcoal/50 md:text-base">
+            {t("engineeringSealLine")}
+          </p>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
               href="https://www.sami-najami.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-8 inline-flex rounded-[4px] bg-charcoal px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-charcoal/90"
+              className="inline-flex rounded-[4px] bg-charcoal px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-charcoal/90"
             >
               {t("heritageSite")} ↗
             </a>
-          </div>
-
-          <div className="mt-16 grid gap-12 md:grid-cols-2 md:gap-16">
-            <div className="flex flex-col justify-center grayscale">
-              <Image
-                src="/partners/sami-najami-logo.svg"
-                alt="Sami Najami"
-                width={280}
-                height={48}
-                className="h-auto w-full max-w-[280px] opacity-80"
-              />
-              <p className="mt-8 font-mono text-[10px] uppercase leading-relaxed tracking-[0.18em] text-charcoal/45">
-                {t("heritagePartnerBlurb")}
-              </p>
-            </div>
-            <div className="flex flex-col border-t border-charcoal/10 pt-10 md:border-l md:border-t-0 md:pl-12 md:pt-0">
-              <p className="font-mono text-[9px] uppercase tracking-[0.35em] text-charcoal/40">
-                {t("heritageCorp")}
-              </p>
-              <p className="mt-3 font-sans text-sm leading-relaxed text-charcoal/55">
-                {t("heritageCorpBody")}
-              </p>
-              <embed
-                title="Sami Najami brand PDF"
-                src="/partners/sami-najami-brand.pdf#view=FitH"
-                type="application/pdf"
-                className="mt-6 h-[200px] w-full rounded-[4px] bg-white opacity-90"
-              />
-              <a
-                href="/partners/sami-najami-brand.pdf"
-                download
-                className="mt-4 inline-flex w-fit font-mono text-[9px] uppercase tracking-widest text-charcoal/60 hover:text-charcoal"
-              >
-                {t("downloadPdf")}
-              </a>
-            </div>
+            <a
+              href="/partners/sami-najami-brand.pdf"
+              download
+              className="inline-flex rounded-[4px] border border-charcoal/15 bg-white px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-charcoal/70 transition-colors hover:border-charcoal/30 hover:text-charcoal"
+            >
+              {t("downloadPdf")}
+            </a>
           </div>
         </div>
       </section>
 
-      <footer id="inquire" className="border-t border-charcoal/[0.06] bg-[#FAFAFA] px-8 py-28 md:px-12 md:py-36">
+      <footer id="contact" className="border-t border-charcoal/[0.06] bg-[#FAFAFA] px-8 py-28 md:px-12 md:py-36">
         <div className="mx-auto grid max-w-7xl gap-16 md:grid-cols-4 md:gap-12">
           <div className="space-y-8 md:col-span-2">
             <div className="font-serif text-lg font-medium tracking-[0.28em] text-charcoal">

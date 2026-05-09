@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useInquiryModal } from "@/components/inquiry-modal-context";
 import { useLang } from "@/components/language-provider";
 
 type NavVariant = "hero" | "solid";
@@ -12,6 +13,7 @@ export function SiteNavbar({
   variant?: NavVariant;
 }) {
   const { lang, setLang, t } = useLang();
+  const { openBookMeeting } = useInquiryModal();
   const [onLight, setOnLight] = useState(variant === "solid");
 
   useEffect(() => {
@@ -65,25 +67,35 @@ export function SiteNavbar({
           <Link href="/about-najami" className={`transition-colors ${linkClass}`}>
             {t("navAbout")}
           </Link>
-          <a
-            href="#inquire"
+          <button
+            type="button"
+            onClick={openBookMeeting}
             className={`rounded-[4px] px-4 py-2 font-mono text-[10px] uppercase tracking-[0.2em] transition-colors ${ctaClass}`}
           >
             {t("navInquire")}
-          </a>
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={() => setLang(lang === "en" ? "ar" : "en")}
-          className={`rounded-[4px] px-3 py-2 font-mono text-[10px] uppercase tracking-[0.25em] transition-colors ${
-            isLight
-              ? "text-charcoal/60 hover:bg-charcoal/[0.06]"
-              : "text-white/75 hover:bg-white/10"
-          }`}
-          aria-label={lang === "en" ? "Switch to Arabic" : "Switch to English"}
-        >
-          {t("langShort")}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={openBookMeeting}
+            className={`rounded-[4px] px-3 py-2 font-mono text-[9px] uppercase tracking-[0.2em] transition-colors md:hidden ${ctaClass}`}
+          >
+            {t("navInquire")}
+          </button>
+          <button
+            type="button"
+            onClick={() => setLang(lang === "en" ? "ar" : "en")}
+            className={`rounded-[4px] border-2 px-3.5 py-2 font-mono text-[10px] font-medium uppercase tracking-[0.28em] transition-colors ${
+              isLight
+                ? "border-charcoal/25 bg-white text-charcoal shadow-sm hover:border-charcoal/45"
+                : "border-white/55 bg-white/10 text-white backdrop-blur-sm hover:bg-white/18"
+            }`}
+            aria-label={lang === "en" ? "Switch to Arabic" : "Switch to English"}
+          >
+            {t("langShort")}
+          </button>
+        </div>
       </div>
     </nav>
   );

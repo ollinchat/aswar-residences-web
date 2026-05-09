@@ -23,6 +23,10 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
+html[dir="rtl"] body {
+  font-family: var(--font-arabic), var(--font-geist-sans), system-ui, sans-serif;
+}
+
 .leaflet-container {
   background: #1a1c1e !important;
   font-family: inherit;
