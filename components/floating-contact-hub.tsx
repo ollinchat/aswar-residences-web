@@ -7,34 +7,44 @@ import {
   motion,
   useReducedMotion,
 } from "framer-motion";
-import { MessageCircle, X } from "lucide-react";
+import { ChevronRight, Plus } from "lucide-react";
 import type { ReactNode } from "react";
 import {
+  BrandIconFacebook,
   BrandIconGmail,
   BrandIconInstagram,
+  BrandIconLinkedIn,
   BrandIconMessenger,
   BrandIconPhone,
   BrandIconTelegram,
   BrandIconWhatsApp,
+  BrandIconX,
+  BrandIconYouTube,
   IconInternationalAccess,
 } from "@/components/contact-brand-icons";
 import { useLang } from "@/components/language-provider";
-import type { CopyKey } from "@/lib/i18n";
+import type { CopyKey, Lang } from "@/lib/i18n";
 
-const A11Y_TEXT = "aswar-a11y-text";
+const LS_TEXT_SIZE = "aswar-a11y-text-size";
+const LS_LEGACY_TEXT = "aswar-a11y-text";
 const A11Y_CONTRAST = "aswar-a11y-contrast";
-const A11Y_UNDERLINE = "aswar-a11y-underline";
+const A11Y_UNDERLINE = "aswar-a11y-underline-links";
+const CLS_TEXT_SM = "aswar-a11y-text-sm";
+const CLS_TEXT_LG = "aswar-a11y-text-lg";
+const CLS_GRAYSCALE_FLAG = "aswar-a11y-grayscale";
+const CLS_BIG_CURSOR = "aswar-a11y-big-cursor";
+const CLS_STOP_ANIM = "aswar-a11y-stop-animations";
+const CLS_READABLE = "aswar-a11y-readable-font";
+const LS_NEGATIVE = "aswar-a11y-negative";
 
-const fabSpring = { type: "spring" as const, stiffness: 400, damping: 28 };
-const fabHover = { y: -4, scale: 1.05 };
-
-/** Elastic menu — float up with slight overshoot */
 const menuSpring = {
   type: "spring" as const,
-  stiffness: 260,
-  damping: 14,
-  mass: 0.72,
+  stiffness: 280,
+  damping: 13,
+  mass: 0.68,
 };
+
+const pillTap = { type: "spring" as const, stiffness: 520, damping: 28 };
 
 const CHANNEL_GLOW: Record<string, string> = {
   wa: "[&_svg]:transition-[filter,transform] motion-safe:hover:[&_svg]:drop-shadow-[0_0_12px_rgba(37,211,102,0.75)]",
@@ -48,7 +58,16 @@ const CHANNEL_GLOW: Record<string, string> = {
     "[&_svg]:transition-[filter,transform] motion-safe:hover:[&_svg]:drop-shadow-[0_0_14px_rgba(225,48,108,0.55)]",
   telegram:
     "[&_svg]:transition-[filter,transform] motion-safe:hover:[&_svg]:drop-shadow-[0_0_14px_rgba(0,136,204,0.75)]",
+  facebook:
+    "[&_svg]:transition-[filter,transform] motion-safe:hover:[&_svg]:drop-shadow-[0_0_12px_rgba(24,119,242,0.55)]",
+  x: "[&_svg]:transition-[filter,transform] motion-safe:hover:[&_svg]:drop-shadow-[0_0_10px_rgba(255,255,255,0.35)]",
+  linkedin:
+    "[&_svg]:transition-[filter,transform] motion-safe:hover:[&_svg]:drop-shadow-[0_0_12px_rgba(10,102,194,0.55)]",
+  youtube:
+    "[&_svg]:transition-[filter,transform] motion-safe:hover:[&_svg]:drop-shadow-[0_0_12px_rgba(255,0,0,0.45)]",
 };
+
+type TextSize = "sm" | "md" | "lg";
 
 type Channel = {
   id: string;
@@ -58,7 +77,7 @@ type Channel = {
   node: ReactNode;
 };
 
-function buildChannels(): Channel[] {
+function buildContactChannels(): Channel[] {
   const wa =
     process.env.NEXT_PUBLIC_CONTACT_WHATSAPP?.replace(/\D/g, "") ||
     "971400000000";
@@ -66,7 +85,6 @@ function buildChannels(): Channel[] {
   const email = process.env.NEXT_PUBLIC_CONTACT_EMAIL || "sales@aswar.ae";
   const mMessenger =
     process.env.NEXT_PUBLIC_CONTACT_MESSENGER_USERNAME || "meta";
-  const ig = process.env.NEXT_PUBLIC_CONTACT_INSTAGRAM || "aswar";
   const tg = process.env.NEXT_PUBLIC_CONTACT_TELEGRAM || "aswar";
 
   return [
@@ -78,16 +96,17 @@ function buildChannels(): Channel[] {
       node: <BrandIconWhatsApp />,
     },
     {
+      id: "telegram",
+      href: `https://t.me/${tg}`,
+      external: true,
+      labelKey: "hubToolTelegram",
+      node: <BrandIconTelegram />,
+    },
+    {
       id: "phone",
       href: tel.startsWith("tel:") ? tel : `tel:${tel}`,
       labelKey: "hubToolPhone",
       node: <BrandIconPhone />,
-    },
-    {
-      id: "email",
-      href: `mailto:${email}`,
-      labelKey: "hubToolEmail",
-      node: <BrandIconGmail />,
     },
     {
       id: "messenger",
@@ -97,6 +116,26 @@ function buildChannels(): Channel[] {
       node: <BrandIconMessenger />,
     },
     {
+      id: "email",
+      href: `mailto:${email}`,
+      labelKey: "hubToolEmail",
+      node: <BrandIconGmail />,
+    },
+  ];
+}
+
+function buildSocialChannels(): Channel[] {
+  const ig = process.env.NEXT_PUBLIC_CONTACT_INSTAGRAM || "aswar";
+  const fb = process.env.NEXT_PUBLIC_CONTACT_FACEBOOK || "aswar";
+  const xHandle = process.env.NEXT_PUBLIC_CONTACT_X || "aswar";
+  const li =
+    process.env.NEXT_PUBLIC_CONTACT_LINKEDIN ||
+    "aswar-international-development";
+  const ytRaw = process.env.NEXT_PUBLIC_CONTACT_YOUTUBE || "ASWARInternational";
+  const yt = ytRaw.replace(/^@/, "");
+
+  return [
+    {
       id: "instagram",
       href: `https://www.instagram.com/${ig}/`,
       external: true,
@@ -104,24 +143,95 @@ function buildChannels(): Channel[] {
       node: <BrandIconInstagram />,
     },
     {
-      id: "telegram",
-      href: `https://t.me/${tg}`,
+      id: "facebook",
+      href: `https://www.facebook.com/${fb}`,
       external: true,
-      labelKey: "hubToolTelegram",
-      node: <BrandIconTelegram />,
+      labelKey: "hubToolFacebook",
+      node: <BrandIconFacebook />,
+    },
+    {
+      id: "x",
+      href: `https://x.com/${xHandle.replace(/^@/, "")}`,
+      external: true,
+      labelKey: "hubToolX",
+      node: <BrandIconX />,
+    },
+    {
+      id: "linkedin",
+      href: `https://www.linkedin.com/company/${li}/`,
+      external: true,
+      labelKey: "hubToolLinkedIn",
+      node: <BrandIconLinkedIn />,
+    },
+    {
+      id: "youtube",
+      href: `https://www.youtube.com/@${yt}`,
+      external: true,
+      labelKey: "hubToolYouTube",
+      node: <BrandIconYouTube />,
     },
   ];
 }
 
-function readStored(key: string): boolean {
+function readStoredBool(key: string): boolean {
   if (typeof window === "undefined") return false;
   return window.localStorage.getItem(key) === "1";
 }
 
-function writeStored(key: string, on: boolean) {
+function writeStoredBool(key: string, on: boolean) {
   if (typeof window === "undefined") return;
   if (on) window.localStorage.setItem(key, "1");
   else window.localStorage.removeItem(key);
+}
+
+function readTextSize(): TextSize {
+  if (typeof window === "undefined") return "md";
+  const v = window.localStorage.getItem(LS_TEXT_SIZE);
+  if (v === "sm" || v === "lg") return v;
+  if (window.localStorage.getItem(LS_LEGACY_TEXT) === "1") return "lg";
+  return "md";
+}
+
+function writeTextSize(size: TextSize) {
+  if (typeof window === "undefined") return;
+  if (size === "md") window.localStorage.removeItem(LS_TEXT_SIZE);
+  else window.localStorage.setItem(LS_TEXT_SIZE, size);
+}
+
+function pillTypography(lang: Lang) {
+  if (lang === "ar") {
+    return "font-arabic text-[11px] font-semibold leading-snug tracking-wide text-charcoal max-[380px]:text-[10px] sm:text-xs";
+  }
+  return "font-serif text-[10px] font-semibold uppercase leading-snug tracking-[0.2em] text-charcoal max-[380px]:text-[9px] max-[380px]:tracking-[0.16em] sm:text-[11px] sm:tracking-[0.22em]";
+}
+
+const glassPill =
+  "flex w-full max-w-[min(100vw-2rem,20rem)] min-w-0 items-center justify-between gap-2 rounded-full border border-white/10 bg-white/30 px-4 py-2 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-2xl max-[380px]:max-w-[min(100vw-1.5rem,18rem)] max-[380px]:px-3.5 max-[380px]:py-1.5 sm:px-6 sm:py-3";
+
+const pillPrimary =
+  "border-white/15 bg-white/35 ring-1 ring-white/10 shadow-[0_10px_36px_rgba(0,0,0,0.14)]";
+
+const trayPanel =
+  "w-[min(calc(100vw-2rem),20rem)] max-h-[min(70vh,480px)] origin-bottom overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-white/30 p-3 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-2xl sm:p-3.5";
+
+function SectionLabel({
+  id,
+  children,
+  lang,
+}: {
+  id: string;
+  children: ReactNode;
+  lang: Lang;
+}) {
+  const cls =
+    lang === "ar"
+      ? "font-arabic text-[10px] font-semibold text-charcoal/55 sm:text-[11px]"
+      : "font-serif text-[9px] font-semibold uppercase tracking-[0.2em] text-charcoal/55 sm:text-[10px]";
+  return (
+    <p id={id} className={`border-b border-white/10 pb-1.5 ${cls}`}>
+      {children}
+    </p>
+  );
 }
 
 function ToggleRow({
@@ -139,9 +249,9 @@ function ToggleRow({
       role="switch"
       aria-checked={checked}
       onClick={() => onChange(!checked)}
-      className="flex w-full items-center justify-between gap-4 rounded-[2px] border border-white/15 bg-white/50 px-3 py-2.5 text-start backdrop-blur-md transition-colors hover:bg-white/70"
+      className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/25 px-3 py-2 text-start backdrop-blur-md transition-colors hover:bg-white/40"
     >
-      <span className="font-sans text-[11px] font-medium leading-snug tracking-wide text-charcoal">
+      <span className="font-sans text-[11px] font-medium leading-snug tracking-wide text-charcoal sm:text-xs">
         {label}
       </span>
       <span
@@ -160,93 +270,241 @@ function ToggleRow({
   );
 }
 
-const glassOrb =
-  "relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl";
+function TextSizeRadios({
+  value,
+  onChange,
+  labelledBy,
+  t,
+}: {
+  value: TextSize;
+  onChange: (v: TextSize) => void;
+  labelledBy: string;
+  t: (k: CopyKey) => string;
+}) {
+  const sizes: TextSize[] = ["sm", "md", "lg"];
+  const labels: Record<TextSize, CopyKey> = {
+    sm: "a11yTextSmall",
+    md: "a11yTextMedium",
+    lg: "a11yTextLarge",
+  };
+  return (
+    <div
+      role="radiogroup"
+      aria-labelledby={labelledBy}
+      className="flex gap-1.5"
+    >
+      {sizes.map((sz) => (
+        <button
+          key={sz}
+          type="button"
+          role="radio"
+          aria-checked={value === sz}
+          onClick={() => onChange(sz)}
+          className={`min-h-9 flex-1 rounded-full border px-2 py-1.5 font-sans text-[10px] font-semibold tracking-wide transition-colors sm:text-[11px] ${
+            value === sz
+              ? "border-charcoal/35 bg-charcoal text-white"
+              : "border-white/15 bg-white/20 text-charcoal hover:bg-white/35"
+          }`}
+        >
+          {t(labels[sz])}
+        </button>
+      ))}
+    </div>
+  );
+}
 
-const hitWrap = "flex min-h-[48px] min-w-[48px] items-center justify-center rounded-full";
-
-const menuPanelGlass =
-  "w-[min(100vw-3rem,220px)] origin-bottom rounded-[2px] border border-white/20 bg-white/40 p-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl";
-
-const contactMenuGlass =
-  "flex origin-bottom flex-col-reverse gap-2 rounded-[2px] border border-white/20 bg-white/40 p-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl";
+function ChannelTray({
+  channels,
+  onPick,
+  reduceMotion,
+  t,
+}: {
+  channels: Channel[];
+  onPick: () => void;
+  reduceMotion: boolean | null;
+  t: (k: CopyKey) => string;
+}) {
+  return (
+    <div className="flex flex-wrap gap-2">
+      {channels.map((ch) => (
+        <div key={ch.id} className="group relative">
+          <span
+            className="pointer-events-none absolute bottom-full left-1/2 z-[10060] mb-2 hidden max-w-[220px] -translate-x-1/2 rounded-lg border border-white/20 bg-charcoal/95 px-2 py-1 text-center font-sans text-[10px] font-medium text-white opacity-0 shadow-lg backdrop-blur-md transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 md:block whitespace-nowrap"
+            role="tooltip"
+          >
+            {t(ch.labelKey)}
+          </span>
+          <motion.a
+            href={ch.href}
+            {...(ch.external
+              ? { target: "_blank", rel: "noopener noreferrer" }
+              : {})}
+            className={`relative flex min-h-[48px] min-w-[48px] items-center justify-center rounded-full border border-white/15 bg-white/25 p-2 shadow-[0_6px_20px_rgba(0,0,0,0.08)] backdrop-blur-md transition-colors hover:bg-white/45 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25 ${CHANNEL_GLOW[ch.id] ?? ""}`}
+            aria-label={t(ch.labelKey)}
+            onClick={onPick}
+            whileTap={{ scale: 0.94 }}
+            {...(reduceMotion
+              ? {}
+              : {
+                  whileHover: { y: -3, scale: 1.04 },
+                  transition: {
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 22,
+                  },
+                })}
+          >
+            {ch.node}
+          </motion.a>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export function FloatingContactHub() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const reduceMotion = useReducedMotion();
   const [mounted, setMounted] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
+  const [socialOpen, setSocialOpen] = useState(false);
   const [a11yOpen, setA11yOpen] = useState(false);
-  const [textLarge, setTextLarge] = useState(false);
+
+  const [textSize, setTextSize] = useState<TextSize>("md");
   const [highContrast, setHighContrast] = useState(false);
+  const [grayscale, setGrayscale] = useState(false);
+  const [negativeContrast, setNegativeContrast] = useState(false);
   const [underlineLinks, setUnderlineLinks] = useState(false);
+  const [bigCursor, setBigCursor] = useState(false);
+  const [stopAnimations, setStopAnimations] = useState(false);
+  const [readableFont, setReadableFont] = useState(false);
 
   const contactMenuTitleId = useId();
+  const socialMenuTitleId = useId();
   const a11yMenuTitleId = useId();
-  const channels = useMemo(() => buildChannels(), []);
+  const sectionTextId = useId();
+  const sectionDisplayId = useId();
+  const sectionNavId = useId();
+  const sectionReadingId = useId();
+
+  const contactChannels = useMemo(() => buildContactChannels(), []);
+  const socialChannels = useMemo(() => buildSocialChannels(), []);
 
   useEffect(() => {
     queueMicrotask(() => setMounted(true));
   }, []);
 
   useEffect(() => {
-    const t0 = readStored(A11Y_TEXT);
-    const c0 = readStored(A11Y_CONTRAST);
-    const u0 = readStored(A11Y_UNDERLINE);
     queueMicrotask(() => {
-      setTextLarge(t0);
-      setHighContrast(c0);
-      setUnderlineLinks(u0);
+      setTextSize(readTextSize());
+      setHighContrast(readStoredBool(A11Y_CONTRAST));
+      setGrayscale(readStoredBool(CLS_GRAYSCALE_FLAG));
+      setNegativeContrast(readStoredBool(LS_NEGATIVE));
+      setUnderlineLinks(readStoredBool(A11Y_UNDERLINE));
+      setBigCursor(readStoredBool(CLS_BIG_CURSOR));
+      setStopAnimations(readStoredBool(CLS_STOP_ANIM));
+      setReadableFont(readStoredBool(CLS_READABLE));
     });
   }, []);
 
   useEffect(() => {
-    document.documentElement.classList.toggle(A11Y_TEXT, textLarge);
-    writeStored(A11Y_TEXT, textLarge);
-  }, [textLarge]);
+    document.documentElement.classList.remove(CLS_TEXT_SM, CLS_TEXT_LG);
+    if (textSize === "sm") document.documentElement.classList.add(CLS_TEXT_SM);
+    if (textSize === "lg") document.documentElement.classList.add(CLS_TEXT_LG);
+    writeTextSize(textSize);
+  }, [textSize]);
 
   useEffect(() => {
     document.documentElement.classList.toggle(A11Y_CONTRAST, highContrast);
-    writeStored(A11Y_CONTRAST, highContrast);
+    writeStoredBool(A11Y_CONTRAST, highContrast);
   }, [highContrast]);
 
   useEffect(() => {
+    writeStoredBool(CLS_GRAYSCALE_FLAG, grayscale);
+  }, [grayscale]);
+
+  useEffect(() => {
+    writeStoredBool(LS_NEGATIVE, negativeContrast);
+  }, [negativeContrast]);
+
+  useEffect(() => {
+    const parts: string[] = [];
+    if (highContrast) parts.push("contrast(1.14)", "saturate(1.06)");
+    if (grayscale) parts.push("grayscale(1)");
+    if (negativeContrast) parts.push("invert(1)", "hue-rotate(180deg)");
+    document.body.style.filter = parts.length ? parts.join(" ") : "";
+    return () => {
+      document.body.style.filter = "";
+    };
+  }, [highContrast, grayscale, negativeContrast]);
+
+  useEffect(() => {
     document.documentElement.classList.toggle(A11Y_UNDERLINE, underlineLinks);
-    writeStored(A11Y_UNDERLINE, underlineLinks);
+    writeStoredBool(A11Y_UNDERLINE, underlineLinks);
   }, [underlineLinks]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(CLS_BIG_CURSOR, bigCursor);
+    writeStoredBool(CLS_BIG_CURSOR, bigCursor);
+  }, [bigCursor]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(CLS_STOP_ANIM, stopAnimations);
+    writeStoredBool(CLS_STOP_ANIM, stopAnimations);
+  }, [stopAnimations]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle(CLS_READABLE, readableFont);
+    writeStoredBool(CLS_READABLE, readableFont);
+  }, [readableFont]);
 
   const closeAll = useCallback(() => {
     setContactOpen(false);
+    setSocialOpen(false);
     setA11yOpen(false);
-  }, []);
-
-  const toggleContact = useCallback(() => {
-    setA11yOpen(false);
-    setContactOpen((o) => !o);
   }, []);
 
   const toggleA11y = useCallback(() => {
     setContactOpen(false);
+    setSocialOpen(false);
     setA11yOpen((o) => !o);
   }, []);
 
+  const toggleSocial = useCallback(() => {
+    setContactOpen(false);
+    setA11yOpen(false);
+    setSocialOpen((o) => !o);
+  }, []);
+
+  const toggleContact = useCallback(() => {
+    setSocialOpen(false);
+    setA11yOpen(false);
+    setContactOpen((o) => !o);
+  }, []);
+
   useEffect(() => {
-    if (!contactOpen && !a11yOpen) return;
+    if (!contactOpen && !socialOpen && !a11yOpen) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") closeAll();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [contactOpen, a11yOpen, closeAll]);
+  }, [contactOpen, socialOpen, a11yOpen, closeAll]);
 
-  const overlayOpen = contactOpen || a11yOpen;
-
+  const overlayOpen = contactOpen || socialOpen || a11yOpen;
   const menuTransition = reduceMotion ? { duration: 0.2 } : menuSpring;
   const fadeTransition = reduceMotion ? { duration: 0.15 } : { duration: 0.22 };
 
-  const hoverProps = reduceMotion
-    ? {}
-    : { whileHover: fabHover, transition: fabSpring };
+  const pillLabel = pillTypography(lang);
+
+  const menuMotion = {
+    initial: reduceMotion
+      ? { opacity: 0 }
+      : { opacity: 0, y: 32, scale: 0.92 },
+    animate: { opacity: 1, y: 0, scale: 1 },
+    exit: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 22, scale: 0.94 },
+    transition: menuTransition,
+  };
 
   const tree = (
     <>
@@ -260,174 +518,248 @@ export function FloatingContactHub() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={fadeTransition}
-            className="aswar-floating-hub-backdrop pointer-events-auto bg-charcoal/[0.07] backdrop-blur-[2px]"
+            className="aswar-floating-hub-backdrop pointer-events-auto z-[9998] bg-charcoal/[0.07] backdrop-blur-[2px]"
             onClick={closeAll}
           />
         ) : null}
       </AnimatePresence>
 
-      <div className="aswar-floating-hub-root flex flex-col items-start gap-3">
-        <div className="pointer-events-auto flex flex-col items-start gap-2">
-          <AnimatePresence>
-            {a11yOpen ? (
-              <motion.div
-                key="a11y-menu"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby={a11yMenuTitleId}
-                initial={
-                  reduceMotion
-                    ? { opacity: 0 }
-                    : { opacity: 0, y: 36, scale: 0.92 }
-                }
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={
-                  reduceMotion
-                    ? { opacity: 0 }
-                    : { opacity: 0, y: 24, scale: 0.94 }
-                }
-                transition={menuTransition}
-                className={menuPanelGlass}
-              >
-                <p
-                  id={a11yMenuTitleId}
-                  className="border-b border-white/20 pb-2 font-sans text-[9px] font-semibold uppercase tracking-[0.22em] text-charcoal/50"
+      <div className="aswar-floating-hub-root z-[9999] flex flex-col items-start gap-2">
+        <div className="pointer-events-auto flex w-full flex-col gap-2">
+          {/* Accessibility */}
+          <div className="flex w-full flex-col items-start gap-1.5">
+            <AnimatePresence>
+              {a11yOpen ? (
+                <motion.div
+                  key="a11y-menu"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby={a11yMenuTitleId}
+                  {...menuMotion}
+                  className={trayPanel}
                 >
-                  {t("a11yMenuTitle")}
-                </p>
-                <div className="mt-2 flex flex-col gap-1.5">
-                  <ToggleRow
-                    label={t("a11yIncreaseText")}
-                    checked={textLarge}
-                    onChange={setTextLarge}
-                  />
-                  <ToggleRow
-                    label={t("a11yHighContrast")}
-                    checked={highContrast}
-                    onChange={setHighContrast}
-                  />
-                  <ToggleRow
-                    label={t("a11yUnderlineLinks")}
-                    checked={underlineLinks}
-                    onChange={setUnderlineLinks}
-                  />
-                </div>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
+                  <p
+                    id={a11yMenuTitleId}
+                    className={
+                      lang === "ar"
+                        ? "mb-2 font-arabic text-xs font-semibold text-charcoal"
+                        : "mb-2 font-serif text-[10px] font-semibold uppercase tracking-[0.24em] text-charcoal sm:text-[11px]"
+                    }
+                  >
+                    {t("a11yMenuTitle")}
+                  </p>
+                  <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-1.5">
+                      <SectionLabel id={sectionTextId} lang={lang}>
+                        {t("hubSectionA11yText")}
+                      </SectionLabel>
+                      <TextSizeRadios
+                        value={textSize}
+                        onChange={setTextSize}
+                        labelledBy={sectionTextId}
+                        t={t}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <SectionLabel id={sectionDisplayId} lang={lang}>
+                        {t("hubSectionA11yDisplay")}
+                      </SectionLabel>
+                      <div className="flex flex-col gap-1.5">
+                        <ToggleRow
+                          label={t("a11yHighContrast")}
+                          checked={highContrast}
+                          onChange={setHighContrast}
+                        />
+                        <ToggleRow
+                          label={t("a11yGrayscale")}
+                          checked={grayscale}
+                          onChange={setGrayscale}
+                        />
+                        <ToggleRow
+                          label={t("a11yNegativeContrast")}
+                          checked={negativeContrast}
+                          onChange={setNegativeContrast}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <SectionLabel id={sectionNavId} lang={lang}>
+                        {t("hubSectionA11yNav")}
+                      </SectionLabel>
+                      <div className="flex flex-col gap-1.5">
+                        <ToggleRow
+                          label={t("a11yUnderlineLinks")}
+                          checked={underlineLinks}
+                          onChange={setUnderlineLinks}
+                        />
+                        <ToggleRow
+                          label={t("a11yBigCursor")}
+                          checked={bigCursor}
+                          onChange={setBigCursor}
+                        />
+                        <ToggleRow
+                          label={t("a11yStopAnimations")}
+                          checked={stopAnimations}
+                          onChange={setStopAnimations}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <SectionLabel id={sectionReadingId} lang={lang}>
+                        {t("hubSectionA11yReading")}
+                      </SectionLabel>
+                      <ToggleRow
+                        label={t("a11yReadableFont")}
+                        checked={readableFont}
+                        onChange={setReadableFont}
+                      />
+                    </div>
+                  </div>
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
 
-          <div className={hitWrap}>
             <motion.button
               type="button"
               onClick={toggleA11y}
               aria-expanded={a11yOpen}
               aria-haspopup="dialog"
-              aria-label={a11yOpen ? t("hubAriaA11yClose") : t("hubAriaA11yOpen")}
-              whileTap={{ scale: 0.96 }}
-              {...hoverProps}
-              className={`${glassOrb} text-charcoal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25`}
+              aria-label={
+                a11yOpen ? t("hubAriaA11yClose") : t("hubAriaA11yOpen")
+              }
+              whileTap={{ scale: 0.97 }}
+              transition={pillTap}
+              className={`${glassPill} text-start focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25`}
             >
-              <IconInternationalAccess />
+              <span className="flex min-w-0 flex-1 items-center gap-2">
+                <IconInternationalAccess className="!h-[18px] !w-[18px] shrink-0 sm:!h-5 sm:!w-5" />
+                <span className={`min-w-0 flex-1 truncate ${pillLabel}`}>
+                  {t("hubPillAccessibility")}
+                </span>
+              </span>
+              <motion.span
+                aria-hidden
+                animate={{ rotate: a11yOpen ? -90 : 0 }}
+                transition={pillTap}
+                className="shrink-0 text-charcoal/70"
+              >
+                <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
+              </motion.span>
             </motion.button>
           </div>
-        </div>
 
-        <div className="pointer-events-auto flex flex-col items-start gap-2">
-          <AnimatePresence>
-            {contactOpen ? (
-              <motion.div
-                key="hub-menu"
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby={contactMenuTitleId}
-                initial={
-                  reduceMotion
-                    ? { opacity: 0 }
-                    : { opacity: 0, y: 36, scale: 0.92 }
-                }
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={
-                  reduceMotion
-                    ? { opacity: 0 }
-                    : { opacity: 0, y: 24, scale: 0.94 }
-                }
-                transition={menuTransition}
-                className={contactMenuGlass}
-              >
-                <p id={contactMenuTitleId} className="sr-only">
-                  {t("hubMenuTitle")}
-                </p>
-                {channels.map((ch, index) => (
-                  <motion.div
-                    key={ch.id}
-                    initial={
-                      reduceMotion
-                        ? { opacity: 0 }
-                        : { opacity: 0, y: 14, scale: 0.94 }
+          {/* Social */}
+          <div className="flex w-full flex-col items-start gap-1.5">
+            <AnimatePresence>
+              {socialOpen ? (
+                <motion.div
+                  key="social-menu"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby={socialMenuTitleId}
+                  {...menuMotion}
+                  className={trayPanel}
+                >
+                  <p
+                    id={socialMenuTitleId}
+                    className={
+                      lang === "ar"
+                        ? "mb-2 font-arabic text-xs font-semibold text-charcoal"
+                        : "mb-2 font-serif text-[9px] font-semibold uppercase tracking-[0.22em] text-charcoal/60 sm:text-[10px]"
                     }
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={
-                      reduceMotion
-                        ? { opacity: 0 }
-                        : { opacity: 0, y: 10, scale: 0.96 }
-                    }
-                    transition={{
-                      ...menuTransition,
-                      delay: reduceMotion ? 0 : index * 0.035,
-                    }}
-                    className="group relative flex items-center justify-start"
                   >
-                    <span
-                      className="pointer-events-none absolute left-full top-1/2 z-[10060] ml-3 hidden max-w-[200px] -translate-y-1/2 rounded-[2px] border border-white/20 bg-charcoal/95 px-2.5 py-1.5 text-start font-sans text-[10px] font-medium leading-snug tracking-wide text-white opacity-0 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-md transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 md:block whitespace-nowrap"
-                      role="tooltip"
-                    >
-                      {t(ch.labelKey)}
-                    </span>
-                    <div className={hitWrap}>
-                      <motion.a
-                        href={ch.href}
-                        title={t(ch.labelKey)}
-                        {...(ch.external
-                          ? { target: "_blank", rel: "noopener noreferrer" }
-                          : {})}
-                        className={`${glassOrb} ${CHANNEL_GLOW[ch.id] ?? ""} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25`}
-                        aria-label={t(ch.labelKey)}
-                        onClick={() => setContactOpen(false)}
-                        whileTap={{ scale: 0.95 }}
-                        {...(reduceMotion
-                          ? {}
-                          : { whileHover: fabHover, transition: fabSpring })}
-                      >
-                        {ch.node}
-                      </motion.a>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
+                    {t("hubSocialMenuTitle")}
+                  </p>
+                  <ChannelTray
+                    channels={socialChannels}
+                    onPick={() => setSocialOpen(false)}
+                    reduceMotion={reduceMotion}
+                    t={t}
+                  />
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
 
-          <div className={hitWrap}>
+            <motion.button
+              type="button"
+              onClick={toggleSocial}
+              aria-expanded={socialOpen}
+              aria-haspopup="dialog"
+              aria-label={
+                socialOpen ? t("hubAriaSocialClose") : t("hubAriaSocialOpen")
+              }
+              whileTap={{ scale: 0.97 }}
+              transition={pillTap}
+              className={`${glassPill} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25`}
+            >
+              <span className={`min-w-0 flex-1 truncate text-start ${pillLabel}`}>
+                {t("hubPillSocial")}
+              </span>
+              <motion.span
+                aria-hidden
+                className="shrink-0 text-charcoal/70"
+                animate={{ rotate: socialOpen ? 45 : 0 }}
+                transition={pillTap}
+              >
+                <Plus className="h-4 w-4" strokeWidth={1.5} />
+              </motion.span>
+            </motion.button>
+          </div>
+
+          {/* Contact */}
+          <div className="flex w-full flex-col items-start gap-1.5">
+            <AnimatePresence>
+              {contactOpen ? (
+                <motion.div
+                  key="contact-menu"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby={contactMenuTitleId}
+                  {...menuMotion}
+                  className={trayPanel}
+                >
+                  <p
+                    id={contactMenuTitleId}
+                    className={
+                      lang === "ar"
+                        ? "mb-2 font-arabic text-xs font-semibold text-charcoal"
+                        : "mb-2 font-serif text-[9px] font-semibold uppercase tracking-[0.22em] text-charcoal/60 sm:text-[10px]"
+                    }
+                  >
+                    {t("hubContactMenuTitle")}
+                  </p>
+                  <ChannelTray
+                    channels={contactChannels}
+                    onPick={() => setContactOpen(false)}
+                    reduceMotion={reduceMotion}
+                    t={t}
+                  />
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
+
             <motion.button
               type="button"
               onClick={toggleContact}
               aria-expanded={contactOpen}
               aria-haspopup="dialog"
-              aria-label={contactOpen ? t("hubAriaClose") : t("hubAriaOpen")}
-              whileTap={{ scale: 0.96 }}
-              {...hoverProps}
-              className={`${glassOrb} text-charcoal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25`}
+              aria-label={
+                contactOpen ? t("hubAriaClose") : t("hubAriaOpen")
+              }
+              whileTap={{ scale: 0.98 }}
+              transition={pillTap}
+              className={`${glassPill} ${pillPrimary} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25`}
             >
+              <span className={`min-w-0 flex-1 truncate text-start ${pillLabel}`}>
+                {t("hubPillContact")}
+              </span>
               <motion.span
-                animate={{ rotate: contactOpen ? 90 : 0 }}
-                transition={fabSpring}
-                className="flex items-center justify-center"
+                aria-hidden
+                animate={{ rotate: contactOpen ? -90 : 0 }}
+                transition={pillTap}
+                className="shrink-0 text-charcoal/70"
               >
-                {contactOpen ? (
-                  <X className="h-5 w-5" strokeWidth={1} aria-hidden />
-                ) : (
-                  <MessageCircle className="h-5 w-5" strokeWidth={1} aria-hidden />
-                )}
+                <ChevronRight className="h-4 w-4" strokeWidth={1.5} />
               </motion.span>
             </motion.button>
           </div>

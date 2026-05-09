@@ -161,3 +161,71 @@ export function BrandIconPhone({ className }: { className?: string }) {
     </svg>
   );
 }
+
+/** Facebook — Meta blue + “f”. */
+export function BrandIconFacebook({ className }: { className?: string }) {
+  return (
+    <svg
+      className={`${svgBase} ${className ?? ""}`}
+      viewBox="0 0 24 24"
+      aria-hidden
+    >
+      <circle cx="12" cy="12" r="11" fill="#1877F2" />
+      <path
+        fill="#fff"
+        d="M13.5 12.5h2.2l.7-2.8h-2.9V8.4c0-.8.15-1.35 1.35-1.35h1.5V4.3c-.26-.03-1.15-.11-2.2-.11-2.18 0-3.65 1.33-3.65 3.77v2.14H7.5v2.8h2.1V20h3.9v-7.5z"
+      />
+    </svg>
+  );
+}
+
+/** X (Twitter) — mark on dark roundel. */
+export function BrandIconX({ className }: { className?: string }) {
+  return (
+    <svg
+      className={`${svgBase} ${className ?? ""}`}
+      viewBox="0 0 24 24"
+      aria-hidden
+    >
+      <circle cx="12" cy="12" r="11" fill="#0A0A0A" />
+      <path
+        fill="#fff"
+        d="m13.67 10.98 3.54-4.06h-.84l-3.07 3.52-2.45-3.52H6.5l3.71 5.35L6.5 17.06h.84l3.24-3.72 2.59 3.72h4.35l-3.85-5.08zm-1.2 1.38-.38-.54-2.99-4.28h1.28l1.92 2.74.38.55 3.16 4.52h-1.28l-2.09-2.99z"
+      />
+    </svg>
+  );
+}
+
+/** LinkedIn — brand blue. */
+export function BrandIconLinkedIn({ className }: { className?: string }) {
+  return (
+    <svg
+      className={`${svgBase} ${className ?? ""}`}
+      viewBox="0 0 24 24"
+      aria-hidden
+    >
+      <rect x="2" y="2" width="20" height="20" rx="3.5" fill="#0A66C2" />
+      <path
+        fill="#fff"
+        d="M8.2 9.4H5.8V18h2.4V9.4zm.1-2.5c-.01-.8-.6-1.35-1.5-1.35-.9 0-1.5.55-1.5 1.35 0 .75.58 1.35 1.48 1.35h.02c.92 0 1.5-.6 1.5-1.35zM18.3 18h-2.4v-4.9c0-1.17-.42-1.97-1.47-1.97-.8 0-1.28.54-1.49 1.06-.08.19-.1.45-.1.72V18H10.4s.03-7.9 0-8.65h2.4v1.24a2.4 2.4 0 0 1 2.17-1.2c1.58 0 2.77 1.03 2.77 3.25V18z"
+      />
+    </svg>
+  );
+}
+
+/** YouTube — red tile + play. */
+export function BrandIconYouTube({ className }: { className?: string }) {
+  return (
+    <svg
+      className={`${svgBase} ${className ?? ""}`}
+      viewBox="0 0 24 24"
+      aria-hidden
+    >
+      <path
+        fill="#FF0000"
+        d="M21.58 7.19c-.25-.95-.98-1.68-1.93-1.93C17.88 4.75 12 4.75 12 4.75s-5.88 0-7.65.51c-.95.25-1.68.98-1.93 1.93C2 9.11 2 12 2 12s0 2.89.42 4.81c.25.95.98 1.68 1.93 1.93 1.77.51 7.65.51 7.65.51s5.88 0 7.65-.51c.95-.25 1.68-.98 1.93-1.93C22 14.89 22 12 22 12s0-2.89-.42-4.81z"
+      />
+      <path fill="#fff" d="M10 15.5v-7l6 3.5-6 3.5z" />
+    </svg>
+  );
+}
