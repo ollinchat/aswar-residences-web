@@ -44,7 +44,7 @@ export function SiteNavbar({
       <div
         className={`hidden items-center gap-8 font-mono text-[10px] uppercase tracking-[0.2em] md:flex lg:gap-10 ${isLight ? "text-ink/55" : "text-white/75"}`}
       >
-        <Link href="/residences" className={`transition-colors ${linkClass}`}>
+        <Link href="/#the-residences" className={`transition-colors ${linkClass}`}>
           Residences
         </Link>
         <Link href="/gallery" className={`transition-colors ${linkClass}`}>

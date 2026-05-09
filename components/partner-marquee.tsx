@@ -13,7 +13,7 @@ export function PartnerMarquee() {
   const doubled = [...PLACEHOLDERS, ...PLACEHOLDERS];
 
   return (
-    <div className="relative overflow-hidden border-t border-ink/10 bg-paper py-10">
+    <div className="relative overflow-hidden bg-paper py-16 md:py-20">
       <div className="flex w-max animate-marquee gap-16 md:gap-24 will-change-transform">
         {doubled.map((name, i) => (
           <span
