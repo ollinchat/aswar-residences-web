@@ -1,0 +1,34 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { SiteNavbar } from "@/components/site-navbar";
+
+export const metadata: Metadata = {
+  title: "Gallery | ASWAR 01",
+  description: "Visual gallery for ASWAR 01 — architecture, interiors, and Dubai context.",
+};
+
+export default function GalleryPage() {
+  return (
+    <>
+      <SiteNavbar variant="solid" />
+      <main className="bg-paper px-6 pb-32 pt-32 text-ink md:px-12 md:pt-40">
+        <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-ink/45">
+          Gallery
+        </p>
+        <h1 className="mt-6 max-w-3xl font-serif text-4xl font-medium tracking-tight md:text-6xl">
+          Imagery & media library
+        </h1>
+        <p className="mt-8 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-wider text-ink/50">
+          Dedicated space for campaign photography, film, and press assets.
+          Wire your CMS or DAM here when ready.
+        </p>
+        <Link
+          href="/"
+          className="mt-14 inline-flex font-mono text-[10px] uppercase tracking-[0.25em] text-champagne hover:text-ink"
+        >
+          ← Back to home
+        </Link>
+      </main>
+    </>
+  );
+}

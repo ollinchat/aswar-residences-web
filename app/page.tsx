@@ -1,15 +1,49 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import Image from "next/image";
 import {
   motion,
   AnimatePresence,
   useMotionValue,
   useSpring,
 } from "framer-motion";
-import { Share2, Printer } from "lucide-react";
+import { Share2, Printer, Play } from "lucide-react";
+import { SiteNavbar } from "@/components/site-navbar";
+import { Fullscreen360 } from "@/components/fullscreen-360";
+import { PartnerMarquee } from "@/components/partner-marquee";
 
-const GOLD_LINE = "border-[0.5px] border-aswar-gold/50";
+const HAIRLINE = "border-[0.5px] border-ink/10";
+
+const RESIDENCE_GALLERY = [
+  {
+    id: "sky",
+    title: "Sky Residence",
+    image:
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2000&q=85",
+    pano: "/hero-360-panorama.jpg",
+  },
+  {
+    id: "corner",
+    title: "Corner Living",
+    image:
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=2000&q=85",
+    pano: "/hero-360-panorama.jpg",
+  },
+  {
+    id: "penthouse",
+    title: "Penthouse Gallery",
+    image:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=85",
+    pano: "/hero-360-panorama.jpg",
+  },
+];
+
+const PAYMENT_SLIDES = [
+  { title: "Down Payment", value: "20", suffix: "%", subtitle: "On Booking" },
+  { title: "Construction", value: "40", suffix: "%", subtitle: "During Build" },
+  { title: "Handover", value: "40", suffix: "%", subtitle: "On Completion" },
+];
 
 type MagneticButtonProps = {
   children: React.ReactNode;
@@ -38,9 +72,8 @@ function MagneticButton({
     const rect = el.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
-    const strength = 0.22;
-    x.set((e.clientX - cx) * strength);
-    y.set((e.clientY - cy) * strength);
+    x.set((e.clientX - cx) * 0.18);
+    y.set((e.clientY - cy) * 0.18);
   };
 
   const handleLeave = () => {
@@ -77,35 +110,34 @@ function SectionHeading({
 }) {
   return (
     <div
-      className={`relative mb-16 md:mb-24 ${
+      className={`relative mb-20 md:mb-28 ${
         align === "center" ? "text-center" : ""
       }`}
     >
       <span
-        className={`pointer-events-none absolute select-none font-serif text-[clamp(5.5rem,16vw,13rem)] font-bold leading-none text-aswar-gold/[0.08] ${
+        className={`pointer-events-none absolute select-none font-serif text-[clamp(4rem,14vw,11rem)] font-extralight leading-none text-ink/[0.06] ${
           align === "center"
             ? "left-1/2 top-0 -translate-x-1/2 -translate-y-1/4"
-            : "-left-1 md:-left-4 -top-8 md:-top-20"
+            : "-left-2 md:-left-4 -top-6 md:-top-16"
         }`}
         aria-hidden
       >
         {index}
       </span>
-      <div className="relative z-10 space-y-4">
+      <div className="relative z-10 space-y-5">
         <div
           className={`flex items-center gap-6 ${align === "center" ? "justify-center" : ""}`}
         >
-          <span
-            className={`font-mono text-[10px] uppercase tracking-[0.35em] text-aswar-gold ${GOLD_LINE} px-3 py-1`}
-          >
+          <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.35em] text-ink/45">
+            <span className="h-1 w-1 rounded-full bg-champagne" aria-hidden />
             {index}
           </span>
-          <span className={`hidden sm:block h-[0.5px] flex-1 max-w-[120px] bg-aswar-gold/40`} />
+          <span className="hidden h-[0.5px] max-w-[100px] flex-1 bg-ink/15 sm:block" />
         </div>
-        <h2 className="font-serif text-4xl font-bold tracking-tight text-ink md:text-5xl">
+        <h2 className="font-serif text-3xl font-medium tracking-tight text-ink md:text-4xl lg:text-5xl">
           {title}
         </h2>
-        <p className="max-w-md font-mono text-xs uppercase tracking-widest text-stone/90">
+        <p className="max-w-md font-mono text-[11px] uppercase leading-relaxed tracking-widest text-ink/50">
           {subtitle}
         </p>
       </div>
@@ -113,127 +145,203 @@ function SectionHeading({
   );
 }
 
-const Navbar = () => (
-  <nav
-    className={`fixed top-0 z-50 flex w-full items-center justify-between border-b border-aswar-gold/30 bg-parchment/85 px-8 py-6 backdrop-blur-md md:px-10 md:py-7`}
-  >
-    <div className="font-serif text-xl font-bold tracking-[0.35em] text-ink">
-      ASWAR
+function ScrollBreath() {
+  return (
+    <div
+      className="pointer-events-none absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center md:bottom-10"
+      aria-hidden
+    >
+      <motion.div
+        className="w-[0.5px] origin-bottom rounded-full bg-white/75"
+        initial={{ scaleY: 0.75, opacity: 0.55 }}
+        animate={{
+          scaleY: [0.72, 1, 0.72],
+          opacity: [0.5, 1, 0.5],
+        }}
+        transition={{
+          duration: 2.8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        style={{ height: 52 }}
+      />
     </div>
-    <div className="hidden gap-10 font-mono text-[10px] uppercase tracking-[0.25em] text-ink/70 md:flex">
-      <a href="#" className="transition-colors hover:text-aswar-gold">
-        The Tower
-      </a>
-      <a href="#" className="transition-colors hover:text-aswar-gold">
-        Units
-      </a>
-      <a href="#" className="transition-colors hover:text-aswar-gold">
-        Investment
-      </a>
-      <a
-        href="#"
-        className="border-b-[0.5px] border-aswar-gold pb-0.5 text-aswar-gold"
-      >
-        Inquire
-      </a>
-    </div>
-  </nav>
-);
+  );
+}
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("3BR");
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [viewerSrc, setViewerSrc] = useState("/hero-360-panorama.jpg");
+  const [viewerTitle, setViewerTitle] = useState("360° Experience");
   const units = ["1BR", "2BR", "3BR", "4BR", "5BR", "PENTHOUSE"];
 
-  return (
-    <main className="bg-parchment text-ink selection:bg-aswar-gold/20">
-      <Navbar />
+  const open360 = (src: string, title: string) => {
+    setViewerSrc(src);
+    setViewerTitle(title);
+    setViewerOpen(true);
+  };
 
-      {/* Hero — split screen, depth */}
-      <section className="relative min-h-screen pt-[76px]">
-        <div className="grid min-h-[calc(100vh-76px)] md:grid-cols-2">
-          <div className="relative flex flex-col items-center justify-center bg-ink px-6 py-20 md:px-10 md:py-0">
-            <motion.div
-              initial={{ opacity: 0, x: -24 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="font-serif text-[clamp(3.5rem,14vw,9rem)] font-bold leading-none tracking-tight text-champagne [writing-mode:vertical-rl] [text-orientation:mixed] rotate-180"
-            >
+  return (
+    <main className="bg-paper text-ink selection:bg-champagne/25">
+      <SiteNavbar variant="hero" />
+      <Fullscreen360
+        open={viewerOpen}
+        onClose={() => setViewerOpen(false)}
+        imageSrc={viewerSrc}
+        title={viewerTitle}
+      />
+
+      <section className="relative h-[100dvh] min-h-[100svh] w-full overflow-hidden">
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/hero-poster.png"
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+        </video>
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/72"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_85%_70%_at_50%_45%,transparent_0%,rgba(0,0,0,0.35)_100%)]"
+          aria-hidden
+        />
+
+        <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 pb-36 pt-24 md:pb-40">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center"
+          >
+            <h1 className="font-serif text-[clamp(3rem,12vw,8.5rem)] font-light tracking-[0.22em] text-white md:tracking-[0.3em]">
               ASWAR
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.35, duration: 0.8 }}
-              className="absolute bottom-10 left-8 right-8 md:left-12 md:right-auto"
-            >
-              <p className="font-serif text-3xl font-bold text-aswar-gold md:text-4xl">
-                01
-              </p>
-              <p className="mt-3 font-mono text-[10px] uppercase leading-relaxed tracking-[0.4em] text-champagne/60">
-                Luxury Living Redefined
-                <br />
-                <span className="text-champagne/40">Dubai, UAE</span>
-              </p>
-            </motion.div>
+            </h1>
             <div
-              className={`pointer-events-none absolute right-0 top-16 bottom-16 hidden w-[0.5px] bg-gradient-to-b from-transparent via-aswar-gold/50 to-transparent md:block`}
+              className="mx-auto mt-8 h-[0.5px] w-14 bg-champagne/90"
               aria-hidden
             />
-          </div>
+            <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.42em] text-white/80">
+              Private Residences · Dubai
+            </p>
+          </motion.div>
+        </div>
 
-          <div className="relative flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-parchment via-white to-mist/80 px-6 py-16 md:px-12 md:py-10">
-            <span
-              className="pointer-events-none absolute -right-4 top-1/2 -translate-y-1/2 select-none font-serif text-[min(40vw,18rem)] font-bold leading-none text-aswar-gold/[0.06]"
-              aria-hidden
-            >
+        <motion.div
+          initial={{ opacity: 0, y: 28, x: 12 }}
+          animate={{ opacity: 1, y: 0, x: 0 }}
+          transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute bottom-24 right-4 z-20 w-[min(92vw,20rem)] md:bottom-28 md:right-10 md:w-[22rem]"
+        >
+          <button
+            type="button"
+            onClick={() => open360("/hero-360-panorama.jpg", "Tower · 360° Preview")}
+            className="group relative w-full overflow-hidden rounded-lg border border-white/50 bg-white/15 text-left shadow-[0_24px_64px_-16px_rgba(0,0,0,0.45)] backdrop-blur-2xl backdrop-saturate-150 transition-shadow hover:border-white/70 hover:shadow-[0_28px_72px_-12px_rgba(0,0,0,0.5)]"
+            aria-label="Open 360° virtual tour"
+          >
+            <div className="relative aspect-[16/10] w-full">
+              <Image
+                src="/hero-360-panorama.jpg"
+                alt=""
+                fill
+                sizes="(max-width: 768px) 92vw, 22rem"
+                className="object-cover opacity-95 transition-opacity group-hover:opacity-100"
+              />
+              <div className="absolute inset-0 bg-ink/15 transition-colors group-hover:bg-ink/10" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="flex h-14 w-14 items-center justify-center rounded-full border border-white/60 bg-white/20 backdrop-blur-md transition-transform group-hover:scale-105">
+                  <Play
+                    className="ml-0.5 h-6 w-6 text-white"
+                    strokeWidth={1.25}
+                    fill="none"
+                  />
+                </span>
+              </div>
+            </div>
+            <div className="border-t border-white/25 px-4 py-3">
+              <p className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/90">
+                360° Virtual Tour
+              </p>
+              <p className="mt-1 font-mono text-[8px] uppercase tracking-wider text-white/55">
+                Immersive environment
+              </p>
+            </div>
+          </button>
+        </motion.div>
+
+        <ScrollBreath />
+      </section>
+
+      {/* Engineering Excellence — Sami Najami */}
+      <section className="border-b border-ink/10 bg-paper px-6 py-32 md:px-12 md:py-44 lg:py-48">
+        <div className="mx-auto grid max-w-6xl gap-14 md:grid-cols-2 md:items-center md:gap-20">
+          <div>
+            <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.35em] text-ink/45">
+              <span className="h-1 w-1 rounded-full bg-champagne" aria-hidden />
               01
             </span>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: 16 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.85, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-full max-w-md"
+            <h2 className="mt-6 font-serif text-4xl font-medium tracking-tight text-ink md:text-5xl">
+              Engineering Excellence
+            </h2>
+            <div className="mx-0 my-8 h-[0.5px] max-w-[120px] bg-champagne/80" />
+            <p className="font-serif text-lg font-normal leading-relaxed text-ink/80 md:text-xl">
+              ASWAR 01 is delivered under the stewardship of{" "}
+              <strong className="font-medium text-ink">Sami Najami</strong> — the
+              parent engineering and contracting group renowned for precision,
+              scale, and enduring quality across the UAE.
+            </p>
+            <p className="mt-6 font-mono text-[11px] uppercase leading-relaxed tracking-wider text-ink/45">
+              Structural integrity · Programme certainty · Heritage of delivery
+            </p>
+            <a
+              href="https://www.sami-najami.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-10 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-champagne transition-colors hover:text-ink"
             >
-              <div
-                className="pointer-events-none absolute -inset-6 rounded-sm bg-aswar-gold/15 blur-3xl md:-inset-10"
-                aria-hidden
+              Visit sami-najami.com
+              <span className="text-champagne" aria-hidden>
+                ↗
+              </span>
+            </a>
+          </div>
+          <div className="flex justify-center md:justify-end">
+            <a
+              href="https://www.sami-najami.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`block max-w-sm rounded-sm bg-paper p-10 ${HAIRLINE} transition-shadow hover:shadow-lg`}
+            >
+              <Image
+                src="/partners/sami-najami-logo.svg"
+                alt="Sami Najami — Engineering & Contracting"
+                width={320}
+                height={56}
+                className="h-auto w-full"
               />
-              <div
-                className={`relative aspect-[3/4] w-full overflow-hidden rounded-sm bg-white shadow-[0_0_0_0.5px_rgba(197,160,89,0.35),0_32px_80px_-24px_rgba(197,160,89,0.35),0_24px_64px_-32px_rgba(15,15,15,0.12)] ring-1 ring-aswar-gold/25`}
-              >
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-mist/30 to-white">
-                  <div className="w-[55%] rounded-full border-[0.5px] border-aswar-gold/35 px-4 py-16 text-center font-mono text-[10px] uppercase tracking-[0.35em] text-stone/50">
-                    [ 360° Tower Viewport ]
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            <div className="relative z-10 mt-12 flex justify-center md:mt-14">
-              <MagneticButton
-                type="button"
-                className="rounded-sm bg-ink px-10 py-3.5 font-mono text-[10px] uppercase tracking-[0.3em] text-white shadow-lg transition-colors hover:bg-aswar-gold"
-              >
-                Explore 360°
-              </MagneticButton>
-            </div>
+              <p className="mt-8 font-mono text-[10px] uppercase leading-relaxed tracking-widest text-ink/40">
+                Parent company & principal contractor for ASWAR International
+                Development initiatives.
+              </p>
+            </a>
           </div>
         </div>
       </section>
 
-      <div className={`${GOLD_LINE} w-full opacity-80`} aria-hidden />
-
-      {/* Units — overlap treatment, layered index */}
-      <section className="relative overflow-visible px-6 py-28 md:py-36">
+      <section className="relative overflow-visible px-6 py-40 md:px-12 md:py-52 lg:py-56">
         <div className="relative mx-auto max-w-[1400px] overflow-visible">
           <SectionHeading
             index="02"
             title="Available Units"
             subtitle="Immersive layouts · Verified specifications"
           />
-
-          <div className="mb-14 flex flex-col items-end justify-between gap-8 md:flex-row md:items-end">
-            <p className="max-w-sm font-mono text-[11px] uppercase leading-relaxed tracking-wider text-stone">
+          <div className="mb-16 flex flex-col items-end justify-between gap-10 md:mb-20 md:flex-row md:items-end">
+            <p className="max-w-sm font-mono text-[11px] uppercase leading-relaxed tracking-wider text-ink/55">
               Select a layout to preview floor plans and high-resolution
               interior renders.
             </p>
@@ -245,8 +353,8 @@ export default function Home() {
                   onClick={() => setActiveTab(unit)}
                   className={`rounded-sm border px-5 py-2.5 font-mono text-[10px] uppercase tracking-widest transition-all ${
                     activeTab === unit
-                      ? `border-ink bg-ink text-white ${GOLD_LINE}`
-                      : `border-stone/25 bg-white/80 text-stone hover:border-aswar-gold/60`
+                      ? "border-ink bg-ink text-paper"
+                      : `border-ink/12 bg-paper text-ink/60 hover:border-champagne/50`
                   }`}
                 >
                   {unit}
@@ -254,7 +362,6 @@ export default function Home() {
               ))}
             </div>
           </div>
-
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -262,38 +369,36 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.35 }}
-              className="grid gap-8 overflow-visible md:grid-cols-12 md:gap-10"
+              className="grid gap-10 overflow-visible md:grid-cols-12 md:gap-12"
             >
               <div className="relative z-0 overflow-visible md:col-span-8">
-                <div className="group relative md:pl-6 md:pt-6">
-                  <div
-                    className={`relative z-10 -mx-2 origin-center shadow-2xl transition-transform duration-500 ease-out md:mx-0 md:-translate-x-3 md:-translate-y-5 md:scale-[1.045]`}
-                  >
+                <div className="group relative md:pl-4 md:pt-4">
+                  <div className="relative z-10 -mx-1 origin-center shadow-xl transition-transform duration-500 ease-out md:mx-0 md:-translate-x-2 md:-translate-y-4 md:scale-[1.03]">
                     <div
-                      className={`aspect-[16/10] overflow-hidden rounded-sm bg-mist ring-1 ring-aswar-gold/20 ${GOLD_LINE}`}
+                      className={`aspect-[16/10] overflow-hidden rounded-sm bg-ink/[0.04] ${HAIRLINE}`}
                     >
-                      <div className="flex h-full items-center justify-center bg-gradient-to-tr from-champagne/40 via-white to-mist/50">
-                        <span className="font-mono text-[11px] uppercase italic tracking-widest text-stone/35">
+                      <div className="flex h-full items-center justify-center bg-gradient-to-br from-paper to-ink/[0.03]">
+                        <span className="font-mono text-[11px] uppercase italic tracking-widest text-ink/25">
                           [ High-Res {activeTab} Interior Render ]
                         </span>
                       </div>
                     </div>
                   </div>
                   <div
-                    className="pointer-events-none absolute -bottom-3 -right-3 left-8 top-8 -z-10 border border-aswar-gold/15 bg-transparent md:left-14 md:top-10"
+                    className="pointer-events-none absolute -bottom-2 -right-2 left-6 top-6 -z-10 border border-ink/10 bg-transparent md:left-10 md:top-8"
                     aria-hidden
                   />
-                  <div className="pointer-events-none absolute bottom-8 left-8 z-20 flex gap-2 opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 md:bottom-12 md:left-12">
+                  <div className="pointer-events-none absolute bottom-6 left-6 z-20 flex gap-2 opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 md:bottom-10 md:left-10">
                     <button
                       type="button"
-                      className="pointer-events-auto rounded-sm bg-white/95 p-3 shadow-md ring-1 ring-stone/10 transition-colors hover:text-aswar-gold"
+                      className="pointer-events-auto rounded-sm border border-ink/10 bg-paper/90 p-3 shadow-sm backdrop-blur-sm transition-colors hover:text-champagne"
                       aria-label="Share"
                     >
                       <Share2 size={14} />
                     </button>
                     <button
                       type="button"
-                      className="pointer-events-auto rounded-sm bg-white/95 p-3 shadow-md ring-1 ring-stone/10 transition-colors hover:text-aswar-gold"
+                      className="pointer-events-auto rounded-sm border border-ink/10 bg-paper/90 p-3 shadow-sm backdrop-blur-sm transition-colors hover:text-champagne"
                       aria-label="Print"
                     >
                       <Printer size={14} />
@@ -301,36 +406,29 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-
               <div className="flex flex-col justify-between space-y-6 md:col-span-4">
-                <div
-                  className={`relative z-10 flex-grow rounded-sm border border-stone/10 bg-white/90 p-8 backdrop-blur-sm md:p-10 ${GOLD_LINE}`}
-                >
-                  <h3 className="mb-8 font-serif text-2xl font-bold tracking-tight text-ink md:text-3xl">
+                <div className="relative z-10 flex-grow rounded-sm border border-ink/10 bg-paper/95 p-8 backdrop-blur-sm md:p-10">
+                  <h3 className="mb-8 font-serif text-2xl font-medium tracking-tight text-ink md:text-3xl">
                     {activeTab} Residence
                   </h3>
-                  <div className="space-y-5 font-mono text-[11px] uppercase tracking-wider text-stone">
-                    <div
-                      className={`flex items-center justify-between gap-4 border-b border-aswar-gold/25 pb-4`}
-                    >
-                      <span className="text-stone/80">Total Area</span>
+                  <div className="space-y-5 font-mono text-[11px] uppercase tracking-wider text-ink/55">
+                    <div className="flex items-center justify-between gap-4 border-b border-ink/10 pb-4">
+                      <span className="text-ink/45">Total Area</span>
                       <span className="text-ink">2,450 SQ.FT</span>
                     </div>
-                    <div
-                      className={`flex items-center justify-between gap-4 border-b border-aswar-gold/25 pb-4`}
-                    >
-                      <span className="text-stone/80">Unit Type</span>
+                    <div className="flex items-center justify-between gap-4 border-b border-ink/10 pb-4">
+                      <span className="text-ink/45">Unit Type</span>
                       <span className="text-ink">Corner Suite</span>
                     </div>
                     <div className="flex items-center justify-between gap-4 pb-1">
-                      <span className="text-stone/80">Starting From</span>
-                      <span className="text-aswar-gold">AED 4.2M</span>
+                      <span className="text-ink/45">Starting From</span>
+                      <span className="text-champagne">AED 4.2M</span>
                     </div>
                   </div>
                 </div>
                 <MagneticButton
                   type="button"
-                  className={`w-full rounded-sm bg-aswar-gold py-5 font-mono text-[10px] uppercase tracking-[0.3em] text-white shadow-[0_12px_40px_-12px_rgba(197,160,89,0.45)] transition-colors hover:bg-ink`}
+                  className="w-full rounded-sm border border-ink bg-ink py-5 font-mono text-[10px] uppercase tracking-[0.28em] text-paper shadow-lg transition-colors hover:bg-ink/90"
                 >
                   Download Technical Spec
                 </MagneticButton>
@@ -340,84 +438,170 @@ export default function Home() {
         </div>
       </section>
 
-      <div className={`${GOLD_LINE} w-full opacity-80`} aria-hidden />
-
-      {/* Payment — magazine numbers */}
-      <section className="border-y border-stone/10 bg-mist/40 py-28 md:py-36">
-        <div className="mx-auto max-w-7xl px-6">
+      {/* Residences — interactive gallery */}
+      <section className="border-t border-ink/10 bg-ink/[0.02] px-6 py-40 md:px-12 md:py-52 lg:py-56">
+        <div className="mx-auto max-w-[1600px]">
           <SectionHeading
             index="03"
-            title="Payment Plan"
-            subtitle="Structured for international investors"
-            align="center"
+            title="Residences"
+            subtitle="Curated interiors · Full-scale visual language"
           />
-          <div className="grid gap-6 md:grid-cols-3">
-            {[
-              { title: "Down Payment", value: "20%", subtitle: "On Booking" },
-              { title: "Construction", value: "40%", subtitle: "During Build" },
-              { title: "Handover", value: "40%", subtitle: "On Completion" },
-            ].map((box, i) => (
-              <div
-                key={i}
-                className={`group relative overflow-hidden rounded-sm border border-stone/15 bg-white p-10 text-center transition-colors hover:border-aswar-gold/45 md:p-12 ${GOLD_LINE}`}
+          <div className="grid gap-10 md:gap-14">
+            {RESIDENCE_GALLERY.map((item, i) => (
+              <motion.article
+                key={item.id}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.6, delay: i * 0.06 }}
+                className="group relative overflow-hidden rounded-sm"
               >
-                <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-stone">
-                  {box.title}
-                </p>
-                <p className="mt-5 font-serif text-5xl font-bold text-ink transition-colors group-hover:text-aswar-gold md:text-6xl">
-                  {box.value}
-                </p>
-                <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-stone/55">
-                  {box.subtitle}
-                </p>
-              </div>
+                <div className="relative aspect-[21/9] min-h-[280px] w-full md:aspect-[24/9] md:min-h-[360px]">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                    sizes="(max-width: 768px) 100vw, 1600px"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 flex flex-col gap-4 p-8 md:flex-row md:items-end md:justify-between md:p-12">
+                    <h3 className="font-serif text-3xl font-medium text-paper md:text-4xl">
+                      {item.title}
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => open360(item.pano, `${item.title} · 360°`)}
+                      className="inline-flex w-fit items-center gap-3 border border-white/40 bg-white/10 px-6 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-paper backdrop-blur-md transition-colors hover:border-champagne hover:bg-white/20"
+                    >
+                      <Play className="h-4 w-4" strokeWidth={1.25} />
+                      360° Experience
+                    </button>
+                  </div>
+                </div>
+              </motion.article>
             ))}
           </div>
         </div>
       </section>
 
-      <div className={`${GOLD_LINE} w-full opacity-80`} aria-hidden />
+      {/* Payment — horizontal slider */}
+      <section
+        id="payment"
+        className="border-y border-ink/10 bg-paper px-0 py-40 md:py-52 lg:py-56"
+      >
+        <div className="mx-auto max-w-7xl px-6 md:px-12">
+          <SectionHeading
+            index="04"
+            title="Payment Plan"
+            subtitle="Structured for international investors"
+            align="center"
+          />
+        </div>
+        <div className="mt-4 w-full overflow-x-auto pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex snap-x snap-mandatory gap-6 px-6 md:gap-8 md:px-12">
+            {PAYMENT_SLIDES.map((slide, i) => (
+              <div
+                key={slide.title}
+                className="min-w-[min(100%,340px)] shrink-0 snap-center rounded-sm border border-ink/10 bg-paper px-10 py-16 text-center shadow-sm md:min-w-[380px] md:px-14 md:py-20"
+              >
+                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink/40">
+                  {slide.title}
+                </p>
+                <p className="mt-8 flex items-baseline justify-center gap-1 font-serif text-7xl font-extralight tracking-tight text-ink md:text-8xl">
+                  {slide.value}
+                  <span className="font-serif text-4xl font-extralight text-ink/50 md:text-5xl">
+                    {slide.suffix}
+                  </span>
+                </p>
+                <div className="mx-auto mt-6 h-[0.5px] w-12 bg-champagne/70" />
+                <p className="mt-6 font-mono text-[10px] uppercase tracking-widest text-ink/40">
+                  {slide.subtitle}
+                </p>
+                <span className="mt-8 inline-block font-mono text-[9px] text-ink/25">
+                  {String(i + 1).padStart(2, "0")} /{" "}
+                  {String(PAYMENT_SLIDES.length).padStart(2, "0")}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <p className="mt-4 text-center font-mono text-[9px] uppercase tracking-widest text-ink/35">
+          Scroll horizontally
+        </p>
+      </section>
 
-      <footer className="border-t border-aswar-gold/25 bg-white px-8 py-20 md:px-10">
-        <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-4">
+      {/* Location */}
+      <section className="px-6 py-40 md:px-12 md:py-52 lg:py-56">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading
+            index="05"
+            title="Location"
+            subtitle="Business Bay · Dubai, UAE"
+          />
+          <div
+            className={`overflow-hidden rounded-sm ${HAIRLINE} bg-ink/[0.03]`}
+          >
+            <div className="aspect-[21/9] min-h-[280px] w-full grayscale contrast-[1.05] md:min-h-[340px]">
+              <iframe
+                title="ASWAR 01 — Business Bay, Dubai"
+                src="https://maps.google.com/maps?q=Business+Bay+Dubai&hl=en&z=14&output=embed"
+                className="h-full w-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </div>
+          <p className="mt-8 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-wider text-ink/45">
+            Minutes from Downtown and the waterfront. Exact pin to follow upon
+            authority release.
+          </p>
+        </div>
+      </section>
+
+      <PartnerMarquee />
+
+      <footer
+        id="inquire"
+        className="border-t border-ink/10 bg-paper px-8 py-24 md:px-12 md:py-32"
+      >
+        <div className="mx-auto grid max-w-7xl gap-14 md:grid-cols-4 md:gap-12">
           <div className="space-y-6 md:col-span-2">
-            <div className="font-serif text-xl font-bold tracking-[0.35em] text-ink">
+            <div className="font-serif text-lg font-medium tracking-[0.28em] text-ink">
               ASWAR
             </div>
-            <p className="max-w-xs font-mono text-[10px] uppercase leading-relaxed tracking-widest text-stone">
+            <p className="max-w-xs font-mono text-[10px] uppercase leading-relaxed tracking-widest text-ink/45">
               ASWAR International Development
               <br />
               Visionary Architecture · Dubai, UAE
             </p>
           </div>
           <div className="space-y-4">
-            <h4 className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-aswar-gold">
+            <h4 className="font-serif text-xs font-medium uppercase tracking-[0.2em] text-champagne">
               Headquarters
             </h4>
-            <p className="font-mono text-[11px] uppercase leading-loose tracking-wider text-stone">
+            <p className="font-mono text-[11px] uppercase leading-loose tracking-wider text-ink/50">
               Business Bay, Dubai
               <br />
               United Arab Emirates
             </p>
           </div>
           <div className="space-y-4">
-            <h4 className="font-serif text-xs font-bold uppercase tracking-[0.2em] text-aswar-gold">
+            <h4 className="font-serif text-xs font-medium uppercase tracking-[0.2em] text-champagne">
               Inquiries
             </h4>
-            <p className="font-mono text-[11px] uppercase leading-loose tracking-wider text-stone transition-colors hover:text-ink">
+            <p className="font-mono text-[11px] uppercase leading-loose tracking-wider text-ink/50 transition-colors hover:text-ink">
               <a href="mailto:sales@aswar.ae">sales@aswar.ae</a>
               <br />
               <a href="tel:+971000000000">+971 (0) 4 000 0000</a>
             </p>
           </div>
         </div>
-        <div
-          className={`mx-auto mt-16 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-aswar-gold/20 pt-8 md:flex-row`}
-        >
-          <p className="font-mono text-[9px] uppercase tracking-widest text-stone/50">
+        <div className="mx-auto mt-20 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-ink/10 pt-10 md:flex-row">
+          <p className="font-mono text-[9px] uppercase tracking-widest text-ink/35">
             © 2026 ASWAR International Development. All rights reserved.
           </p>
-          <div className="flex gap-8 font-mono text-[9px] uppercase tracking-widest text-stone/50">
+          <div className="flex gap-8 font-mono text-[9px] uppercase tracking-widest text-ink/35">
             <a href="#" className="transition-colors hover:text-ink">
               Privacy Policy
             </a>

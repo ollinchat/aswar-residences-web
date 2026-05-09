@@ -2,20 +2,25 @@
 module.exports = {
   theme: {
     extend: {
+      keyframes: {
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+      },
+      animation: {
+        marquee: "marquee 32s linear infinite",
+      },
       fontFamily: {
-        serif: ["var(--font-playfair)", "Georgia", "serif"],
+        serif: ["var(--font-cormorant)", "Georgia", "serif"],
         mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
         sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
       },
       colors: {
-        /** Primary brand — Aswar Gold */
-        "aswar-gold": "#C5A059",
-        /** Global palette (luxury neutrals) */
-        ink: "#0F0F0F",
-        parchment: "#FAF7F2",
-        champagne: "#F3EDE4",
-        stone: "#8A8580",
-        mist: "#E8E6E3",
+        /** Brand palette — Paper, Ink, Champagne only */
+        paper: "#FDFDFD",
+        ink: "#1A1A1A",
+        champagne: "#D4AF37",
       },
     },
   },
