@@ -96,7 +96,7 @@ export function ResidenceGallerySlider({ images, label, on360 }: Props) {
           <button
             type="button"
             onClick={on360}
-            className="absolute bottom-4 end-4 z-20 inline-flex items-center gap-2 rounded-[2px] bg-charcoal px-4 py-2.5 font-sans text-[9px] font-medium uppercase tracking-[0.28em] text-white shadow-lg transition-colors hover:bg-charcoal/90"
+            className="absolute bottom-4 end-4 z-20 inline-flex items-center gap-2 rounded-[2px] border border-white/15 bg-[#0a0a0a]/90 px-4 py-2.5 font-sans text-[9px] font-medium uppercase tracking-[0.28em] text-white shadow-lg backdrop-blur-xl transition-colors hover:bg-zinc-950/85"
           >
             <Rotate3d className="h-4 w-4" strokeWidth={1.2} />
             360°

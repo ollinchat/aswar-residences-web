@@ -11,13 +11,9 @@ import {
   useSpring,
 } from "framer-motion";
 import {
-  Accessibility,
-  ArrowUpDown,
-  CircleParking,
   GraduationCap,
   Play,
   ShoppingBag,
-  Sofa,
   TrainFront,
   Trees,
 } from "lucide-react";
@@ -25,6 +21,7 @@ import { SiteNavbar } from "@/components/site-navbar";
 import { PartnerMarquee } from "@/components/partner-marquee";
 import { EngineeringFloorPlan } from "@/components/engineering-floor-plan";
 import { HeritageProjectGallery } from "@/components/heritage-project-gallery";
+import { PaymentCalculator } from "@/components/payment-calculator";
 import { ResidenceGallerySlider } from "@/components/residence-gallery-slider";
 import { useLang } from "@/components/language-provider";
 import type { CopyKey, Lang } from "@/lib/i18n";
@@ -572,7 +569,7 @@ export default function Home() {
                     onClick={() => setViewMode("lifestyle")}
                     className={`rounded-[2px] px-4 py-2 font-sans text-[9px] font-medium uppercase tracking-[0.22em] transition-colors ${
                       viewMode === "lifestyle"
-                        ? "bg-charcoal text-white"
+                        ? "border border-charcoal/15 bg-[#0a0a0a]/90 text-white backdrop-blur-xl"
                         : "text-charcoal/42 ring-1 ring-charcoal/[0.1] hover:text-charcoal"
                     }`}
                   >
@@ -583,7 +580,7 @@ export default function Home() {
                     onClick={() => setViewMode("engineering")}
                     className={`rounded-[2px] px-4 py-2 font-sans text-[9px] font-medium uppercase tracking-[0.22em] transition-colors ${
                       viewMode === "engineering"
-                        ? "bg-charcoal text-white"
+                        ? "border border-charcoal/15 bg-[#0a0a0a]/90 text-white backdrop-blur-xl"
                         : "text-charcoal/42 ring-1 ring-charcoal/[0.1] hover:text-charcoal"
                     }`}
                   >
@@ -594,7 +591,7 @@ export default function Home() {
                     onClick={() => setViewMode("financing")}
                     className={`rounded-[2px] px-4 py-2 font-sans text-[9px] font-medium uppercase tracking-[0.22em] transition-colors ${
                       viewMode === "financing"
-                        ? "bg-charcoal text-white"
+                        ? "border border-charcoal/15 bg-[#0a0a0a]/90 text-white backdrop-blur-xl"
                         : "text-charcoal/42 ring-1 ring-charcoal/[0.1] hover:text-charcoal"
                     }`}
                   >
@@ -624,146 +621,162 @@ export default function Home() {
                 </div>
 
                 <div className="border-t border-charcoal/[0.08] pt-6">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <p className="font-sans text-[9px] font-medium uppercase tracking-[0.24em] text-charcoal/32">
-                      {t("totalArea")} · {t("balcony")}
-                    </p>
+                  <div
+                    className="mx-auto w-full max-w-xl rounded-[2px] border border-white/10 bg-[#0a0a0a]/90 px-2.5 py-0.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl sm:px-4 sm:py-1"
+                    role="list"
+                  >
                     <div
-                      className="inline-flex rounded-[2px] p-0.5 ring-1 ring-charcoal/[0.1]"
-                      role="group"
-                      aria-label="Area unit"
+                      role="listitem"
+                      className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
                     >
-                      <button
-                        type="button"
-                        onClick={() => setAreaMetric("sqm")}
-                        className={`rounded-[1px] px-3 py-1.5 font-sans text-[9px] font-medium uppercase tracking-[0.18em] transition-colors ${
-                          areaMetric === "sqm"
-                            ? "bg-charcoal text-white"
-                            : "text-charcoal/45 hover:text-charcoal"
-                        }`}
-                      >
-                        {t("metricSqm")}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setAreaMetric("sqft")}
-                        className={`rounded-[1px] px-3 py-1.5 font-sans text-[9px] font-medium uppercase tracking-[0.18em] transition-colors ${
-                          areaMetric === "sqft"
-                            ? "bg-charcoal text-white"
-                            : "text-charcoal/45 hover:text-charcoal"
-                        }`}
-                      >
-                        {t("metricSqft")}
-                      </button>
-                    </div>
-                  </div>
-
-                  <dl className="mt-5 space-y-0">
-                    <div className="flex justify-between gap-6 border-b border-charcoal/[0.08] py-3.5">
-                      <dt className="max-w-[55%] font-serif text-[10px] font-medium uppercase leading-snug tracking-[0.2em] text-charcoal/42 rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                      <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
                         {t("totalArea")}
-                      </dt>
-                      <dd className="text-end font-sans text-[11px] font-semibold tabular-nums tracking-[0.06em] text-charcoal rtl:leading-[1.72]">
-                        {formatAreaValue(
-                          activeResidence.areas.totalSqft,
-                          areaMetric,
-                          lang,
-                        )}
-                      </dd>
+                      </span>
+                      <div className="flex min-w-0 flex-1 items-center justify-end gap-2 rtl:justify-start">
+                        <span className="text-end font-sans text-[11px] font-medium tabular-nums text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
+                          {formatAreaValue(
+                            activeResidence.areas.totalSqft,
+                            areaMetric,
+                            lang,
+                          )}
+                        </span>
+                        <div
+                          className="inline-flex shrink-0 rounded-[2px] bg-white/5 p-0.5 ring-1 ring-white/15"
+                          role="group"
+                          aria-label="Area unit"
+                        >
+                          <button
+                            type="button"
+                            onClick={() => setAreaMetric("sqm")}
+                            className={`rounded-[1px] px-2.5 py-1 font-sans text-[8px] font-medium uppercase tracking-[0.16em] transition-colors sm:px-3 sm:text-[9px] ${
+                              areaMetric === "sqm"
+                                ? "bg-white text-charcoal"
+                                : "text-white/55 hover:text-white"
+                            }`}
+                          >
+                            {t("metricSqm")}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setAreaMetric("sqft")}
+                            className={`rounded-[1px] px-2.5 py-1 font-sans text-[8px] font-medium uppercase tracking-[0.16em] transition-colors sm:px-3 sm:text-[9px] ${
+                              areaMetric === "sqft"
+                                ? "bg-white text-charcoal"
+                                : "text-white/55 hover:text-white"
+                            }`}
+                          >
+                            {t("metricSqft")}
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex justify-between gap-6 border-b border-charcoal/[0.08] py-3.5">
-                      <dt className="max-w-[55%] font-serif text-[10px] font-medium uppercase leading-snug tracking-[0.2em] text-charcoal/42 rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+
+                    <div
+                      role="listitem"
+                      className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
+                    >
+                      <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
                         {t("balcony")}
-                      </dt>
-                      <dd className="text-end font-sans text-[11px] font-semibold tabular-nums tracking-[0.06em] text-charcoal rtl:leading-[1.72]">
+                      </span>
+                      <span className="text-end font-sans text-[11px] font-medium tabular-nums text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
                         {formatAreaValue(
                           activeResidence.areas.balconySqft,
                           areaMetric,
                           lang,
                         )}
-                      </dd>
+                      </span>
                     </div>
-                  </dl>
 
-                  <ul className="mt-8 grid grid-cols-2 gap-x-8 gap-y-7 border-t border-charcoal/[0.08] pt-7 lg:grid-cols-4 lg:gap-y-6">
-                    {activeResidence.specs.elevator ? (
-                      <li className="min-w-0">
-                        <div className="flex items-start gap-2.5 rtl:flex-row-reverse">
-                          <ArrowUpDown
-                            className="mt-0.5 h-4 w-4 shrink-0 text-charcoal/45"
-                            strokeWidth={1.25}
-                            aria-hidden
-                          />
-                          <div className="min-w-0 flex-1 space-y-1.5 text-start">
-                            <p className="font-serif text-[9px] font-medium uppercase tracking-[0.22em] text-charcoal/42 rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
-                              {t("residenceLblElevator")}
-                            </p>
-                            <p className="font-sans text-[11px] font-medium leading-snug tracking-[0.08em] text-charcoal rtl:leading-[1.72]">
-                              {t("residenceValElevator")}
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                    ) : null}
-                    {activeResidence.specs.accessibility ? (
-                      <li className="min-w-0">
-                        <div className="flex items-start gap-2.5 rtl:flex-row-reverse">
-                          <Accessibility
-                            className="mt-0.5 h-4 w-4 shrink-0 text-charcoal/45"
-                            strokeWidth={1.25}
-                            aria-hidden
-                          />
-                          <div className="min-w-0 flex-1 space-y-1.5 text-start">
-                            <p className="font-serif text-[9px] font-medium uppercase tracking-[0.22em] text-charcoal/42 rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
-                              {t("residenceLblAccessibility")}
-                            </p>
-                            <p className="font-sans text-[11px] font-medium leading-snug tracking-[0.08em] text-charcoal rtl:leading-[1.72]">
-                              {t("residenceValAccessibility")}
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                    ) : null}
-                    {activeResidence.specs.furnishing === "full" ? (
-                      <li className="min-w-0">
-                        <div className="flex items-start gap-2.5 rtl:flex-row-reverse">
-                          <Sofa
-                            className="mt-0.5 h-4 w-4 shrink-0 text-charcoal/45"
-                            strokeWidth={1.25}
-                            aria-hidden
-                          />
-                          <div className="min-w-0 flex-1 space-y-1.5 text-start">
-                            <p className="font-serif text-[9px] font-medium uppercase tracking-[0.22em] text-charcoal/42 rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
-                              {t("residenceLblFurnishing")}
-                            </p>
-                            <p className="font-sans text-[11px] font-medium leading-snug tracking-[0.08em] text-charcoal rtl:leading-[1.72]">
-                              {t("residenceValFurnishing")}
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                    ) : null}
-                    <li className="min-w-0">
-                      <div className="flex items-start gap-2.5 rtl:flex-row-reverse">
-                        <CircleParking
-                          className="mt-0.5 h-4 w-4 shrink-0 text-charcoal/45"
-                          strokeWidth={1.25}
-                          aria-hidden
-                        />
-                        <div className="min-w-0 flex-1 space-y-1.5 text-start">
-                          <p className="font-serif text-[9px] font-medium uppercase tracking-[0.22em] text-charcoal/42 rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
-                            {t("residenceLblParking")}
-                          </p>
-                          <p className="font-sans text-[11px] font-semibold tabular-nums tracking-[0.06em] text-charcoal rtl:leading-[1.72]">
-                            {formatParkingBaysLine(
-                              activeResidence.specs.parkingBays,
-                              t,
-                            )}
-                          </p>
-                        </div>
+                    <div
+                      role="listitem"
+                      className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
+                    >
+                      <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                        {t("residenceLblParking")}
+                      </span>
+                      <div className="flex min-w-0 flex-col items-end gap-0.5 text-end rtl:items-start rtl:text-start">
+                        <span className="font-sans text-[11px] font-medium text-white rtl:font-arabic rtl:leading-[1.72]">
+                          {t("residenceValParkingLead")}
+                        </span>
+                        <span className="font-sans text-[10px] font-medium text-white/75 rtl:font-arabic rtl:leading-[1.72]">
+                          {formatParkingBaysLine(
+                            activeResidence.specs.parkingBays,
+                            t,
+                          )}
+                        </span>
                       </div>
-                    </li>
-                  </ul>
+                    </div>
+
+                    {activeResidence.specs.elevator ? (
+                      <div
+                        role="listitem"
+                        className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
+                      >
+                        <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                          {t("residenceLblElevator")}
+                        </span>
+                        <span className="text-end font-sans text-[11px] font-medium text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
+                          {t("residenceValElevator")}
+                        </span>
+                      </div>
+                    ) : null}
+
+                    {activeResidence.specs.accessibility ? (
+                      <div
+                        role="listitem"
+                        className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
+                      >
+                        <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                          {t("residenceLblAccessibility")}
+                        </span>
+                        <span className="text-end font-sans text-[11px] font-medium text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
+                          {t("residenceValAccessibility")}
+                        </span>
+                      </div>
+                    ) : null}
+
+                    {activeResidence.specs.furnishing === "full" ? (
+                      <div
+                        role="listitem"
+                        className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
+                      >
+                        <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                          {t("residenceLblFurnishing")}
+                        </span>
+                        <span className="text-end font-sans text-[11px] font-medium text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
+                          {t("residenceValFurnishing")}
+                        </span>
+                      </div>
+                    ) : null}
+
+                    {activeResidence.specs.smartHome ? (
+                      <div
+                        role="listitem"
+                        className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
+                      >
+                        <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                          {t("residenceLblSmartHome")}
+                        </span>
+                        <span className="text-end font-sans text-[11px] font-medium text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
+                          {t("residenceValSmartHome")}
+                        </span>
+                      </div>
+                    ) : null}
+
+                    {activeResidence.specs.security ? (
+                      <div
+                        role="listitem"
+                        className="flex min-h-[52px] items-center justify-between gap-3 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
+                      >
+                        <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                          {t("residenceLblSecurity")}
+                        </span>
+                        <span className="text-end font-sans text-[11px] font-medium text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
+                          {t("residenceValSecurity")}
+                        </span>
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
 
                 {viewMode === "financing" ? (
@@ -775,7 +788,7 @@ export default function Home() {
                       href={`mailto:sales@aswar.ae?subject=${encodeURIComponent(
                         `Finance quote — ASWAR 01 — ${activeResidence.label}`,
                       )}`}
-                      className="inline-flex w-full items-center justify-center rounded-[2px] bg-charcoal px-6 py-3.5 font-mono text-[10px] uppercase tracking-[0.24em] text-white transition-colors hover:bg-charcoal/90"
+                      className="inline-flex w-full items-center justify-center rounded-[2px] border border-white/15 bg-[#0a0a0a]/90 px-6 py-3.5 font-mono text-[10px] uppercase tracking-[0.24em] text-white backdrop-blur-xl transition-colors hover:bg-zinc-950/80"
                     >
                       {t("financingCta")}
                     </a>
@@ -859,6 +872,19 @@ export default function Home() {
                 </p>
               </div>
             ))}
+          </div>
+
+          <div className="mx-auto mt-14 max-w-xl md:mt-16">
+            <PaymentCalculator
+              lang={lang}
+              t={t}
+              initialPurchasePrice={
+                RESIDENCE_MODELS.find((m) => m.id === "2br")?.booking
+                  .priceMin ?? RESIDENCE_MODELS[0].booking.priceMin
+              }
+              downPaymentPct={Number(PAYMENT_PHASES[0].pct)}
+              currency="AED"
+            />
           </div>
         </div>
       </section>
@@ -987,7 +1013,7 @@ export default function Home() {
               onClick={() => setMapBasemap("light")}
               className={`rounded-[2px] px-3 py-1.5 font-sans text-[9px] font-medium uppercase tracking-[0.2em] transition-colors ${
                 mapBasemap === "light"
-                  ? "bg-charcoal text-white"
+                  ? "border border-charcoal/12 bg-[#0a0a0a]/90 text-white backdrop-blur-xl"
                   : mapBasemap === "dark"
                     ? "text-white/55 ring-1 ring-white/15 hover:text-white"
                     : "text-charcoal/42 ring-1 ring-charcoal/[0.1] hover:text-charcoal"
@@ -1069,7 +1095,7 @@ export default function Home() {
               href="https://www.sami-najami.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex rounded-[2px] bg-charcoal px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white transition-colors hover:bg-charcoal/90"
+              className="inline-flex rounded-[2px] border border-charcoal/12 bg-[#0a0a0a]/90 px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white backdrop-blur-xl transition-colors hover:bg-zinc-950/85"
             >
               {t("heritageSite")} ↗
             </a>

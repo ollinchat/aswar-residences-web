@@ -259,8 +259,8 @@ function ToggleRow({
         {label}
       </span>
       <span
-        className={`relative h-5 w-9 shrink-0 rounded-full transition-colors ${
-          checked ? "bg-charcoal" : "bg-charcoal/15"
+        className={`relative h-5 w-9 shrink-0 rounded-full ring-1 ring-charcoal/10 transition-colors ${
+          checked ? "bg-[#0a0a0a]/90 backdrop-blur-sm" : "bg-charcoal/12"
         }`}
         aria-hidden
       >
@@ -306,7 +306,7 @@ function TextSizeRadios({
           onClick={() => onChange(sz)}
           className={`min-h-9 flex-1 rounded-full border px-2 py-1.5 font-sans text-[10px] font-semibold tracking-wide transition-colors sm:text-[11px] ${
             value === sz
-              ? "border-charcoal/35 bg-charcoal text-white"
+              ? "border-charcoal/30 bg-[#0a0a0a]/88 text-white backdrop-blur-md"
               : "border-white/15 bg-white/20 text-charcoal hover:bg-white/35"
           }`}
         >
@@ -333,7 +333,7 @@ function ChannelTray({
       {channels.map((ch) => (
         <div key={ch.id} className="group relative">
           <span
-            className="pointer-events-none absolute bottom-full left-1/2 z-[10060] mb-2 hidden max-w-[220px] -translate-x-1/2 rounded-lg border border-white/20 bg-charcoal/95 px-2 py-1 text-center font-sans text-[10px] font-medium text-white opacity-0 shadow-lg backdrop-blur-md transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 md:block whitespace-nowrap"
+            className="pointer-events-none absolute bottom-full left-1/2 z-[10060] mb-2 hidden max-w-[220px] -translate-x-1/2 rounded-lg border border-white/20 bg-zinc-950/85 px-2 py-1 text-center font-sans text-[10px] font-medium text-white opacity-0 shadow-lg backdrop-blur-xl transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 md:block whitespace-nowrap"
             role="tooltip"
           >
             {t(ch.labelKey)}

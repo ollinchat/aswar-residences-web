@@ -12,6 +12,9 @@ export type ResidenceModel = {
     accessibility: boolean;
     /** High-end interior specification */
     furnishing: "full";
+    smartHome: boolean;
+    /** Concierge / guarding (display copy from i18n) */
+    security: "24/7";
   };
   images: string[];
   pano: string;
@@ -33,6 +36,8 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
       elevator: true,
       accessibility: true,
       furnishing: "full",
+      smartHome: true,
+      security: "24/7",
     },
     images: [
       "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1800&q=88",
@@ -51,6 +56,8 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
       elevator: true,
       accessibility: true,
       furnishing: "full",
+      smartHome: true,
+      security: "24/7",
     },
     images: [
       "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1800&q=88",
@@ -69,6 +76,8 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
       elevator: true,
       accessibility: true,
       furnishing: "full",
+      smartHome: true,
+      security: "24/7",
     },
     images: [
       "https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=1800&q=88",
@@ -87,6 +96,8 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
       elevator: true,
       accessibility: true,
       furnishing: "full",
+      smartHome: true,
+      security: "24/7",
     },
     images: [
       "https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?auto=format&fit=crop&w=1800&q=88",
@@ -105,6 +116,8 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
       elevator: true,
       accessibility: true,
       furnishing: "full",
+      smartHome: true,
+      security: "24/7",
     },
     images: [
       "https://images.unsplash.com/photo-1600047509355-9dc75507daeb?auto=format&fit=crop&w=1800&q=88",

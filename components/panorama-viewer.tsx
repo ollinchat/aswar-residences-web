@@ -110,7 +110,7 @@ export function PanoramaViewerModal({
             onClick={onClose}
           />
           <motion.div
-            className="relative z-10 flex max-h-[min(88vh,920px)] w-full max-w-5xl flex-col overflow-hidden rounded-[2px] bg-charcoal shadow-[0_24px_80px_rgba(0,0,0,0.35)]"
+            className="relative z-10 flex max-h-[min(88vh,920px)] w-full max-w-5xl flex-col overflow-hidden rounded-[2px] border border-white/10 bg-[#0a0a0a]/90 shadow-[0_24px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl"
             initial={{ opacity: 0, y: 12, scale: 0.985 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.99 }}
@@ -130,7 +130,7 @@ export function PanoramaViewerModal({
                 <X className="h-4 w-4" strokeWidth={1.25} />
               </button>
             </div>
-            <div className="relative min-h-0 flex-1 bg-charcoal">
+            <div className="relative min-h-0 flex-1 bg-[#0a0a0a]/80 backdrop-blur-md">
               <Canvas
                 key={imageSrc}
                 camera={{ position: [0, 0, 0.01], fov: 72, near: 0.1, far: 2000 }}

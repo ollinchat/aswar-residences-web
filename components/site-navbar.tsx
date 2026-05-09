@@ -32,7 +32,7 @@ export function SiteNavbar({
     : "text-white/85 hover:text-white";
 
   const ctaClass = isLight
-    ? "bg-charcoal text-white hover:bg-charcoal/92"
+    ? "border border-charcoal/12 bg-[#0a0a0a]/90 text-white backdrop-blur-xl hover:bg-zinc-950/85"
     : "bg-white/95 text-charcoal hover:bg-white";
 
   return (
