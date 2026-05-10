@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet.css";
 
 const CENTER: [number, number] = [25.1868, 55.2658];
 
-/** Dark basemap (Carto) — same centre as light map for consistency. */
+/** Dark Carto basemap — same init pattern as light map. */
 export default function DarkMap() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [mapReady, setMapReady] = useState(false);
@@ -64,17 +64,17 @@ export default function DarkMap() {
     [],
   );
 
+  const shellClass =
+    "relative z-0 h-[300px] min-h-[300px] w-full overflow-hidden sm:h-[480px] md:h-[600px]";
+
   return (
-    <div
-      ref={rootRef}
-      className="relative z-0 h-[300px] w-full min-h-[300px] overflow-hidden sm:h-[min(480px,58vh)] sm:min-h-[360px] md:h-[480px]"
-    >
+    <div ref={rootRef} className={shellClass}>
       {mapReady ? (
         <MapContainer
           key="aswar-dark-map"
           center={CENTER}
           zoom={13}
-          className="dark-map-container z-0 h-full w-full min-h-[300px] overflow-hidden sm:min-h-[360px]"
+          className="dark-map-container z-0 h-full w-full min-h-[300px] overflow-hidden sm:min-h-[480px] md:min-h-[600px]"
           style={{ height: "100%", width: "100%" }}
           scrollWheelZoom={false}
           attributionControl
@@ -88,7 +88,7 @@ export default function DarkMap() {
         </MapContainer>
       ) : (
         <div
-          className="flex h-[300px] w-full min-h-[300px] items-center justify-center bg-[#1a1a1a] sm:h-full sm:min-h-[360px]"
+          className="flex h-[300px] w-full min-h-[300px] items-center justify-center bg-[#1a1a1a] sm:h-[480px] sm:min-h-[480px] md:h-[600px] md:min-h-[600px]"
           aria-busy="true"
         />
       )}

@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet.css";
 
 const CENTER: [number, number] = [25.1868, 55.2658];
 
-/** Light / silver Carto basemap with minimal gold pulse marker. */
+/** Light / silver Carto basemap — init deferred until container has real dimensions (Leaflet / Strict Mode safe). */
 export default function LightMap() {
   const rootRef = useRef<HTMLDivElement>(null);
   const [mapReady, setMapReady] = useState(false);
@@ -64,17 +64,17 @@ export default function LightMap() {
     [],
   );
 
+  const shellClass =
+    "relative z-0 h-[300px] min-h-[300px] w-full overflow-hidden sm:h-[480px] md:h-[600px]";
+
   return (
-    <div
-      ref={rootRef}
-      className="relative z-0 h-[300px] w-full min-h-[300px] overflow-hidden sm:h-[min(480px,58vh)] sm:min-h-[360px] md:h-[480px]"
-    >
+    <div ref={rootRef} className={shellClass}>
       {mapReady ? (
         <MapContainer
           key="aswar-light-map"
           center={CENTER}
           zoom={13}
-          className="light-map-container z-0 h-full w-full min-h-[300px] overflow-hidden sm:min-h-[360px]"
+          className="light-map-container z-0 h-full w-full min-h-[300px] overflow-hidden sm:min-h-[480px] md:min-h-[600px]"
           style={{ height: "100%", width: "100%" }}
           scrollWheelZoom={false}
           attributionControl
@@ -88,7 +88,7 @@ export default function LightMap() {
         </MapContainer>
       ) : (
         <div
-          className="flex h-[300px] w-full min-h-[300px] items-center justify-center bg-[#f4f4f5] sm:h-full sm:min-h-[360px]"
+          className="flex h-[300px] w-full min-h-[300px] items-center justify-center bg-[#f4f4f5] sm:h-[480px] sm:min-h-[480px] md:h-[600px] md:min-h-[600px]"
           aria-busy="true"
         />
       )}

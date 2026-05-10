@@ -33,9 +33,9 @@ function formatMoney(n: number, lang: Lang, currency: string) {
   }).format(n);
 }
 
-/** `text-base` (16px) avoids iOS focus zoom on number inputs. */
+/** `text-base` (16px) avoids iOS focus zoom; `min-h-[48px]` for touch targets. */
 const inputClass =
-  "min-h-[44px] rounded-lg border border-zinc-200/90 bg-zinc-50 px-3 py-2.5 font-sans text-base tabular-nums text-zinc-900 outline-none transition-[background-color,border-color,box-shadow] placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white focus:ring-1 focus:ring-zinc-900/10";
+  "min-h-[48px] rounded-lg border border-zinc-200/90 bg-zinc-50 px-3 py-2.5 font-sans text-base tabular-nums text-zinc-900 outline-none transition-[background-color,border-color,box-shadow] placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white focus:ring-1 focus:ring-zinc-900/10";
 
 export function PaymentCalculator({
   lang,
@@ -103,7 +103,7 @@ export function PaymentCalculator({
           </p>
         </div>
 
-        <div className="mt-5 space-y-5">
+        <div className="mt-5 flex flex-col gap-5">
           <label className="block space-y-1.5">
             <span className={labelClass}>{t("financingPurchasePrice")}</span>
             <input
@@ -145,7 +145,7 @@ export function PaymentCalculator({
               />
             </div>
             <div
-              className="flex min-h-[44px] items-center py-1"
+              className="flex min-h-[48px] items-center py-1"
               dir="ltr"
             >
               <input
@@ -173,7 +173,7 @@ export function PaymentCalculator({
               {t("paymentLblLoanTerm")}
             </span>
             <div
-              className="grid grid-cols-2 gap-1.5 sm:grid-cols-4"
+              className="grid grid-cols-1 gap-2 md:grid-cols-4"
               role="group"
               aria-label={t("paymentLblLoanTerm")}
             >
@@ -184,7 +184,7 @@ export function PaymentCalculator({
                     key={y}
                     type="button"
                     onClick={() => setTermYears(y)}
-                    className={`min-h-[44px] rounded-lg border px-2 py-2 font-sans text-[10px] font-medium tracking-[0.12em] transition-[color,box-shadow,border-color,background] sm:min-h-[44px] sm:text-[11px] ${
+                    className={`min-h-[44px] rounded-lg border px-3 py-2.5 font-sans text-[10px] font-medium tracking-[0.12em] transition-[color,box-shadow,border-color,background] sm:text-[11px] ${
                       active
                         ? "border-zinc-400/80 bg-white text-zinc-900 shadow-sm ring-1 ring-zinc-200/90"
                         : "border-zinc-200/90 bg-zinc-50 text-zinc-500 hover:border-zinc-300 hover:text-zinc-700"

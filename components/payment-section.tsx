@@ -38,7 +38,7 @@ export function PaymentSection({
     }`;
 
   return (
-    <div className="mx-auto mt-12 w-full max-w-5xl px-3 sm:px-4 md:mt-14 md:px-0">
+    <div className="mx-auto mt-12 w-full max-w-5xl overflow-x-hidden px-3 sm:px-4 md:mt-14 md:px-0">
       <div className="flex justify-center">
         <div className={tabBarClass} role="tablist" aria-label={t("paymentTitle")}>
         <button
