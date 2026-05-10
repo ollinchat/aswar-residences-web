@@ -127,7 +127,7 @@ export const copy = {
     proxParksMins: "5 min away",
     proxMetro: "Metro",
     proxMetroMins: "8 min away",
-    districtLoadMore: "Load more",
+    districtLoadMore: "Show more",
     liveUpdatesKicker: "Live updates",
     liveUpdatesTitle: "Stay Connected",
     liveUpdatesSubtitle:

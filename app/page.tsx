@@ -796,7 +796,7 @@ export default function Home() {
               return (
                 <motion.div
                   key={img.src}
-                  className="relative aspect-[4/3] overflow-hidden rounded-[2px] bg-charcoal/[0.04]"
+                  className="relative aspect-[4/3] min-h-0 overflow-hidden rounded-[2px] bg-charcoal/[0.04]"
                   initial={
                     isNew
                       ? { opacity: 0, y: 22 }
@@ -818,8 +818,8 @@ export default function Home() {
                     src={img.src}
                     alt={img.alt}
                     fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px"
+                    className="object-cover object-center"
                     priority={idx < 4}
                     placeholder="blur"
                     blurDataURL={REMOTE_IMAGE_BLUR_DATA_URL}
