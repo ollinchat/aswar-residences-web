@@ -1,7 +1,8 @@
 /**
  * District Highlights — iconic Dubai (`w=1200`, `object-cover` in `app/page.tsx`).
- * Hero: `photo-1512453979798-5ea266f8880c` (aerial Downtown / highways, verified 200).
- * Stadium/night tile uses a separate night-skyline asset so the grid has no duplicate hero.
+ * Avoid legacy Unsplash IDs that 404 on the CDN (e.g. `photo-1582672060674-884a8839a85f`,
+ * `photo-1518684079-b4a468aebefc`, `photo-1526498460520-4c246339543c`,
+ * `photo-1600047509355-9dc75507daeb`).
  */
 
 export type DistrictAttraction = { src: string; alt: string };
@@ -17,8 +18,8 @@ export const DISTRICT_ATTRACTIONS_ALL: DistrictAttraction[] = [
     "Downtown Dubai and Burj Khalifa area — aerial city centre energy",
   ),
   landmark(
-    "photo-1528702748617-c64d49f918af",
-    "Beach and waterfront — turquoise water and luxury towers",
+    "photo-1546412414-8035e1776c9a",
+    "Dubai Marina — waterfront towers and turquoise water",
   ),
   landmark(
     "photo-1582650625119-3a31f8fa2699",
