@@ -79,6 +79,17 @@ html[dir="rtl"] .font-arabic {
   }
 }
 
+@keyframes amenity-float-particle {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.35;
+  }
+  100% {
+    transform: translate3d(18px, -22px, 0) scale(1.35);
+    opacity: 0.9;
+  }
+}
+
 /* Light basemap — minimal gold pulse */
 .aswar-marker-pulse-light {
   display: flex;
