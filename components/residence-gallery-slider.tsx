@@ -48,7 +48,7 @@ export function ResidenceGallerySlider({ images, label, on360 }: Props) {
 
   return (
     <div className="space-y-4">
-      <div className="relative min-h-[min(58vh,600px)] w-full overflow-hidden rounded-[2px] bg-neutral-100">
+      <div className="relative min-h-[600px] w-full overflow-hidden rounded-[2px] bg-neutral-100 md:min-h-[min(72vh,820px)]">
         <div className="absolute inset-x-0 top-0 z-30 flex gap-1 px-3 pt-3">
           {images.map((_, idx) => (
             <button
@@ -86,7 +86,7 @@ export function ResidenceGallerySlider({ images, label, on360 }: Props) {
               alt={`${label} — ${i + 1}`}
               fill
               className="pointer-events-none object-cover select-none"
-              sizes="(max-width: 1024px) 100vw, 58vw"
+              sizes="(max-width: 1024px) 100vw, 65vw"
               priority={i === 0}
             />
           </motion.div>

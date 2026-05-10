@@ -22,6 +22,7 @@ import { PartnerMarquee } from "@/components/partner-marquee";
 import { EngineeringFloorPlan } from "@/components/engineering-floor-plan";
 import { HeritageProjectGallery } from "@/components/heritage-project-gallery";
 import { PaymentSection } from "@/components/payment-section";
+import { ProjectAmenities } from "@/components/project-amenities";
 import { ResidenceGallerySlider } from "@/components/residence-gallery-slider";
 import { useLang } from "@/components/language-provider";
 import type { CopyKey, Lang } from "@/lib/i18n";
@@ -35,7 +36,6 @@ import {
 } from "@/lib/district-attractions";
 import { REMOTE_IMAGE_BLUR_DATA_URL } from "@/lib/image-blur-placeholder";
 import { monthlyMortgagePayment } from "@/lib/financing-math";
-import { PAYMENT_PHASES } from "@/lib/payment-phases";
 
 const PanoramaViewerModal = dynamic(
   () =>
@@ -66,11 +66,6 @@ function formatStartingFrom(minAed: number, lang: Lang) {
     return `من ${amount}M د.إ`;
   }
   return `From AED ${amount}M`;
-}
-
-function formatParkingBaysLine(n: number, t: (key: CopyKey) => string): string {
-  if (n === 1) return t("residenceParkingBaysOne");
-  return t("residenceParkingBaysMany").replace(/\{\{n\}\}/g, String(n));
 }
 
 type MagneticButtonProps = {
@@ -396,9 +391,9 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="grid items-start gap-12 lg:grid-cols-12 lg:gap-14"
+              className="grid items-start gap-12 lg:grid-cols-[minmax(0,65fr)_minmax(0,35fr)] lg:gap-14"
             >
-              <div className="lg:col-span-7">
+              <div className="min-w-0">
                 {viewMode === "financing" ? (
                   <div className="space-y-6 rounded-[2px] border border-charcoal/[0.08] bg-[#FAFAFA] p-6 md:p-8">
                     <div>
@@ -525,7 +520,7 @@ export default function Home() {
                 )}
               </div>
 
-              <aside className="space-y-10 lg:col-span-5 lg:sticky lg:top-28 lg:self-start">
+              <aside className="min-w-0 space-y-10 lg:sticky lg:top-28 lg:self-start">
                 <div className="flex flex-wrap gap-2">
                   <button
                     type="button"
@@ -655,90 +650,84 @@ export default function Home() {
                       className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
                     >
                       <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
-                        {t("residenceLblParking")}
+                        {t("residenceLblGarden")}
                       </span>
-                      <div className="flex min-w-0 flex-col items-end gap-0.5 text-end rtl:items-start rtl:text-start">
-                        <span className="font-sans text-[11px] font-medium text-white rtl:font-arabic rtl:leading-[1.72]">
-                          {t("residenceValParkingLead")}
-                        </span>
-                        <span className="font-sans text-[10px] font-medium text-white/75 rtl:font-arabic rtl:leading-[1.72]">
-                          {formatParkingBaysLine(
-                            activeResidence.specs.parkingBays,
-                            t,
-                          )}
-                        </span>
-                      </div>
+                      <span className="text-end font-sans text-[11px] font-medium tabular-nums text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
+                        {activeResidence.spatial.gardenSqft != null
+                          ? formatAreaValue(
+                              activeResidence.spatial.gardenSqft,
+                              areaMetric,
+                              lang,
+                            )
+                          : t("specNotApplicable")}
+                      </span>
                     </div>
 
-                    {activeResidence.specs.elevator ? (
-                      <div
-                        role="listitem"
-                        className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
-                      >
-                        <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
-                          {t("residenceLblElevator")}
-                        </span>
-                        <span className="text-end font-sans text-[11px] font-medium text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
-                          {t("residenceValElevator")}
-                        </span>
-                      </div>
-                    ) : null}
+                    <div
+                      role="listitem"
+                      className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
+                    >
+                      <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                        {t("residenceLblKitchen")}
+                      </span>
+                      <span className="text-end font-sans text-[11px] font-medium tabular-nums text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
+                        {formatAreaValue(
+                          activeResidence.spatial.kitchenSqft,
+                          areaMetric,
+                          lang,
+                        )}
+                      </span>
+                    </div>
 
-                    {activeResidence.specs.accessibility ? (
-                      <div
-                        role="listitem"
-                        className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
-                      >
-                        <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
-                          {t("residenceLblAccessibility")}
-                        </span>
-                        <span className="text-end font-sans text-[11px] font-medium text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
-                          {t("residenceValAccessibility")}
-                        </span>
-                      </div>
-                    ) : null}
+                    <div
+                      role="listitem"
+                      className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
+                    >
+                      <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                        {t("residenceLblLivingRoom")}
+                      </span>
+                      <span className="text-end font-sans text-[11px] font-medium tabular-nums text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
+                        {formatAreaValue(
+                          activeResidence.spatial.livingSqft,
+                          areaMetric,
+                          lang,
+                        )}
+                      </span>
+                    </div>
 
-                    {activeResidence.specs.furnishing === "full" ? (
-                      <div
-                        role="listitem"
-                        className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
-                      >
-                        <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
-                          {t("residenceLblFurnishing")}
-                        </span>
-                        <span className="text-end font-sans text-[11px] font-medium text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
-                          {t("residenceValFurnishing")}
-                        </span>
-                      </div>
-                    ) : null}
+                    <div
+                      role="listitem"
+                      className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
+                    >
+                      <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                        {t("residenceLblMasterBedroom")}
+                      </span>
+                      <span className="text-end font-sans text-[11px] font-medium tabular-nums text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
+                        {formatAreaValue(
+                          activeResidence.spatial.masterBedSqft,
+                          areaMetric,
+                          lang,
+                        )}
+                      </span>
+                    </div>
 
-                    {activeResidence.specs.smartHome ? (
-                      <div
-                        role="listitem"
-                        className="flex min-h-[52px] items-center justify-between gap-3 border-b border-white/10 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
-                      >
-                        <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
-                          {t("residenceLblSmartHome")}
-                        </span>
-                        <span className="text-end font-sans text-[11px] font-medium text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
-                          {t("residenceValSmartHome")}
-                        </span>
-                      </div>
-                    ) : null}
-
-                    {activeResidence.specs.security ? (
-                      <div
-                        role="listitem"
-                        className="flex min-h-[52px] items-center justify-between gap-3 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
-                      >
-                        <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
-                          {t("residenceLblSecurity")}
-                        </span>
-                        <span className="text-end font-sans text-[11px] font-medium text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
-                          {t("residenceValSecurity")}
-                        </span>
-                      </div>
-                    ) : null}
+                    <div
+                      role="listitem"
+                      className="flex min-h-[52px] items-center justify-between gap-3 px-1.5 transition-colors hover:bg-white/5 sm:gap-4 sm:px-2"
+                    >
+                      <span className="max-w-[46%] font-serif text-[10px] font-medium uppercase tracking-widest text-white/60 rtl:max-w-[50%] rtl:font-arabic rtl:normal-case rtl:tracking-wide rtl:leading-[1.72]">
+                        {t("residenceLblAdditionalBedrooms")}
+                      </span>
+                      <span className="text-end font-sans text-[11px] font-medium tabular-nums text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
+                        {activeResidence.spatial.additionalBedroomsSqft != null
+                          ? formatAreaValue(
+                              activeResidence.spatial.additionalBedroomsSqft,
+                              areaMetric,
+                              lang,
+                            )
+                          : t("specNotApplicable")}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -760,6 +749,8 @@ export default function Home() {
               </aside>
             </motion.article>
           </AnimatePresence>
+
+          <ProjectAmenities />
         </div>
       </section>
 
@@ -770,29 +761,6 @@ export default function Home() {
             subtitle={t("paymentSubtitle")}
             align="center"
           />
-
-          <div className="mx-auto mb-10 max-w-2xl">
-            <p className="mb-3 text-center font-sans text-[10px] font-medium uppercase tracking-[0.18em] text-charcoal/42 rtl:normal-case rtl:font-arabic rtl:leading-[1.72]">
-              {t("paymentPhaseScheduleCaption")}
-            </p>
-            <ul
-              className="flex flex-wrap justify-center gap-2.5 sm:gap-3"
-              role="list"
-              aria-label={t("paymentPhaseScheduleCaption")}
-            >
-              {PAYMENT_PHASES.map((row) => (
-                <li
-                  key={row.titleKey}
-                  className="rounded-full border border-charcoal/12 bg-white px-3.5 py-2 font-sans text-[11px] text-charcoal/85 shadow-[0_1px_0_rgba(0,0,0,0.04)] sm:px-4 rtl:font-arabic rtl:leading-[1.72]"
-                >
-                  <span className="font-medium">{t(row.titleKey)}</span>
-                  <span className="ms-1.5 tabular-nums text-charcoal/50">
-                    {row.pct}%
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
 
           <PaymentSection
             initialPurchasePrice={

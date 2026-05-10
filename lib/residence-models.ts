@@ -6,14 +6,22 @@ export type ResidenceModel = {
     totalSqft: number;
     balconySqft: number;
   };
+  /** Interior / terrace breakdown (source of truth in SQ.FT). */
+  spatial: {
+    /** Private garden / terrace garden; `null` when not applicable. */
+    gardenSqft: number | null;
+    kitchenSqft: number;
+    livingSqft: number;
+    masterBedSqft: number;
+    /** Combined additional bedrooms; `null` when not applicable (e.g. studio). */
+    additionalBedroomsSqft: number | null;
+  };
   specs: {
     parkingBays: number;
     elevator: boolean;
     accessibility: boolean;
-    /** High-end interior specification */
     furnishing: "full";
     smartHome: boolean;
-    /** Concierge / guarding (display copy from i18n) */
     security: "24/7";
   };
   images: string[];
@@ -31,6 +39,13 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
     id: "studio",
     label: "Studio",
     areas: { totalSqft: 548, balconySqft: 52 },
+    spatial: {
+      gardenSqft: null,
+      kitchenSqft: 88,
+      livingSqft: 210,
+      masterBedSqft: 198,
+      additionalBedroomsSqft: null,
+    },
     specs: {
       parkingBays: 1,
       elevator: true,
@@ -45,12 +60,24 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=88",
     ],
     pano: "/hero-360-panorama.jpg",
-    booking: { availableUnits: 14, totalUnits: 42, priceMin: 1_100_000, priceMax: 1_550_000 },
+    booking: {
+      availableUnits: 14,
+      totalUnits: 42,
+      priceMin: 1_100_000,
+      priceMax: 1_550_000,
+    },
   },
   {
     id: "1br",
     label: "1BR",
     areas: { totalSqft: 892, balconySqft: 118 },
+    spatial: {
+      gardenSqft: null,
+      kitchenSqft: 115,
+      livingSqft: 295,
+      masterBedSqft: 364,
+      additionalBedroomsSqft: null,
+    },
     specs: {
       parkingBays: 1,
       elevator: true,
@@ -65,12 +92,24 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=88",
     ],
     pano: "/hero-360-panorama.jpg",
-    booking: { availableUnits: 11, totalUnits: 56, priceMin: 1_650_000, priceMax: 2_350_000 },
+    booking: {
+      availableUnits: 11,
+      totalUnits: 56,
+      priceMin: 1_650_000,
+      priceMax: 2_350_000,
+    },
   },
   {
     id: "2br",
     label: "2BR",
     areas: { totalSqft: 1420, balconySqft: 186 },
+    spatial: {
+      gardenSqft: null,
+      kitchenSqft: 135,
+      livingSqft: 410,
+      masterBedSqft: 340,
+      additionalBedroomsSqft: 349,
+    },
     specs: {
       parkingBays: 2,
       elevator: true,
@@ -85,12 +124,24 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
       "https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=1800&q=88",
     ],
     pano: "/hero-360-panorama.jpg",
-    booking: { availableUnits: 9, totalUnits: 48, priceMin: 2_750_000, priceMax: 3_950_000 },
+    booking: {
+      availableUnits: 9,
+      totalUnits: 48,
+      priceMin: 2_750_000,
+      priceMax: 3_950_000,
+    },
   },
   {
     id: "3br",
     label: "3BR",
     areas: { totalSqft: 2180, balconySqft: 240 },
+    spatial: {
+      gardenSqft: null,
+      kitchenSqft: 165,
+      livingSqft: 520,
+      masterBedSqft: 380,
+      additionalBedroomsSqft: 875,
+    },
     specs: {
       parkingBays: 2,
       elevator: true,
@@ -105,12 +156,24 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
       "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1800&q=88",
     ],
     pano: "/hero-360-panorama.jpg",
-    booking: { availableUnits: 6, totalUnits: 32, priceMin: 4_100_000, priceMax: 5_850_000 },
+    booking: {
+      availableUnits: 6,
+      totalUnits: 32,
+      priceMin: 4_100_000,
+      priceMax: 5_850_000,
+    },
   },
   {
     id: "penthouse",
     label: "Penthouse",
     areas: { totalSqft: 4850, balconySqft: 620 },
+    spatial: {
+      gardenSqft: 420,
+      kitchenSqft: 320,
+      livingSqft: 980,
+      masterBedSqft: 620,
+      additionalBedroomsSqft: 1890,
+    },
     specs: {
       parkingBays: 3,
       elevator: true,
@@ -125,6 +188,11 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1800&q=88",
     ],
     pano: "/hero-360-panorama.jpg",
-    booking: { availableUnits: 3, totalUnits: 8, priceMin: 8_200_000, priceMax: 16_500_000 },
+    booking: {
+      availableUnits: 3,
+      totalUnits: 8,
+      priceMin: 8_200_000,
+      priceMax: 16_500_000,
+    },
   },
 ];
