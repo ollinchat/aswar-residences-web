@@ -55,6 +55,10 @@ export const copy = {
     paymentTitle: "Payment plan",
     paymentSubtitle:
       "Cash milestones or amortised instalments — model scenarios below; not a binding offer.",
+    paymentPhaseScheduleCaption: "Illustrative milestone split",
+    paymentPhaseDown: "Down payment",
+    paymentPhaseConstruction: "During construction",
+    paymentPhaseHandover: "On handover",
     paymentTabCash: "Cash",
     paymentTabInstallments: "Installments",
     paymentCashIntro:
@@ -241,6 +245,10 @@ export const copy = {
     paymentTitle: "خطة السداد",
     paymentSubtitle:
       "دفعاتٌ نقديةٌ أو أقساطٌ مُسقّطةٌ — نماذجٌ توضيحيةٌ أدناه؛ لا تُعدُّ التزامًا ملزمًا.",
+    paymentPhaseScheduleCaption: "تقسيمٌ توضيحيٌ للمراحل",
+    paymentPhaseDown: "دفعةٌ مقدّمةٌ",
+    paymentPhaseConstruction: "أثناء الإنشاء",
+    paymentPhaseHandover: "عند التسليم",
     paymentTabCash: "نقدًا",
     paymentTabInstallments: "التقسيط",
     paymentCashIntro:

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import type { CopyKey, Lang } from "@/lib/i18n";
 
 const MIN_INITIAL_DOWN = 550_000;

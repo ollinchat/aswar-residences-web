@@ -10,9 +10,15 @@ const CENTER: [number, number] = [25.1868, 55.2658];
 /** Dark Carto basemap — same init pattern as light map. */
 export default function DarkMap() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
   const [mapReady, setMapReady] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     const el = rootRef.current;
     if (!el || !(el instanceof HTMLElement)) return;
 
@@ -69,7 +75,7 @@ export default function DarkMap() {
 
   return (
     <div ref={rootRef} className={shellClass}>
-      {mapReady ? (
+      {mounted && mapReady ? (
         <MapContainer
           key="aswar-dark-map"
           center={CENTER}

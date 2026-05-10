@@ -10,9 +10,15 @@ const CENTER: [number, number] = [25.1868, 55.2658];
 /** Light / silver Carto basemap — init deferred until container has real dimensions (Leaflet / Strict Mode safe). */
 export default function LightMap() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
   const [mapReady, setMapReady] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     const el = rootRef.current;
     if (!el || !(el instanceof HTMLElement)) return;
 
@@ -51,7 +57,7 @@ export default function LightMap() {
       ro.disconnect();
       setMapReady(false);
     };
-  }, []);
+  }, [mounted]);
 
   const pulseIcon = useMemo(
     () =>
@@ -69,7 +75,7 @@ export default function LightMap() {
 
   return (
     <div ref={rootRef} className={shellClass}>
-      {mapReady ? (
+      {mounted && mapReady ? (
         <MapContainer
           key="aswar-light-map"
           center={CENTER}

@@ -35,6 +35,7 @@ import {
 } from "@/lib/district-attractions";
 import { REMOTE_IMAGE_BLUR_DATA_URL } from "@/lib/image-blur-placeholder";
 import { monthlyMortgagePayment } from "@/lib/financing-math";
+import { PAYMENT_PHASES } from "@/lib/payment-phases";
 
 const PanoramaViewerModal = dynamic(
   () =>
@@ -769,6 +770,29 @@ export default function Home() {
             subtitle={t("paymentSubtitle")}
             align="center"
           />
+
+          <div className="mx-auto mb-10 max-w-2xl">
+            <p className="mb-3 text-center font-sans text-[10px] font-medium uppercase tracking-[0.18em] text-charcoal/42 rtl:normal-case rtl:font-arabic rtl:leading-[1.72]">
+              {t("paymentPhaseScheduleCaption")}
+            </p>
+            <ul
+              className="flex flex-wrap justify-center gap-2.5 sm:gap-3"
+              role="list"
+              aria-label={t("paymentPhaseScheduleCaption")}
+            >
+              {PAYMENT_PHASES.map((row) => (
+                <li
+                  key={row.titleKey}
+                  className="rounded-full border border-charcoal/12 bg-white px-3.5 py-2 font-sans text-[11px] text-charcoal/85 shadow-[0_1px_0_rgba(0,0,0,0.04)] sm:px-4 rtl:font-arabic rtl:leading-[1.72]"
+                >
+                  <span className="font-medium">{t(row.titleKey)}</span>
+                  <span className="ms-1.5 tabular-nums text-charcoal/50">
+                    {row.pct}%
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <PaymentSection
             initialPurchasePrice={
