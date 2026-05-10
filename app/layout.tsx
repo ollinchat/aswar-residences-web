@@ -4,6 +4,8 @@ import {
   Geist_Mono,
   Inter,
   Noto_Sans_Arabic,
+  Playfair_Display,
+  Urbanist,
 } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
@@ -29,6 +31,20 @@ const notoArabic = Noto_Sans_Arabic({
   variable: "--font-arabic",
   subsets: ["arabic"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const urbanist = Urbanist({
+  variable: "--font-urbanist",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
   display: "swap",
 });
 
@@ -65,7 +81,7 @@ export default function RootLayout({
       lang="en"
       dir="ltr"
       suppressHydrationWarning
-      className={`${inter.variable} ${geistMono.variable} ${cormorant.variable} ${notoArabic.variable} h-full antialiased`}
+      className={`${inter.variable} ${geistMono.variable} ${cormorant.variable} ${notoArabic.variable} ${playfair.variable} ${urbanist.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <Providers>{children}</Providers>

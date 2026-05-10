@@ -58,7 +58,7 @@ export const copy = {
     amenitiesBuildingAlt:
       "ASWAR 01 — premium residential tower visualization",
     amenitiesHeroTagline: "Estate-grade living",
-    amenities360Badge: "360° View",
+    amenities360Badge: "360° Interactive View",
     amenitiesHotspotHint:
       "Explore the tower — hover points or tap the list",
     amenitiesExitFocus: "Exit focus",
@@ -75,6 +75,30 @@ export const copy = {
       "Courtyard, Water Feature & Garden View Decks",
     amenityMultipurposeHallLawn: "Multipurpose Hall & Open Lawn",
     amenityRooftopOpenArea: "Rooftop Open Area",
+    amenityFurnishedUnitsDesc:
+      "Curated interiors and signature finishes — move-in ready to ASWAR standards, with calm palettes and refined detailing throughout.",
+    amenityAdultKidsPoolsDesc:
+      "Temperature-controlled leisure pools for adults and children, framed by landscaped decks and quiet lounging edges.",
+    amenityGymJogTrackDesc:
+      "A private indoor fitness suite and jogging circuit for daily training — disciplined, discreet, and always on your floor.",
+    amenityYogaMultipurposeDecksDesc:
+      "Open-air wellness decks for yoga, meditation, and flexible community programming above the city.",
+    amenityBbqFirePitDesc:
+      "Alfresco dining terraces with barbecue and fire-pit lounges — made for long evenings and unhurried hosting.",
+    amenityKidsPlaygroundDesc:
+      "A secure, imaginative play garden for younger residents — safe sightlines, soft landscaping, and room to roam.",
+    amenityReadingBeanBagsDesc:
+      "Quiet lounges with relaxed seating for reading, conversation, and focused calm away from the skyline pace.",
+    amenityCabanasWetDecksDesc:
+      "Poolside cabanas and wet decks with sun loungers — resort-grade downtime without leaving the tower.",
+    amenityCourtyardWaterGardenDesc:
+      "A courtyard axis with water features and garden views — the pause between lobby, lifts, and the sky.",
+    amenityMultipurposeHallLawnDesc:
+      "A multipurpose hall and open lawn for culture, gatherings, and celebrations under open sky.",
+    amenityRooftopOpenAreaDesc:
+      "An elevated open rooftop with panoramic views — the crown experience for sunsets and skyline silence.",
+    amenitiesRibbonKicker: "Amenities",
+    amenitiesDetailClose: "Close",
     parking: "Parking",
     enterWalkthrough: "Enter 360° walkthrough",
     remainingOf: "of",
@@ -270,7 +294,7 @@ export const copy = {
     amenitiesTitle: "مرافق المشروع",
     amenitiesBuildingAlt: "أسوار 01 — تصوير معماري للبرج السكني",
     amenitiesHeroTagline: "حياة بمستوى العقارات الفاخرة",
-    amenities360Badge: "عرض 360°",
+    amenities360Badge: "عرض تفاعلي 360°",
     amenitiesHotspotHint: "استكشف البرج — مرّر على النقاط أو اختر من القائمة",
     amenitiesExitFocus: "إغلاق التركيز",
     amenitiesTimelineHint: "اختيار الطابق — اضغط للانتقال",
@@ -286,6 +310,30 @@ export const copy = {
       "باحة داخلية ونافورة وأسطح بإطلالة على الحديقة",
     amenityMultipurposeHallLawn: "قاعة متعددة الأغراض ومسطح أخضر",
     amenityRooftopOpenArea: "سطح مفتوح",
+    amenityFurnishedUnitsDesc:
+      "تشطيبات مختارة بعناية وجاهزة للسكن — بمعايير أسوار وهدوء في الألوان وتفاصيل راقية في كل مساحة.",
+    amenityAdultKidsPoolsDesc:
+      "مسابح مريحة للبالغين والأطفال بدرجة حرارة مضبوطة، مع أسطح خضراء وحواف جلوس هادئة.",
+    amenityGymJogTrackDesc:
+      "صالة لياقة داخلية وممشى للجري — تدريب يومي بخصوصية، دون مغادرة البرج.",
+    amenityYogaMultipurposeDecksDesc:
+      "أسطح مفتوحة لليوغا والتأمل وفعاليات المجتمع المرنة، فوق إيقاع المدينة.",
+    amenityBbqFirePitDesc:
+      "شرفات طعام في الهواء الطلق مع شوايات ومناطق جلوس حول الموقد — لأمسيات طويلة وضيافة بلا عجلة.",
+    amenityKidsPlaygroundDesc:
+      "حديقة لعب آمنة وخيالية للصغار — رؤية مريحة للعائلة وتنسيق لطيف ومساحة للحركة.",
+    amenityReadingBeanBagsDesc:
+      "صالات هادئة بجلوس مريح للقراءة والحديث والتركيز بعيداً عن زحمة الأبراج.",
+    amenityCabanasWetDecksDesc:
+      "كبائن بجانب المسطح المائي وكراسي استلقاء — استرخاء على طراز المنتجع دون مغادرة البرج.",
+    amenityCourtyardWaterGardenDesc:
+      "محور باحة داخلية مع مياه وإطلالات على الحديقة — لحظة توقف بين الردهة والمصاعد والسماء.",
+    amenityMultipurposeHallLawnDesc:
+      "قاعة متعددة الاستخدامات ومسطح أخضر مفتوح للثقافة والتجمعات والاحتفالات تحت السماء.",
+    amenityRooftopOpenAreaDesc:
+      "سطح مرتفع ومفتوح بإطلالات بانورامية — تجربة التاج لغروب الشمس وهدوء الأفق.",
+    amenitiesRibbonKicker: "المرافق",
+    amenitiesDetailClose: "إغلاق",
     parking: "المواقف",
     enterWalkthrough: "الدخول إلى جولة 360°",
     remainingOf: "من",
