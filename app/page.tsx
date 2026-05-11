@@ -125,16 +125,22 @@ function SectionIntro({
   subtitle,
   align = "left",
   tone = "default",
+  spacing = "default",
 }: {
   title: string;
   subtitle?: string;
   align?: "left" | "center";
   tone?: "default" | "onDark";
+  spacing?: "default" | "spacious";
 }) {
   const isDark = tone === "onDark";
+  const marginBottom =
+    spacing === "spacious"
+      ? "mb-16 md:mb-20 lg:mb-28"
+      : "mb-10 md:mb-12 lg:mb-14";
   return (
     <div
-      className={`mb-10 md:mb-12 lg:mb-14 ${
+      className={`${marginBottom} ${
         align === "center" ? "mx-auto max-w-3xl text-center" : ""
       }`}
     >
@@ -780,15 +786,16 @@ export default function Home() {
           <SectionIntro
             title={t("districtTitle")}
             subtitle={t("districtSubtitle")}
+            spacing="spacious"
           />
-          <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
+          <div className="grid grid-cols-2 gap-6 gap-y-10 md:gap-8 md:gap-y-12 lg:grid-cols-3 lg:gap-10 lg:gap-y-14">
             {visibleDistrictAttractions.map((img, idx) => {
               const from = districtExpandBaseline;
               const isNew = from != null && idx >= from;
               return (
-                <motion.div
+                <motion.article
                   key={img.src}
-                  className="relative aspect-[4/3] min-h-0 overflow-hidden rounded-[2px] bg-charcoal/[0.04]"
+                  className="group flex min-h-0 flex-col gap-3 md:gap-3.5"
                   initial={
                     isNew
                       ? { opacity: 0, y: 22 }
@@ -806,17 +813,42 @@ export default function Home() {
                         }
                   }
                 >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 600px"
-                    className="object-cover object-center"
-                    priority={idx < 4}
-                    placeholder="blur"
-                    blurDataURL={REMOTE_IMAGE_BLUR_DATA_URL}
-                  />
-                </motion.div>
+                  <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[4px] bg-neutral-100">
+                    <motion.div
+                      className="h-full w-full origin-center will-change-transform"
+                      whileHover={
+                        reduceDistrictMotion ? undefined : { scale: 1.02 }
+                      }
+                      transition={{
+                        duration: 0.4,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                    >
+                      <Image
+                        src={img.src}
+                        alt={img.alt}
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 400px"
+                        className="object-cover object-center"
+                        priority={idx < 4}
+                        placeholder="blur"
+                        blurDataURL={REMOTE_IMAGE_BLUR_DATA_URL}
+                      />
+                    </motion.div>
+                  </div>
+                  <div className="flex flex-col gap-2 px-0.5">
+                    <p
+                      className={`font-urbanist text-[10px] font-extralight leading-relaxed tracking-[0.2em] text-[#9A8550] transition-colors duration-300 group-hover:text-[#b09a63] ${lang === "ar" ? "font-arabic tracking-normal" : "uppercase"}`}
+                    >
+                      {t(img.kickerKey)}
+                    </p>
+                    <h3
+                      className={`text-[18px] font-medium leading-snug tracking-normal text-[#0f172a] ${lang === "ar" ? "font-arabic" : "font-playfair"}`}
+                    >
+                      {t(img.titleKey)}
+                    </h3>
+                  </div>
+                </motion.article>
               );
             })}
           </div>

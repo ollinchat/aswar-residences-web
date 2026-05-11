@@ -229,3 +229,85 @@ html.aswar-a11y-stop-animations *::after {
   z-index: 9999 !important;
   pointer-events: none;
 }
+
+/* Amenities cinematic tiles — subtle Ken Burns on stills & video */
+@keyframes amenity-ken-burns {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.085);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.amenity-ken-burns-inner {
+  transform-origin: center center;
+  animation: amenity-ken-burns 22s ease-in-out infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .amenity-ken-burns-inner {
+    animation: none !important;
+  }
+}
+
+/* Amenities filmstrip — seamless horizontal marquee (3× duplicate track) */
+@keyframes amenity-filmstrip-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-33.333333%, 0, 0);
+  }
+}
+
+.aswar-amenity-filmstrip-track {
+  display: flex;
+  flex-direction: row;
+  width: max-content;
+  animation: amenity-filmstrip-marquee 44s linear infinite;
+  will-change: transform;
+}
+
+.aswar-amenity-filmstrip-wrap:hover .aswar-amenity-filmstrip-track {
+  animation-play-state: paused;
+}
+
+.aswar-amenity-filmstrip-segment {
+  gap: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aswar-amenity-filmstrip-track {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Floating hub — soft expanding gold glow (Phone & Messages only); not noisy */
+@keyframes aswar-fab-gold-ripple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(154, 133, 80, 0.12);
+  }
+  50% {
+    box-shadow: 0 0 0 11px rgba(154, 133, 80, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(154, 133, 80, 0);
+  }
+}
+
+.aswar-fab-pulse-gold {
+  border-radius: 9999px;
+  animation: aswar-fab-gold-ripple 3s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aswar-fab-pulse-gold {
+    animation: none !important;
+  }
+}

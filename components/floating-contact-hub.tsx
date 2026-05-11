@@ -7,7 +7,14 @@ import {
   motion,
   useReducedMotion,
 } from "framer-motion";
-import { MessageCircle, Plus, UserRound, X } from "lucide-react";
+/* Lucide Accessibility: universal-access glyph (figure with arms extended). */
+import {
+  Accessibility,
+  MessageCircle,
+  Phone,
+  Plus,
+  X,
+} from "lucide-react";
 import type { ReactNode } from "react";
 import {
   BrandIconFacebook,
@@ -24,23 +31,38 @@ import {
 import { useLang } from "@/components/language-provider";
 import type { CopyKey, Lang } from "@/lib/i18n";
 
-const glassFab =
-  "relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/40 text-charcoal shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-2xl transition-[box-shadow,border-color,transform] duration-300 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal/25";
+/** Double-ring: very faint outer white; inner lens 100% transparent + heavy blur */
+const fabOuterRing =
+  "rounded-full border border-white/[0.09] p-[2px] shadow-none";
 
-/** Accessibility — cool silver halo */
-const fabGlowSilver =
-  "motion-safe:hover:border-slate-200/55 motion-safe:hover:shadow-[0_0_28px_rgba(192,198,210,0.5),0_8px_28px_rgba(0,0,0,0.08)]";
+const fabLens =
+  "group relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-white/[0.07] bg-transparent text-[#9A8550] backdrop-blur-[40px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9A8550]/40";
 
-/** Social — soft platinum between silver and gold */
-const fabGlowPlatinum =
-  "motion-safe:hover:border-stone-200/50 motion-safe:hover:shadow-[0_0_26px_rgba(210,205,198,0.45),0_8px_28px_rgba(0,0,0,0.09)]";
-
-/** Contact — champagne gold */
-const fabGlowGoldStrong =
-  "motion-safe:hover:border-champagne/45 motion-safe:hover:shadow-[0_0_32px_rgba(212,175,55,0.5),0_8px_28px_rgba(0,0,0,0.11)]";
+/** Gold icon + illuminated gold drop-shadow on lens hover */
+const fabIconWrap =
+  "flex items-center justify-center text-[#9A8550] transition-[filter,color] duration-300 ease-out [&_svg]:text-[#9A8550] group-hover:[&_svg]:text-[#e8d4a6] group-hover:[&_svg]:drop-shadow-[0_0_12px_rgba(154,133,80,0.95)]";
 
 const hitWrap =
-  "flex min-h-[52px] min-w-[52px] items-center justify-center rounded-full";
+  "flex min-h-[60px] min-w-[60px] items-center justify-center rounded-full";
+
+const FAB_ICON_CLASS = "h-[22px] w-[22px]";
+const FAB_STROKE = 1;
+
+function FabDoubleRing({
+  pulse = false,
+  children,
+}: {
+  pulse?: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      className={`${fabOuterRing} ${pulse ? "aswar-fab-pulse-gold" : ""}`.trim()}
+    >
+      {children}
+    </div>
+  );
+}
 
 const LS_TEXT_SIZE = "aswar-a11y-text-size";
 const LS_LEGACY_TEXT = "aswar-a11y-text";
@@ -53,13 +75,6 @@ const CLS_BIG_CURSOR = "aswar-a11y-big-cursor";
 const CLS_STOP_ANIM = "aswar-a11y-stop-animations";
 const CLS_READABLE = "aswar-a11y-readable-font";
 const LS_NEGATIVE = "aswar-a11y-negative";
-
-const menuSpring = {
-  type: "spring" as const,
-  stiffness: 280,
-  damping: 13,
-  mass: 0.68,
-};
 
 const pillTap = { type: "spring" as const, stiffness: 520, damping: 28 };
 
@@ -496,38 +511,41 @@ export function FloatingContactHub() {
   }, [contactOpen, socialOpen, a11yOpen, closeAll]);
 
   const overlayOpen = contactOpen || socialOpen || a11yOpen;
-  const menuTransition = useMemo(
-    () => (reduceMotion ? { duration: 0.2 } : menuSpring),
-    [reduceMotion],
-  );
   const fadeTransition = useMemo(
     () => (reduceMotion ? { duration: 0.15 } : { duration: 0.22 }),
     [reduceMotion],
   );
 
+  /** Trays: opacity-only crossfade — FABs stay fixed; no slide/scale toward center */
   const menuMotion = useMemo(
     () => ({
-      initial: reduceMotion
-        ? { opacity: 0 }
-        : {
-            opacity: 0,
-            y: 28,
-            scale: 0.94,
-            x: lang === "ar" ? 16 : -16,
-          },
-      animate: { opacity: 1, y: 0, scale: 1, x: 0 },
-      exit: reduceMotion
-        ? { opacity: 0 }
-        : {
-            opacity: 0,
-            y: 14,
-            scale: 0.95,
-            x: lang === "ar" ? 10 : -10,
-          },
-      transition: menuTransition,
+      initial: { opacity: 0 },
+      animate: { opacity: 1 },
+      exit: { opacity: 0 },
+      transition: reduceMotion
+        ? { duration: 0.18 }
+        : { duration: 0.24, ease: [0.4, 0, 0.2, 1] as const },
     }),
-    [reduceMotion, lang, menuTransition],
+    [reduceMotion],
   );
+
+  const telHref = useMemo(() => {
+    const tel =
+      process.env.NEXT_PUBLIC_CONTACT_PHONE_E164 || "+9714000000000";
+    return tel.startsWith("tel:") ? tel : `tel:${tel}`;
+  }, []);
+
+  /** Liquid hover: scale 1.15 — spring stiffness 280, damping 34 */
+  const fabHoverSpring = reduceMotion
+    ? undefined
+    : {
+        scale: 1.15,
+        transition: {
+          type: "spring" as const,
+          stiffness: 280,
+          damping: 34,
+        },
+      };
 
   const tree = (
     <>
@@ -547,9 +565,9 @@ export function FloatingContactHub() {
         ) : null}
       </AnimatePresence>
 
-      <div className="aswar-floating-hub-root z-[9999] flex flex-col items-start gap-2.5">
-        <div className="pointer-events-auto flex flex-col gap-2.5">
-          {/* Accessibility */}
+      <div className="aswar-floating-hub-root z-[9999] flex flex-col items-start gap-5">
+        <div className="pointer-events-auto flex flex-col gap-5">
+          {/* Accessibility — top of stack */}
           <div className="flex w-full flex-col items-start gap-1.5">
             <AnimatePresence>
               {a11yOpen ? (
@@ -643,24 +661,34 @@ export function FloatingContactHub() {
             </AnimatePresence>
 
             <div className={hitWrap}>
-              <motion.button
-                type="button"
-                onClick={toggleA11y}
-                aria-expanded={a11yOpen}
-                aria-haspopup="dialog"
-                aria-label={
-                  a11yOpen ? t("hubAriaA11yClose") : t("hubAriaA11yOpen")
-                }
-                whileTap={{ scale: 0.94 }}
-                transition={pillTap}
-                className={`${glassFab} ${fabGlowSilver}`}
-              >
-                <UserRound className="h-5 w-5" strokeWidth={1.25} aria-hidden />
-              </motion.button>
+              <FabDoubleRing>
+                <motion.button
+                  type="button"
+                  onClick={toggleA11y}
+                  aria-expanded={a11yOpen}
+                  aria-haspopup="dialog"
+                  aria-label={
+                    a11yOpen ? t("hubAriaA11yClose") : t("hubAriaA11yOpen")
+                  }
+                  title={a11yOpen ? t("hubAriaA11yClose") : t("hubAriaA11yOpen")}
+                  whileHover={fabHoverSpring}
+                  whileTap={{ scale: 0.96 }}
+                  transition={pillTap}
+                  className={fabLens}
+                >
+                  <span className={fabIconWrap}>
+                    <Accessibility
+                      className={FAB_ICON_CLASS}
+                      strokeWidth={FAB_STROKE}
+                      aria-hidden
+                    />
+                  </span>
+                </motion.button>
+              </FabDoubleRing>
             </div>
           </div>
 
-          {/* Social */}
+          {/* Social / more */}
           <div className="flex w-full flex-col items-start gap-1.5">
             <AnimatePresence>
               {socialOpen ? (
@@ -693,32 +721,40 @@ export function FloatingContactHub() {
             </AnimatePresence>
 
             <div className={hitWrap}>
-              <motion.button
-                type="button"
-                onClick={toggleSocial}
-                aria-expanded={socialOpen}
-                aria-haspopup="dialog"
-                aria-label={
-                  socialOpen ? t("hubAriaSocialClose") : t("hubAriaSocialOpen")
-                }
-                whileTap={{ scale: 0.94 }}
-                transition={pillTap}
-                className={`${glassFab} ${fabGlowPlatinum}`}
-              >
-                <motion.span
-                  aria-hidden
-                  animate={{ rotate: socialOpen ? 45 : 0 }}
+              <FabDoubleRing>
+                <motion.button
+                  type="button"
+                  onClick={toggleSocial}
+                  aria-expanded={socialOpen}
+                  aria-haspopup="dialog"
+                  aria-label={
+                    socialOpen
+                      ? t("hubAriaSocialClose")
+                      : t("hubAriaSocialOpen")
+                  }
+                  whileHover={fabHoverSpring}
+                  whileTap={{ scale: 0.96 }}
                   transition={pillTap}
-                  className="flex items-center justify-center text-charcoal"
+                  className={fabLens}
                 >
-                  <Plus className="h-5 w-5" strokeWidth={1.35} />
-                </motion.span>
-              </motion.button>
+                  <motion.span
+                    aria-hidden
+                    animate={{ rotate: socialOpen ? 45 : 0 }}
+                    transition={pillTap}
+                    className={fabIconWrap}
+                  >
+                    <Plus
+                      className={FAB_ICON_CLASS}
+                      strokeWidth={FAB_STROKE}
+                    />
+                  </motion.span>
+                </motion.button>
+              </FabDoubleRing>
             </div>
           </div>
 
-          {/* Contact */}
-          <div className="flex w-full flex-col items-start gap-1.5">
+          {/* Phone + Messages — tight pair at bottom; gold ripple on both lenses */}
+          <div className="flex w-full flex-col items-start gap-1">
             <AnimatePresence>
               {contactOpen ? (
                 <motion.div
@@ -750,30 +786,59 @@ export function FloatingContactHub() {
             </AnimatePresence>
 
             <div className={hitWrap}>
-              <motion.button
-                type="button"
-                onClick={toggleContact}
-                aria-expanded={contactOpen}
-                aria-haspopup="dialog"
-                aria-label={
-                  contactOpen ? t("hubAriaClose") : t("hubAriaOpen")
-                }
-                whileTap={{ scale: 0.94 }}
-                transition={pillTap}
-                className={`${glassFab} ring-1 ring-white/15 ${fabGlowGoldStrong}`}
-              >
-                <span className="flex h-5 w-5 items-center justify-center">
-                  {contactOpen ? (
-                    <X className="h-5 w-5" strokeWidth={1.25} aria-hidden />
-                  ) : (
-                    <MessageCircle
-                      className="h-5 w-5"
-                      strokeWidth={1.25}
+              <FabDoubleRing pulse>
+                <motion.button
+                  type="button"
+                  onClick={toggleContact}
+                  aria-expanded={contactOpen}
+                  aria-haspopup="dialog"
+                  aria-label={
+                    contactOpen ? t("hubAriaClose") : t("hubAriaOpen")
+                  }
+                  whileHover={fabHoverSpring}
+                  whileTap={{ scale: 0.96 }}
+                  transition={pillTap}
+                  className={fabLens}
+                >
+                  <span className={fabIconWrap}>
+                    {contactOpen ? (
+                      <X
+                        className={FAB_ICON_CLASS}
+                        strokeWidth={FAB_STROKE}
+                        aria-hidden
+                      />
+                    ) : (
+                      <MessageCircle
+                        className={FAB_ICON_CLASS}
+                        strokeWidth={FAB_STROKE}
+                        aria-hidden
+                      />
+                    )}
+                  </span>
+                </motion.button>
+              </FabDoubleRing>
+            </div>
+
+            <div className={hitWrap}>
+              <FabDoubleRing pulse>
+                <motion.a
+                  href={telHref}
+                  aria-label={t("hubToolPhone")}
+                  title={t("hubToolPhone")}
+                  whileHover={fabHoverSpring}
+                  whileTap={{ scale: 0.96 }}
+                  transition={pillTap}
+                  className={fabLens}
+                >
+                  <span className={fabIconWrap}>
+                    <Phone
+                      className={FAB_ICON_CLASS}
+                      strokeWidth={FAB_STROKE}
                       aria-hidden
                     />
-                  )}
-                </span>
-              </motion.button>
+                  </span>
+                </motion.a>
+              </FabDoubleRing>
             </div>
           </div>
         </div>
