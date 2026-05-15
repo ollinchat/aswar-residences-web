@@ -795,7 +795,7 @@ export default function Home() {
               return (
                 <motion.article
                   key={img.src}
-                  className="group flex min-h-0 flex-col gap-3 md:gap-3.5"
+                  className="group flex min-h-0 flex-col gap-5 md:gap-6"
                   initial={
                     isNew
                       ? { opacity: 0, y: 22 }
@@ -836,14 +836,14 @@ export default function Home() {
                       />
                     </motion.div>
                   </div>
-                  <div className="flex flex-col gap-2 px-0.5">
+                  <div className="flex flex-col gap-1.5 px-0.5 pt-1 md:pt-2">
                     <p
-                      className={`font-urbanist text-[10px] font-extralight leading-relaxed tracking-[0.2em] text-[#9A8550] transition-colors duration-300 group-hover:text-[#b09a63] ${lang === "ar" ? "font-arabic tracking-normal" : "uppercase"}`}
+                      className={`font-urbanist text-[10px] font-extralight leading-relaxed tracking-[0.2em] text-charcoal/45 ${lang === "ar" ? "font-arabic tracking-normal" : "uppercase"}`}
                     >
                       {t(img.kickerKey)}
                     </p>
                     <h3
-                      className={`text-[18px] font-medium leading-snug tracking-normal text-[#0f172a] ${lang === "ar" ? "font-arabic" : "font-playfair"}`}
+                      className={`text-[18px] font-medium leading-snug tracking-normal text-charcoal ${lang === "ar" ? "font-arabic" : "font-playfair"}`}
                     >
                       {t(img.titleKey)}
                     </h3>

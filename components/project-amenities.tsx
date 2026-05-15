@@ -18,7 +18,7 @@ import {
 } from "@/lib/amenity-hotspots";
 import { AMENITY_VISUALS, type AmenityVisualMedia } from "@/lib/amenity-visuals";
 
-const GOLD = "#9A8550";
+const ICON_COLOR = "#1A1C1E";
 
 const AMENITY_DESC = {
   amenityFurnishedUnits: "amenityFurnishedUnitsDesc",
@@ -174,10 +174,10 @@ function FilmstripTile({
       aria-label={label}
       aria-current={isActive ? "true" : undefined}
       onClick={() => onSelect(amenityKey)}
-      className={`group relative aspect-square w-32 shrink-0 overflow-hidden rounded-[4px] border bg-white outline-none transition-[border-color,box-shadow] duration-300 focus-visible:ring-2 focus-visible:ring-[#9A8550]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:w-36 md:w-40 ${
+      className={`group relative aspect-square w-32 shrink-0 overflow-hidden rounded-none border-0 bg-white outline-none transition-[opacity,transform] duration-300 focus-visible:ring-2 focus-visible:ring-charcoal/25 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:w-36 md:w-40 ${
         isActive
-          ? "z-[1] border-[#9A8550] shadow-[0_0_14px_rgba(154,133,80,0.22)]"
-          : "border-[#9A8550]/15"
+          ? "z-[1] scale-100 opacity-100"
+          : "scale-[0.98] opacity-70"
       }`}
     >
       {inView ? (
@@ -195,23 +195,22 @@ function FilmstripTile({
         <div className="absolute inset-0 bg-white" aria-hidden />
       )}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] min-h-[55%] rounded-b-[4px] bg-gradient-to-t from-white/98 via-white/70 to-transparent md:min-h-[52%]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] min-h-[46%] bg-gradient-to-t from-white via-white/88 to-transparent"
         aria-hidden
       />
-      <div className="pointer-events-none absolute end-1.5 top-1.5 z-[2] rounded-[4px] md:end-2 md:top-2">
+      <div className="pointer-events-none absolute end-1.5 top-1.5 z-[2] md:end-2 md:top-2">
         <Icon
           width={15}
           height={15}
           strokeWidth={ICON_STROKE}
-          color={GOLD}
+          color={ICON_COLOR}
           className="drop-shadow-none"
           aria-hidden
         />
       </div>
-      {/* Lower band (~bottom 38%): titles sit low with pb-4; ~15% clearance from tile bottom via padding */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 top-[62%] z-[2] flex flex-col justify-end px-2 pb-4 md:top-[60%] md:px-2.5">
+      <div className="pointer-events-none absolute inset-0 z-[2] flex flex-col items-end justify-end px-1.5 pb-1 md:px-2 md:pb-2">
         <p
-          className={`line-clamp-2 max-w-full text-center text-[11px] font-medium leading-snug tracking-wide text-[#9A8550] transition-[text-shadow] duration-200 md:text-[12px] ${lang === "ar" ? "font-arabic" : "font-playfair"} ${isActive ? "[text-shadow:0_0_8px_rgba(154,133,80,0.3)]" : ""}`}
+          className={`line-clamp-2 w-full text-center text-[11px] font-medium leading-snug tracking-wide text-[#0f172a] md:text-[12px] ${lang === "ar" ? "font-arabic" : "font-playfair"}`}
         >
           {t(amenityKey)}
         </p>
@@ -265,7 +264,7 @@ function AmenityStage({
           width={40}
           height={40}
           strokeWidth={ICON_STROKE}
-          color={GOLD}
+          color={ICON_COLOR}
           className="shrink-0"
           aria-hidden
         />
@@ -309,7 +308,7 @@ export function ProjectAmenities() {
 
   return (
     <section
-      className="w-full border-t border-[#9A8550]/15 bg-white py-10 md:py-12"
+      className="w-full border-t border-charcoal/10 bg-white py-10 md:py-12"
       aria-label={t("amenitiesTitle")}
     >
       <div className="mx-auto w-full max-w-[1200px] px-4 md:px-6 lg:px-8">
@@ -329,7 +328,7 @@ export function ProjectAmenities() {
         <MotionConfig reducedMotion={reduceMotion ? "always" : "never"}>
           <div className="flex flex-col gap-px md:gap-px shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
             <div
-              className="relative w-full overflow-hidden rounded-[4px] border border-[#9A8550]/15 bg-[#fafafa] [aspect-ratio:21/9] min-h-[200px] max-h-[500px] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.5)]"
+              className="relative w-full overflow-hidden rounded-[4px] border border-charcoal/10 bg-[#fafafa] [aspect-ratio:21/9] min-h-[200px] max-h-[500px] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.5)]"
               role="region"
               aria-label={t(featuredKey)}
             >
@@ -343,7 +342,7 @@ export function ProjectAmenities() {
             </div>
 
             <div
-              className="aswar-amenity-filmstrip-wrap overflow-hidden rounded-[4px] border border-[#9A8550]/15 bg-white py-0"
+              className="aswar-amenity-filmstrip-wrap overflow-hidden rounded-none bg-white py-0"
               dir="ltr"
               role="group"
               aria-label={t("amenitiesTitle")}
