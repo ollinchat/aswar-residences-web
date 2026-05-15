@@ -18,7 +18,7 @@ import {
 } from "@/lib/amenity-hotspots";
 import { AMENITY_VISUALS, type AmenityVisualMedia } from "@/lib/amenity-visuals";
 
-const ICON_COLOR = "#1A1C1E";
+const ICON_COLOR = "#9A8550";
 
 const AMENITY_DESC = {
   amenityFurnishedUnits: "amenityFurnishedUnitsDesc",
@@ -87,7 +87,7 @@ function AmenityBackgroundMedia({
 
   if (media.kind === "image") {
     return (
-      <div className="absolute inset-0 overflow-hidden rounded-[4px]">
+      <div className="absolute inset-0 overflow-hidden rounded-none">
         <div
           className={`relative h-full w-full ${burnClass}`}
           style={reduceMotion ? undefined : wrapStyle}
@@ -111,7 +111,7 @@ function AmenityBackgroundMedia({
 
   if (!showVideo) {
     return (
-      <div className="absolute inset-0 overflow-hidden rounded-[4px]">
+      <div className="absolute inset-0 overflow-hidden rounded-none">
         <div
           className={`relative h-full w-full ${burnClass}`}
           style={reduceMotion ? undefined : wrapStyle}
@@ -132,7 +132,7 @@ function AmenityBackgroundMedia({
   }
 
   return (
-    <div className="absolute inset-0 overflow-hidden rounded-[4px]">
+    <div className="absolute inset-0 overflow-hidden rounded-none">
       <div className={`relative h-full w-full ${burnClass}`} style={wrapStyle}>
         <video
           ref={videoRef}
@@ -246,7 +246,7 @@ function AmenityStage({
       animate={{ opacity: 1 }}
       exit={reduceMotion ? undefined : { opacity: 0 }}
       transition={crossfade}
-      className="absolute inset-0 overflow-hidden rounded-[4px]"
+      className="absolute inset-0 overflow-hidden rounded-none"
     >
       <AmenityBackgroundMedia
         media={media}
@@ -258,7 +258,7 @@ function AmenityStage({
         eager
       />
       <div
-        className="absolute inset-y-0 start-0 z-[2] flex w-1/3 min-w-0 flex-col justify-center gap-3 rounded-[4px] border-e border-white/35 bg-gradient-to-r from-white/75 to-transparent px-4 py-6 backdrop-blur-2xl md:gap-4 md:px-6 md:py-8"
+        className="absolute inset-y-0 start-0 z-[2] flex w-1/3 min-w-0 flex-col justify-center gap-3 rounded-none border-e border-white/35 bg-gradient-to-r from-white/75 to-transparent px-4 py-6 backdrop-blur-2xl md:gap-4 md:px-6 md:py-8"
       >
         <Icon
           width={40}
@@ -328,7 +328,7 @@ export function ProjectAmenities() {
         <MotionConfig reducedMotion={reduceMotion ? "always" : "never"}>
           <div className="flex flex-col gap-px md:gap-px shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
             <div
-              className="relative w-full overflow-hidden rounded-[4px] border border-charcoal/10 bg-[#fafafa] [aspect-ratio:21/9] min-h-[200px] max-h-[500px] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.5)]"
+              className="relative w-full overflow-hidden rounded-none border border-charcoal/10 bg-[#fafafa] [aspect-ratio:21/9] min-h-[200px] max-h-[500px] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.5)]"
               role="region"
               aria-label={t(featuredKey)}
             >
