@@ -6,9 +6,10 @@ export const copy = {
     navGallery: "Gallery",
     navLocation: "Location",
     navAbout: "About Najami",
+    navAboutAswar: "About Aswar",
     navInquire: "Book a meeting",
     langShort: "عربي",
-    heroSubtitle: "Private Residences · Dubai",
+    heroSubtitle: "Ras Al Khor · Meydan Horizon · Dubai Skyline Views",
     experience360: "Experience 360°",
     sealQuality: "Seal of quality",
     engineeringSealTitle: "Engineering seal",
@@ -30,7 +31,7 @@ export const copy = {
     magazineKicker: "The collection",
     residencesTitle: "The Residences",
     residencesSubtitle:
-      "Refine typology, budget, and availability — specifications and media update per layout.",
+      "Corner-placed tower residences in Ras Al Khor — 1BR (75–77 sqm) and 2BR (130–156 sqm) with Dubai skyline views.",
     stepTypes: "Typology",
     stepBudget: "Budget",
     stepOptions: "Availability",
@@ -63,39 +64,21 @@ export const copy = {
       "Explore the tower — hover points or tap the list",
     amenitiesExitFocus: "Exit focus",
     amenitiesTimelineHint: "Floor selector — tap to ride",
-    amenityFurnishedUnits: "Furnished Residences",
-    amenityAdultKidsPools: "Luxury Pools",
-    amenityGymJogTrack: "Fitness Studio",
-    amenityYogaMultipurposeDecks: "Wellness Decks",
-    amenityBbqFirePit: "Alfresco Dining",
-    amenityKidsPlayground: "Play Garden",
-    amenityReadingBeanBags: "Reading Lounge",
-    amenityCabanasWetDecks: "Pool Cabanas",
-    amenityCourtyardWaterGarden: "Garden Courtyard",
-    amenityMultipurposeHallLawn: "Grand Lawn",
-    amenityRooftopOpenArea: "Rooftop Lounge",
-    amenityFurnishedUnitsDesc:
-      "Curated interiors and signature finishes — move-in ready to ASWAR standards, with calm palettes and refined detailing throughout.",
-    amenityAdultKidsPoolsDesc:
-      "Temperature-controlled leisure pools for adults and children, framed by landscaped decks and quiet lounging edges.",
-    amenityGymJogTrackDesc:
-      "A private indoor fitness suite and jogging circuit for daily training — disciplined, discreet, and always on your floor.",
-    amenityYogaMultipurposeDecksDesc:
-      "Open-air wellness decks for yoga, meditation, and flexible community programming above the city.",
-    amenityBbqFirePitDesc:
-      "Alfresco dining terraces with barbecue and fire-pit lounges — made for long evenings and unhurried hosting.",
-    amenityKidsPlaygroundDesc:
-      "A secure, imaginative play garden for younger residents — safe sightlines, soft landscaping, and room to roam.",
-    amenityReadingBeanBagsDesc:
-      "Quiet lounges with relaxed seating for reading, conversation, and focused calm away from the skyline pace.",
-    amenityCabanasWetDecksDesc:
-      "Poolside cabanas and wet decks with sun loungers — resort-grade downtime without leaving the tower.",
-    amenityCourtyardWaterGardenDesc:
-      "A courtyard axis with water features and garden views — the pause between lobby, lifts, and the sky.",
-    amenityMultipurposeHallLawnDesc:
-      "A multipurpose hall and open lawn for culture, gatherings, and celebrations under open sky.",
-    amenityRooftopOpenAreaDesc:
-      "An elevated open rooftop with panoramic views — the crown experience for sunsets and skyline silence.",
+    amenityPoolCabanas: "Pool with Cabanas",
+    amenityRooftopLounge: "Rooftop Lounge",
+    amenityYogaDeck: "Yoga Deck",
+    amenityGym: "Gym",
+    amenityJoggingTrack: "Jogging Track",
+    amenityPoolCabanasDesc:
+      "A temperature-controlled pool framed by cabanas and wet decks — resort-grade leisure at podium level.",
+    amenityRooftopLoungeDesc:
+      "An elevated lounge with panoramic views toward the Dubai skyline and Meydan horizon.",
+    amenityYogaDeckDesc:
+      "Open-air decks for yoga, meditation, and quiet wellness above the city.",
+    amenityGymDesc:
+      "A private fitness studio with modern equipment for daily training — discreet and resident-only.",
+    amenityJoggingTrackDesc:
+      "A landscaped jogging circuit for morning runs and evening laps within the development.",
     amenitiesRibbonKicker: "Amenities",
     amenitiesDetailClose: "Close",
     parking: "Parking",
@@ -124,10 +107,40 @@ export const copy = {
     paymentCalcFinalPriceDisclaimer:
       "The final price will be determined after including the interest rate and bank terms.",
     paymentCalcDownStartsAt: "Starts at",
+    aboutKicker: "The developer",
+    aboutTitle: "About Aswar",
+    aboutLead:
+      "Luxury real estate development in Dubai — architectural excellence on the Meydan horizon.",
+    aboutBody:
+      "ASWAR is a luxury real estate developer devoted to high-end residential architecture in Dubai. Set within Ras Al Khor, near Meydan, the project commands corner positioning on a 2,365.95 sqm plot with clear views toward the Dubai skyline and direct connectivity via Emirates Road (E44).",
+    aboutPillarPrivacy: "Privacy",
+    aboutPillarLuxury: "Luxury",
+    aboutPillarInnovation: "Innovation",
+    timelineKicker: "Construction progress",
+    timelineTitle: "Project timeline",
+    timelineSubtitle:
+      "Key delivery milestones from land acquisition through handover.",
+    timelineCurrentLabel: "Current stage",
+    timelineStageLand: "Land acquisition",
+    timelineStageFoundation: "Foundation",
+    timelineStageStructural: "Structural work",
+    timelineStageInterior: "Interior finishing",
+    timelineStageHandover: "Handover",
+    timelineStageLandDesc:
+      "Site secured on the Meydan horizon within Ras Al Khor.",
+    timelineStageFoundationDesc:
+      "Foundations and substructure works underway on the corner plot.",
+    timelineStageStructuralDesc:
+      "Superstructure and core construction advancing toward full height.",
+    timelineStageInteriorDesc:
+      "MEP, façades, and interior fit-out following structural completion.",
+    timelineStageHandoverDesc:
+      "Resident handover, snagging, and move-in readiness.",
     locationTitle: "Location",
-    locationSubtitle: "Business Bay · Dubai, UAE",
+    locationSubtitle: "Ras Al Khor · Meydan · Dubai skyline views",
     locationMapCaption:
-      "Silver-toned cartography with a refined ASWAR marker. Final survey follows authority registration.",
+      "Corner site near Meydan with Emirates Road (E44) access. Cartography follows authority registration.",
+    headquartersAddress: "Ras Al Khor, Dubai",
     footerDev: "ASWAR International Development",
     footerLine: "Visionary Architecture · Dubai, UAE",
     headquarters: "Headquarters",
@@ -168,7 +181,7 @@ export const copy = {
       "Typical UAE retail assumptions (approx. 4.5–5.5% p.a., 20–25 year terms). Actual rates, fees, and eligibility depend on your bank and profile.",
     financingCta: "Get a finance quote",
     districtTitle: "District highlights",
-    districtSubtitle: "Business Bay — connected to the city",
+    districtSubtitle: "Ras Al Khor & Meydan — connected across Dubai",
     proxSchools: "Schools",
     proxSchoolsMins: "12 min away",
     proxShopping: "Shopping · Dubai Mall",
@@ -252,6 +265,7 @@ export const copy = {
     navGallery: "المعرض",
     navLocation: "الموقع",
     navAbout: "نجامي · الأثر الإنشائي",
+    navAboutAswar: "عن أسوار",
     navInquire: "حجز لقاء",
     langShort: "EN",
     heroSubtitle: "مساكن خاصة · دبي، الإمارات",
@@ -276,7 +290,7 @@ export const copy = {
     magazineKicker: "المجموعة",
     residencesTitle: "المساكن",
     residencesSubtitle:
-      "صفِّ الفئة والميزانية والتوافر — تتجدد المواصفات والوسائط وفق كل مخطط.",
+      "مساكن في رأس الخور على زاوية الموقع — غرفة نوم (٧٥–٧٧ م²) وغرفتان (١٣٠–١٥٦ م²) بإطلالات على أفق دبي.",
     stepTypes: "الفئة",
     stepBudget: "الميزانية",
     stepOptions: "التوافر",
@@ -307,39 +321,21 @@ export const copy = {
     amenitiesHotspotHint: "استكشف البرج — مرّر على النقاط أو اختر من القائمة",
     amenitiesExitFocus: "إغلاق التركيز",
     amenitiesTimelineHint: "اختيار الطابق — اضغط للانتقال",
-    amenityFurnishedUnits: "وحدات مفروشة",
-    amenityAdultKidsPools: "مسابح فاخرة",
-    amenityGymJogTrack: "صالة لياقة",
-    amenityYogaMultipurposeDecks: "سطح العافية",
-    amenityBbqFirePit: "تراس الشواء",
-    amenityKidsPlayground: "حديقة الأطفال",
-    amenityReadingBeanBags: "صالة القراءة",
-    amenityCabanasWetDecks: "كبائن المسبح",
-    amenityCourtyardWaterGarden: "باحة مائية",
-    amenityMultipurposeHallLawn: "مسطح الفعاليات",
-    amenityRooftopOpenArea: "صالة السطح",
-    amenityFurnishedUnitsDesc:
-      "تشطيبات مختارة بعناية وجاهزة للسكن — بمعايير أسوار وهدوء في الألوان وتفاصيل راقية في كل مساحة.",
-    amenityAdultKidsPoolsDesc:
-      "مسابح مريحة للبالغين والأطفال بدرجة حرارة مضبوطة، مع أسطح خضراء وحواف جلوس هادئة.",
-    amenityGymJogTrackDesc:
-      "صالة لياقة داخلية وممشى للجري — تدريب يومي بخصوصية، دون مغادرة البرج.",
-    amenityYogaMultipurposeDecksDesc:
-      "أسطح مفتوحة لليوغا والتأمل وفعاليات المجتمع المرنة، فوق إيقاع المدينة.",
-    amenityBbqFirePitDesc:
-      "شرفات طعام في الهواء الطلق مع شوايات ومناطق جلوس حول الموقد — لأمسيات طويلة وضيافة بلا عجلة.",
-    amenityKidsPlaygroundDesc:
-      "حديقة لعب آمنة وخيالية للصغار — رؤية مريحة للعائلة وتنسيق لطيف ومساحة للحركة.",
-    amenityReadingBeanBagsDesc:
-      "صالات هادئة بجلوس مريح للقراءة والحديث والتركيز بعيداً عن زحمة الأبراج.",
-    amenityCabanasWetDecksDesc:
-      "كبائن بجانب المسطح المائي وكراسي استلقاء — استرخاء على طراز المنتجع دون مغادرة البرج.",
-    amenityCourtyardWaterGardenDesc:
-      "محور باحة داخلية مع مياه وإطلالات على الحديقة — لحظة توقف بين الردهة والمصاعد والسماء.",
-    amenityMultipurposeHallLawnDesc:
-      "قاعة متعددة الاستخدامات ومسطح أخضر مفتوح للثقافة والتجمعات والاحتفالات تحت السماء.",
-    amenityRooftopOpenAreaDesc:
-      "سطح مرتفع ومفتوح بإطلالات بانورامية — تجربة التاج لغروب الشمس وهدوء الأفق.",
+    amenityPoolCabanas: "مسبح مع كبائن",
+    amenityRooftopLounge: "صالة السطح",
+    amenityYogaDeck: "سطح اليوغا",
+    amenityGym: "صالة رياضية",
+    amenityJoggingTrack: "مسار الجري",
+    amenityPoolCabanasDesc:
+      "مسبح بدرجة حرارة مضبوطة مع كبائن ومناطق استرخاء على طراز المنتجع.",
+    amenityRooftopLoungeDesc:
+      "صالة مرتفعة بإطلالات بانورامية على أفق دبي وأفق ميدان.",
+    amenityYogaDeckDesc:
+      "أسطح مفتوحة لليوغا والتأمل والعافية فوق المدينة.",
+    amenityGymDesc:
+      "صالة لياقة خاصة بمعدات عصرية — للسكان فقط وبخصوصية.",
+    amenityJoggingTrackDesc:
+      "مسار جري منسّق لجولات الصباح والمساء داخل المشروع.",
     amenitiesRibbonKicker: "المرافق",
     amenitiesDetailClose: "إغلاق",
     parking: "المواقف",
@@ -368,10 +364,40 @@ export const copy = {
     paymentCalcFinalPriceDisclaimer:
       "يتم تحديد السعر النهائي بعد احتساب نسبة الفائدة وشروط البنك.",
     paymentCalcDownStartsAt: "يبدأ من",
+    aboutKicker: "المطوّر",
+    aboutTitle: "عن أسوار",
+    aboutLead:
+      "تطوير عقاري فاخر في دبي — تميّز معماري على أفق ميدان.",
+    aboutBody:
+      "أسوار مطوّر عقاري فاخر متخصص في العمارة السكنية الراقية في دبي. يقع المشروع في رأس الخور قرب ميدان، على قطعة زاوية بمساحة ٢٬٣٦٥٫٩٥ م² بإطلالات واضحة على أفق دبي واتصال مباشر عبر طريق الإمارات (E44).",
+    aboutPillarPrivacy: "الخصوصية",
+    aboutPillarLuxury: "الفخامة",
+    aboutPillarInnovation: "الابتكار",
+    timelineKicker: "تقدّم الإنشاء",
+    timelineTitle: "الجدول الزمني للمشروع",
+    timelineSubtitle:
+      "محطات التسليم من شراء الأرض حتى التسليم.",
+    timelineCurrentLabel: "المرحلة الحالية",
+    timelineStageLand: "شراء الأرض",
+    timelineStageFoundation: "الأساسات",
+    timelineStageStructural: "الأعمال الإنشائية",
+    timelineStageInterior: "التشطيبات الداخلية",
+    timelineStageHandover: "التسليم",
+    timelineStageLandDesc:
+      "تأمين الموقع على أفق ميدان ضمن رأس الخور.",
+    timelineStageFoundationDesc:
+      "أعمال الأساسات والبنية التحتية جارية على القطعة الزاوية.",
+    timelineStageStructuralDesc:
+      "الهيكل الإنشائي والنواة يتقدّمان نحو الارتفاع الكامل.",
+    timelineStageInteriorDesc:
+      "الأنظمة والواجهات والتشطيبات الداخلية بعد الإنشاء.",
+    timelineStageHandoverDesc:
+      "تسليم السكان وإنهاء الملاحظات والجاهزية للسكن.",
     locationTitle: "الموقع",
-    locationSubtitle: "الخليج التجاري · دبي، الإمارات العربية المتحدة",
+    locationSubtitle: "رأس الخور · ميدان · إطلالات أفق دبي",
     locationMapCaption:
-      "خريطة فاتحة مع علامة ASWAR؛ تُحدَّد النقطة النهائية وفق تسجيل الجهات المختصة.",
+      "موقع زاوية قرب ميدان مع وصول إلى طريق الإمارات (E44). تُحدَّد الخريطة وفق تسجيل الجهات.",
+    headquartersAddress: "رأس الخور، دبي",
     footerDev: "ASWAR International Development",
     footerLine: "عمارةٌ رائدة · دبي، الإمارات",
     headquarters: "المقرّ",
@@ -412,7 +438,7 @@ export const copy = {
       "أرقامٌ مستندةٌ إلى افتراضاتٍ سوقيةٍ تقريبيةٍ في دولة الإمارات (نحو ٤٫٥–٥٫٥٪ سنويًا، ٢٠–٢٥ سنة). القيم الفعلية تعتمد على البنك وملفكم.",
     financingCta: "طلب عرض تمويل",
     districtTitle: "أبرز الوجهة",
-    districtSubtitle: "الخليج التجاري — وصلٌ سلسٌ بقلب المدينة",
+    districtSubtitle: "رأس الخور وميدان — اتصالٌ عبر دبي",
     proxSchools: "المدارس",
     proxSchoolsMins: "١٢ دقيقة",
     proxShopping: "تسوّق · دبي مول",

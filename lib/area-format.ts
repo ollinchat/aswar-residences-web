@@ -30,3 +30,29 @@ export function formatAreaValue(
       : m2.toFixed(1).replace(/\.0$/, "");
   return `${Number(s).toLocaleString(loc)} SQ.M`;
 }
+
+export function formatAreaRangeSqm(
+  minSqm: number,
+  maxSqm: number,
+  lang: Lang,
+): string {
+  const loc = lang === "ar" ? "ar-AE" : "en-US";
+  const min = minSqm.toLocaleString(loc);
+  const max = maxSqm.toLocaleString(loc);
+  return `${min}–${max} SQ.M`;
+}
+
+export function formatAreaRangeFromSqm(
+  minSqm: number,
+  maxSqm: number,
+  metric: AreaMetric,
+  lang: Lang,
+): string {
+  if (metric === "sqm") {
+    return formatAreaRangeSqm(minSqm, maxSqm, lang);
+  }
+  const minFt = sqmToSqft(minSqm);
+  const maxFt = sqmToSqft(maxSqm);
+  const loc = lang === "ar" ? "ar-AE" : "en-US";
+  return `${minFt.toLocaleString(loc)}–${maxFt.toLocaleString(loc)} SQ.FT`;
+}

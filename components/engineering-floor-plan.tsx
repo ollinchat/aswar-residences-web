@@ -68,11 +68,11 @@ export function EngineeringFloorPlan({ unitId }: { unitId: string }) {
   };
 
   return (
-    <div className="rounded-[2px] border border-charcoal/[0.08] bg-white p-6 md:p-8">
+    <div className="rounded-none border border-charcoal/[0.08] bg-white p-6 md:p-8">
       <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.35em] text-charcoal/40">
         Engineering schematic · Not for construction
       </p>
-      {plans[unitId] ?? plans.studio}
+      {plans[unitId] ?? plans["1br"]}
     </div>
   );
 }

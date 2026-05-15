@@ -3,8 +3,9 @@ import Link from "next/link";
 import { SiteNavbar } from "@/components/site-navbar";
 
 export const metadata: Metadata = {
-  title: "Location | ASWAR 01",
-  description: "ASWAR 01 in Business Bay, Dubai — connectivity, views, and context.",
+  title: "Location | ASWAR",
+  description:
+    "ASWAR in Ras Al Khor, near Meydan — corner positioning with Dubai skyline views and E44 connectivity.",
 };
 
 export default function LocationPage() {
@@ -16,16 +17,16 @@ export default function LocationPage() {
           Location
         </p>
         <h1 className="mt-6 max-w-3xl font-serif text-4xl font-medium tracking-tight md:text-6xl">
-          Business Bay, at the centre of the new Dubai
+          Ras Al Khor, on the Meydan horizon
         </h1>
         <p className="mt-8 max-w-xl font-mono text-[11px] uppercase leading-relaxed tracking-wider text-charcoal/50">
-          Replace this copy with approved district storytelling, commute times,
-          and landmark distances once finalised.
+          A 2,365.95 sqm corner plot with views toward the Dubai skyline, connected
+          via Emirates Road (E44) for access across the emirate.
         </p>
-        <div className="mt-14 overflow-hidden rounded-sm border border-charcoal/10">
+        <div className="mt-14 overflow-hidden rounded-none border border-charcoal/10">
           <iframe
-            title="Business Bay, Dubai"
-            src="https://maps.google.com/maps?q=Business+Bay+Dubai&hl=en&z=14&output=embed"
+            title="Ras Al Khor, Dubai"
+            src="https://maps.google.com/maps?q=Ras+Al+Khor+Dubai&hl=en&z=13&output=embed"
             className="aspect-video h-[320px] w-full border-0 grayscale md:h-[400px]"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"

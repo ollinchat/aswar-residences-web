@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "ASWAR 01 | Ultra-Luxury Residences Dubai",
   description:
-    "Experience a new standard of architectural excellence. ASWAR 01 offers premium 1-5 bedroom residences and penthouses in the heart of Dubai.",
+    "ASWAR luxury residences in Ras Al Khor, near Meydan — 1BR and 2BR homes with Dubai skyline views, curated amenities, and architectural excellence.",
   openGraph: {
     title: "ASWAR 01 | International Development",
     description:

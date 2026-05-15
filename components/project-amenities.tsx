@@ -21,17 +21,11 @@ import { AMENITY_VISUALS, type AmenityVisualMedia } from "@/lib/amenity-visuals"
 const ICON_COLOR = "#9A8550";
 
 const AMENITY_DESC = {
-  amenityFurnishedUnits: "amenityFurnishedUnitsDesc",
-  amenityAdultKidsPools: "amenityAdultKidsPoolsDesc",
-  amenityGymJogTrack: "amenityGymJogTrackDesc",
-  amenityYogaMultipurposeDecks: "amenityYogaMultipurposeDecksDesc",
-  amenityBbqFirePit: "amenityBbqFirePitDesc",
-  amenityKidsPlayground: "amenityKidsPlaygroundDesc",
-  amenityReadingBeanBags: "amenityReadingBeanBagsDesc",
-  amenityCabanasWetDecks: "amenityCabanasWetDecksDesc",
-  amenityCourtyardWaterGarden: "amenityCourtyardWaterGardenDesc",
-  amenityMultipurposeHallLawn: "amenityMultipurposeHallLawnDesc",
-  amenityRooftopOpenArea: "amenityRooftopOpenAreaDesc",
+  amenityPoolCabanas: "amenityPoolCabanasDesc",
+  amenityRooftopLounge: "amenityRooftopLoungeDesc",
+  amenityYogaDeck: "amenityYogaDeckDesc",
+  amenityGym: "amenityGymDesc",
+  amenityJoggingTrack: "amenityJoggingTrackDesc",
 } as const satisfies Record<AmenityListKey, CopyKey>;
 
 const ICON_STROKE = 1;

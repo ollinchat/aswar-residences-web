@@ -61,6 +61,9 @@ export function SiteNavbar({
           <Link href="/gallery" className={`transition-colors ${linkClass}`}>
             {t("navGallery")}
           </Link>
+          <Link href="/#about-aswar" className={`transition-colors ${linkClass}`}>
+            {t("navAboutAswar")}
+          </Link>
           <Link href="/location" className={`transition-colors ${linkClass}`}>
             {t("navLocation")}
           </Link>

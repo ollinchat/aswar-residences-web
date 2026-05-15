@@ -1,19 +1,20 @@
+import { sqmToSqft } from "@/lib/area-format";
+
 export type ResidenceModel = {
   id: string;
   label: string;
-  /** Numeric areas for Sq.Ft / Sq.M toggle */
+  /** Authoritative gross area range from ASWAR sales materials (sqm). */
+  areaSqm: { min: number; max: number };
+  /** Numeric areas for Sq.Ft / Sq.M toggle (midpoint of range). */
   areas: {
     totalSqft: number;
     balconySqft: number;
   };
-  /** Interior / terrace breakdown (source of truth in SQ.FT). */
   spatial: {
-    /** Private garden / terrace garden; `null` when not applicable. */
     gardenSqft: number | null;
     kitchenSqft: number;
     livingSqft: number;
     masterBedSqft: number;
-    /** Combined additional bedrooms; `null` when not applicable (e.g. studio). */
     additionalBedroomsSqft: number | null;
   };
   specs: {
@@ -34,48 +35,32 @@ export type ResidenceModel = {
   };
 };
 
-export const RESIDENCE_MODELS: ResidenceModel[] = [
-  {
-    id: "studio",
-    label: "Studio",
-    areas: { totalSqft: 548, balconySqft: 52 },
-    spatial: {
-      gardenSqft: null,
-      kitchenSqft: 88,
-      livingSqft: 210,
-      masterBedSqft: 198,
-      additionalBedroomsSqft: null,
-    },
-    specs: {
-      parkingBays: 1,
-      elevator: true,
-      accessibility: true,
-      furnishing: "full",
-      smartHome: true,
-      security: "24/7",
-    },
-    images: [
-      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=88",
-    ],
-    pano: "/hero-360-panorama.jpg",
-    booking: {
-      availableUnits: 14,
-      totalUnits: 42,
-      priceMin: 1_100_000,
-      priceMax: 1_550_000,
-    },
+function modelFromSqm(
+  base: Omit<ResidenceModel, "areas"> & {
+    balconySqm: number;
   },
-  {
+): ResidenceModel {
+  const midSqm = (base.areaSqm.min + base.areaSqm.max) / 2;
+  const totalSqft = sqmToSqft(midSqm);
+  const balconySqft = sqmToSqft(base.balconySqm);
+  const { balconySqm: _b, ...rest } = base;
+  return {
+    ...rest,
+    areas: { totalSqft, balconySqft },
+  };
+}
+
+export const RESIDENCE_MODELS: ResidenceModel[] = [
+  modelFromSqm({
     id: "1br",
     label: "1BR",
-    areas: { totalSqft: 892, balconySqft: 118 },
+    areaSqm: { min: 75, max: 77 },
+    balconySqm: 11,
     spatial: {
       gardenSqft: null,
-      kitchenSqft: 115,
-      livingSqft: 295,
-      masterBedSqft: 364,
+      kitchenSqft: 95,
+      livingSqft: 280,
+      masterBedSqft: 340,
       additionalBedroomsSqft: null,
     },
     specs: {
@@ -98,17 +83,18 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
       priceMin: 1_650_000,
       priceMax: 2_350_000,
     },
-  },
-  {
+  }),
+  modelFromSqm({
     id: "2br",
     label: "2BR",
-    areas: { totalSqft: 1420, balconySqft: 186 },
+    areaSqm: { min: 130, max: 156 },
+    balconySqm: 18,
     spatial: {
       gardenSqft: null,
-      kitchenSqft: 135,
-      livingSqft: 410,
-      masterBedSqft: 340,
-      additionalBedroomsSqft: 349,
+      kitchenSqft: 125,
+      livingSqft: 385,
+      masterBedSqft: 320,
+      additionalBedroomsSqft: 310,
     },
     specs: {
       parkingBays: 2,
@@ -130,69 +116,5 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
       priceMin: 2_750_000,
       priceMax: 3_950_000,
     },
-  },
-  {
-    id: "3br",
-    label: "3BR",
-    areas: { totalSqft: 2180, balconySqft: 240 },
-    spatial: {
-      gardenSqft: null,
-      kitchenSqft: 165,
-      livingSqft: 520,
-      masterBedSqft: 380,
-      additionalBedroomsSqft: 875,
-    },
-    specs: {
-      parkingBays: 2,
-      elevator: true,
-      accessibility: true,
-      furnishing: "full",
-      smartHome: true,
-      security: "24/7",
-    },
-    images: [
-      "https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1800&q=88",
-    ],
-    pano: "/hero-360-panorama.jpg",
-    booking: {
-      availableUnits: 6,
-      totalUnits: 32,
-      priceMin: 4_100_000,
-      priceMax: 5_850_000,
-    },
-  },
-  {
-    id: "penthouse",
-    label: "Penthouse",
-    areas: { totalSqft: 4850, balconySqft: 620 },
-    spatial: {
-      gardenSqft: 420,
-      kitchenSqft: 320,
-      livingSqft: 980,
-      masterBedSqft: 620,
-      additionalBedroomsSqft: 1890,
-    },
-    specs: {
-      parkingBays: 3,
-      elevator: true,
-      accessibility: true,
-      furnishing: "full",
-      smartHome: true,
-      security: "24/7",
-    },
-    images: [
-      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1800&q=88",
-      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1800&q=88",
-    ],
-    pano: "/hero-360-panorama.jpg",
-    booking: {
-      availableUnits: 3,
-      totalUnits: 8,
-      priceMin: 8_200_000,
-      priceMax: 16_500_000,
-    },
-  },
+  }),
 ];

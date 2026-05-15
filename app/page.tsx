@@ -22,13 +22,16 @@ import { PartnerMarquee } from "@/components/partner-marquee";
 import { EngineeringFloorPlan } from "@/components/engineering-floor-plan";
 import { HeritageProjectGallery } from "@/components/heritage-project-gallery";
 import { PaymentSection } from "@/components/payment-section";
+import { AboutAswarSection } from "@/components/about-aswar-section";
+import { AswarMonogramWatermark } from "@/components/aswar-monogram-watermark";
 import { ProjectAmenities } from "@/components/project-amenities";
+import { ProjectDevelopmentTimeline } from "@/components/project-development-timeline";
 import { ResidenceGallerySlider } from "@/components/residence-gallery-slider";
 import { useLang } from "@/components/language-provider";
 import type { CopyKey, Lang } from "@/lib/i18n";
 import { RESIDENCE_MODELS } from "@/lib/residence-models";
 import type { AreaMetric } from "@/lib/area-format";
-import { formatAreaValue } from "@/lib/area-format";
+import { formatAreaRangeFromSqm, formatAreaValue } from "@/lib/area-format";
 import {
   DISTRICT_ATTRACTIONS_ALL,
   DISTRICT_ATTRACTIONS_INITIAL,
@@ -190,7 +193,7 @@ function ScrollBreath() {
 
 export default function Home() {
   const { t, lang } = useLang();
-  const [residenceId, setResidenceId] = useState<string>(RESIDENCE_MODELS[2].id);
+  const [residenceId, setResidenceId] = useState<string>(RESIDENCE_MODELS[0].id);
   const [viewerOpen, setViewerOpen] = useState(false);
   const [viewerSrc, setViewerSrc] = useState("/hero-360-panorama.jpg");
   const [viewerTitle, setViewerTitle] = useState("360° Experience");
@@ -332,6 +335,8 @@ export default function Home() {
 
         <ScrollBreath />
       </section>
+
+      <AboutAswarSection />
 
       <section
         id="the-residences"
@@ -598,8 +603,9 @@ export default function Home() {
                       </span>
                       <div className="flex min-w-0 flex-1 items-center justify-end gap-2 rtl:justify-start">
                         <span className="text-end font-sans text-[11px] font-medium tabular-nums text-white rtl:text-start rtl:font-arabic rtl:leading-[1.72]">
-                          {formatAreaValue(
-                            activeResidence.areas.totalSqft,
+                          {formatAreaRangeFromSqm(
+                            activeResidence.areaSqm.min,
+                            activeResidence.areaSqm.max,
                             areaMetric,
                             lang,
                           )}
@@ -757,6 +763,8 @@ export default function Home() {
           </AnimatePresence>
 
           <ProjectAmenities />
+
+          <ProjectDevelopmentTimeline />
         </div>
       </section>
 
@@ -912,11 +920,12 @@ export default function Home() {
       </section>
 
       <section
-        className={`px-6 py-20 transition-colors duration-300 md:px-12 ${
+        className={`relative overflow-hidden px-6 py-20 transition-colors duration-300 md:px-12 ${
           mapBasemap === "dark" ? "bg-[#1a1a1a]" : "bg-[#ebebeb]"
         }`}
       >
-        <div className="mx-auto max-w-6xl">
+        <AswarMonogramWatermark />
+        <div className="relative z-[1] mx-auto max-w-6xl">
           <SectionIntro
             title={t("locationTitle")}
             subtitle={t("locationSubtitle")}
@@ -949,7 +958,7 @@ export default function Home() {
             </button>
           </div>
           <div
-            className={`overflow-hidden rounded-[2px] transition-colors duration-300 ${
+            className={`overflow-hidden rounded-none transition-colors duration-300 ${
               mapBasemap === "dark" ? "bg-[#1c1c1c]" : "bg-[#ebebeb]"
             }`}
           >
@@ -1054,7 +1063,7 @@ export default function Home() {
               {t("headquarters")}
             </h4>
             <p className="font-mono text-[11px] uppercase leading-loose tracking-wider text-charcoal/45">
-              Business Bay, Dubai
+              {t("headquartersAddress")}
               <br />
               United Arab Emirates
             </p>
