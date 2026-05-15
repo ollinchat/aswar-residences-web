@@ -3,7 +3,7 @@
 const PLACEHOLDERS = [
   "Sami Najami",
   "ASWAR Development",
-  "Business Bay",
+  "Ras Al Khor",
   "Dubai Land",
   "Premium Partners",
   "Global Capital",

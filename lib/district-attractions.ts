@@ -8,6 +8,7 @@ export type DistrictAttraction = {
   alt: string;
   titleKey: CopyKey;
   kickerKey: CopyKey;
+  descKey: CopyKey;
 };
 
 const attraction = (
@@ -15,43 +16,43 @@ const attraction = (
   alt: string,
   titleKey: CopyKey,
   kickerKey: CopyKey,
+  descKey: CopyKey,
 ): DistrictAttraction => ({
-  src: `https://images.unsplash.com/${photoId}?auto=format&fit=crop&w=1200&q=80`,
+  src: `https://images.unsplash.com/${photoId}?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=88`,
   alt,
   titleKey,
   kickerKey,
+  descKey,
 });
 
 export const DISTRICT_ATTRACTIONS_ALL: DistrictAttraction[] = [
   attraction(
+    "photo-1551884834-b42e9a02d1f3",
+    "Pink flamingos at Ras Al Khor Wildlife Sanctuary wetlands",
+    "districtHlSanctuaryTitle",
+    "districtHlSanctuaryKicker",
+    "districtHlSanctuaryDesc",
+  ),
+  attraction(
+    "photo-1553284965-680caea199b0",
+    "Meydan Racecourse — world-class horse racing under evening lights",
+    "districtHlMeydanTitle",
+    "districtHlMeydanKicker",
+    "districtHlMeydanDesc",
+  ),
+  attraction(
+    "photo-1518684079-3c83eb24d39d",
+    "Dubai Creek Harbour skyline and waterfront towers at dusk",
+    "districtHlCreekTowerTitle",
+    "districtHlCreekTowerKicker",
+    "districtHlCreekTowerDesc",
+  ),
+  attraction(
     "photo-1512453979798-5ea266f8880c",
-    "Downtown Dubai and Burj Khalifa area — aerial city centre energy",
+    "Downtown Dubai skyline with Burj Khalifa — city centre panorama",
     "districtHlDowntownTitle",
     "districtHlDowntownKicker",
-  ),
-  attraction(
-    "photo-1546412414-8035e1776c9a",
-    "Dubai Marina — waterfront towers and turquoise water",
-    "districtHlMarinaTitle",
-    "districtHlMarinaKicker",
-  ),
-  attraction(
-    "photo-1582650625119-3a31f8fa2699",
-    "Entertainment and theme parks — Ferris wheel and resort energy",
-    "districtHlLeisureTitle",
-    "districtHlLeisureKicker",
-  ),
-  attraction(
-    "photo-1608991156162-3c55b3cf05d3",
-    "Dubai at night — stadium-scale skyline and city lights",
-    "districtHlNightTitle",
-    "districtHlNightKicker",
-  ),
-  attraction(
-    "photo-1516624683217-bf02fc6b6b7c",
-    "Nature and wildlife — safari and open landscape",
-    "districtHlNatureTitle",
-    "districtHlNatureKicker",
+    "districtHlDowntownDesc",
   ),
 ];
 

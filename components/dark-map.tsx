@@ -4,8 +4,9 @@ import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import L from "leaflet";
 import { useEffect, useMemo, useRef, useState } from "react";
 import "leaflet/dist/leaflet.css";
+import { ASWAR_SITE } from "@/lib/site-location";
 
-const CENTER: [number, number] = [25.1868, 55.2658];
+const CENTER = ASWAR_SITE.center;
 
 /** Dark Carto basemap — same init pattern as light map. */
 export default function DarkMap() {
@@ -79,7 +80,7 @@ export default function DarkMap() {
         <MapContainer
           key="aswar-dark-map"
           center={CENTER}
-          zoom={13}
+          zoom={ASWAR_SITE.mapZoom}
           className="dark-map-container z-0 h-full w-full min-h-[300px] overflow-hidden sm:min-h-[480px] md:min-h-[600px]"
           style={{ height: "100%", width: "100%" }}
           scrollWheelZoom={false}

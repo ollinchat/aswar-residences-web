@@ -910,6 +910,11 @@ export default function Home() {
                     >
                       {t(img.titleKey)}
                     </h3>
+                    <p
+                      className={`mt-2 text-[11px] font-extralight leading-relaxed text-charcoal/52 ${lang === "ar" ? "font-arabic" : "font-urbanist"}`}
+                    >
+                      {t(img.descKey)}
+                    </p>
                   </div>
                 </motion.article>
               );
