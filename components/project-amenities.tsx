@@ -16,6 +16,7 @@ import {
   AMENITY_LIST_ORDER,
   type AmenityListKey,
 } from "@/lib/amenity-hotspots";
+import { LuxuryRevealItem, LuxuryStagger } from "@/components/luxury-reveal";
 import { AMENITY_VISUALS, type AmenityVisualMedia } from "@/lib/amenity-visuals";
 
 const ICON_COLOR = "#9A8550";
@@ -302,22 +303,26 @@ export function ProjectAmenities() {
 
   return (
     <section
-      className="w-full border-t border-charcoal/10 bg-white py-10 md:py-12"
+      className="w-full border-t border-charcoal/10 bg-white py-32 md:py-40"
       aria-label={t("amenitiesTitle")}
     >
       <div className="mx-auto w-full max-w-[1200px] px-4 md:px-6 lg:px-8">
-        <header className="mb-6 text-center md:mb-8">
-          <h2
-            className={`text-[clamp(1.5rem,3.2vw,2rem)] font-normal tracking-tight text-[#0f172a] ${lang === "ar" ? "font-arabic" : "font-playfair"}`}
-          >
-            {t("amenitiesTitle")}
-          </h2>
-          <p
-            className={`mx-auto mt-2 max-w-lg text-[9px] font-light uppercase tracking-[0.2em] text-[#0f172a]/42 md:text-[10px] ${lang === "ar" ? "font-arabic" : "font-urbanist"}`}
-          >
-            {t("amenitiesRibbonKicker")}
-          </p>
-        </header>
+        <LuxuryStagger className="mb-6 text-center md:mb-8">
+          <LuxuryRevealItem>
+            <h2
+              className={`text-[clamp(1.5rem,3.2vw,2rem)] font-extralight tracking-[0.2em] text-[#0f172a] md:tracking-[0.28em] ${lang === "ar" ? "font-arabic" : "font-playfair"}`}
+            >
+              {t("amenitiesTitle")}
+            </h2>
+          </LuxuryRevealItem>
+          <LuxuryRevealItem>
+            <p
+              className={`mx-auto mt-2 max-w-lg text-[9px] font-extralight uppercase tracking-[0.28em] text-[#0f172a]/42 md:text-[10px] ${lang === "ar" ? "font-arabic" : "font-urbanist"}`}
+            >
+              {t("amenitiesRibbonKicker")}
+            </p>
+          </LuxuryRevealItem>
+        </LuxuryStagger>
 
         <MotionConfig reducedMotion={reduceMotion ? "always" : "never"}>
           <div className="flex flex-col gap-px md:gap-px shadow-[0_1px_3px_rgba(15,23,42,0.04)]">

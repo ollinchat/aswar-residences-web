@@ -23,6 +23,7 @@ import { EngineeringFloorPlan } from "@/components/engineering-floor-plan";
 import { HeritageProjectGallery } from "@/components/heritage-project-gallery";
 import { PaymentSection } from "@/components/payment-section";
 import { AboutAswarSection } from "@/components/about-aswar-section";
+import { LuxuryRevealItem, LuxuryStagger } from "@/components/luxury-reveal";
 import { AswarMonogramWatermark } from "@/components/aswar-monogram-watermark";
 import { ProjectAmenities } from "@/components/project-amenities";
 import { ProjectDevelopmentTimeline } from "@/components/project-development-timeline";
@@ -32,6 +33,7 @@ import type { CopyKey, Lang } from "@/lib/i18n";
 import { RESIDENCE_MODELS } from "@/lib/residence-models";
 import type { AreaMetric } from "@/lib/area-format";
 import { formatAreaRangeFromSqm, formatAreaValue } from "@/lib/area-format";
+import { LUXURY_DURATION, LUXURY_EASE } from "@/lib/luxury-motion";
 import {
   DISTRICT_ATTRACTIONS_ALL,
   DISTRICT_ATTRACTIONS_INITIAL,
@@ -142,28 +144,32 @@ function SectionIntro({
       ? "mb-16 md:mb-20 lg:mb-28"
       : "mb-10 md:mb-12 lg:mb-14";
   return (
-    <div
+    <LuxuryStagger
       className={`${marginBottom} ${
         align === "center" ? "mx-auto max-w-3xl text-center" : ""
       }`}
     >
-      <h2
-        className={`max-w-3xl font-serif text-3xl font-medium tracking-tight md:text-5xl ${
-          isDark ? "text-white" : "text-charcoal"
-        }`}
-      >
-        {title}
-      </h2>
-      {subtitle ? (
-        <p
-          className={`mt-6 max-w-xl font-sans text-[11px] font-medium uppercase leading-relaxed tracking-[0.28em] ${
-            isDark ? "text-white/48" : "text-charcoal/42"
-          } ${align === "center" ? "mx-auto" : ""}`}
+      <LuxuryRevealItem>
+        <h2
+          className={`max-w-3xl font-serif text-3xl font-extralight tracking-[0.2em] md:text-5xl md:tracking-[0.28em] ${
+            isDark ? "text-white" : "text-charcoal"
+          }`}
         >
-          {subtitle}
-        </p>
+          {title}
+        </h2>
+      </LuxuryRevealItem>
+      {subtitle ? (
+        <LuxuryRevealItem>
+          <p
+            className={`mt-6 max-w-xl font-sans text-[11px] font-extralight uppercase leading-relaxed tracking-[0.32em] ${
+              isDark ? "text-white/48" : "text-charcoal/42"
+            } ${align === "center" ? "mx-auto" : ""}`}
+          >
+            {subtitle}
+          </p>
+        </LuxuryRevealItem>
       ) : null}
-    </div>
+    </LuxuryStagger>
   );
 }
 
@@ -303,22 +309,65 @@ export default function Home() {
 
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 pb-24 pt-20 md:pb-28">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.2, delayChildren: 0.15 },
+              },
+            }}
             className="text-center"
           >
-            <h1 className="font-serif text-[clamp(3rem,12vw,8.5rem)] font-light tracking-[0.22em] text-white md:tracking-[0.3em]">
+            <motion.h1
+              variants={{
+                hidden: { opacity: 0, y: 36 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: LUXURY_DURATION, ease: LUXURY_EASE },
+                },
+              }}
+              className="font-serif text-[clamp(3rem,12vw,8.5rem)] font-extralight tracking-[0.25em] text-white md:tracking-[0.35em]"
+            >
               ASWAR
-            </h1>
-            <div
+            </motion.h1>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 28 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: LUXURY_DURATION, ease: LUXURY_EASE },
+                },
+              }}
               className="mx-auto mt-8 h-[0.5px] w-14 bg-champagne/90"
               aria-hidden
             />
-            <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.42em] text-white/80">
+            <motion.p
+              variants={{
+                hidden: { opacity: 0, y: 28 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: LUXURY_DURATION, ease: LUXURY_EASE },
+                },
+              }}
+              className="mt-8 font-mono text-[10px] font-extralight uppercase tracking-[0.42em] text-white/80"
+            >
               {t("heroSubtitle")}
-            </p>
-            <div className="mt-14 flex justify-center">
+            </motion.p>
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 28 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: LUXURY_DURATION, ease: LUXURY_EASE },
+                },
+              }}
+              className="mt-14 flex justify-center"
+            >
               <MagneticButton
                 type="button"
                 onClick={() =>
@@ -329,7 +378,7 @@ export default function Home() {
                 <Play className="h-4 w-4" strokeWidth={1.25} />
                 {t("experience360")}
               </MagneticButton>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
 
@@ -340,20 +389,26 @@ export default function Home() {
 
       <section
         id="the-residences"
-        className="scroll-mt-24 bg-[#FFFFFF] px-6 py-20 md:px-14"
+        className="scroll-mt-24 bg-[#FFFFFF] px-6 py-32 md:px-14 md:py-40"
       >
         <div className="mx-auto max-w-[1360px]">
-          <header className="mb-10 md:mb-12">
-            <p className="font-sans text-[9px] font-medium uppercase tracking-[0.52em] text-charcoal/32">
-              {t("magazineKicker")}
-            </p>
-            <h2 className="mt-5 max-w-2xl font-serif text-4xl font-light tracking-tight text-charcoal md:text-[2.85rem] md:leading-[1.1]">
-              {t("residencesTitle")}
-            </h2>
-            <p className="mt-7 max-w-md font-sans text-[11px] font-medium uppercase leading-relaxed tracking-[0.26em] text-charcoal/38">
-              {t("residencesSubtitle")}
-            </p>
-          </header>
+          <LuxuryStagger className="mb-14 md:mb-16">
+            <LuxuryRevealItem>
+              <p className="font-sans text-[9px] font-extralight uppercase tracking-[0.52em] text-charcoal/32">
+                {t("magazineKicker")}
+              </p>
+            </LuxuryRevealItem>
+            <LuxuryRevealItem>
+              <h2 className="mt-5 max-w-2xl font-serif text-4xl font-extralight tracking-[0.2em] text-charcoal md:text-[2.85rem] md:leading-[1.1] md:tracking-[0.28em]">
+                {t("residencesTitle")}
+              </h2>
+            </LuxuryRevealItem>
+            <LuxuryRevealItem>
+              <p className="mt-7 max-w-md font-sans text-[11px] font-extralight uppercase leading-relaxed tracking-[0.3em] text-charcoal/38">
+                {t("residencesSubtitle")}
+              </p>
+            </LuxuryRevealItem>
+          </LuxuryStagger>
 
           <div className="mb-10 border-b border-charcoal/[0.08]">
             <div className="scrollbar-none flex gap-8 overflow-x-auto pb-px md:flex-wrap md:gap-x-12 md:gap-y-6 lg:gap-x-14">
@@ -768,7 +823,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-[#FFFFFF] px-6 py-20 md:px-12">
+      <section className="bg-[#FFFFFF] px-6 py-32 md:px-12 md:py-40">
         <div className="mx-auto max-w-6xl">
           <SectionIntro
             title={t("paymentTitle")}
@@ -788,7 +843,7 @@ export default function Home() {
 
       <section
         id="district-highlights"
-        className="scroll-mt-24 bg-[#FAFAFA] px-6 py-20 md:px-12"
+        className="scroll-mt-24 bg-[#FAFAFA] px-6 py-32 md:px-12 md:py-40"
       >
         <div className="mx-auto max-w-6xl">
           <SectionIntro
@@ -920,7 +975,7 @@ export default function Home() {
       </section>
 
       <section
-        className={`relative overflow-hidden px-6 py-20 transition-colors duration-300 md:px-12 ${
+        className={`relative overflow-hidden px-6 py-32 transition-colors duration-300 md:px-12 md:py-40 ${
           mapBasemap === "dark" ? "bg-[#1a1a1a]" : "bg-[#ebebeb]"
         }`}
       >
@@ -1049,7 +1104,7 @@ export default function Home() {
       <footer id="contact" className="border-t border-charcoal/[0.06] bg-[#FAFAFA] px-8 py-20 md:px-12">
         <div className="mx-auto grid max-w-7xl gap-16 md:grid-cols-4 md:gap-12">
           <div className="space-y-8 md:col-span-2">
-            <div className="font-serif text-lg font-medium tracking-[0.28em] text-charcoal">
+            <div className="font-serif text-lg font-extralight tracking-[0.3em] text-charcoal">
               ASWAR
             </div>
             <p className="max-w-xs font-mono text-[10px] uppercase leading-relaxed tracking-[0.22em] text-charcoal/40">

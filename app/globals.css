@@ -312,25 +312,25 @@ html.aswar-a11y-stop-animations *::after {
   }
 }
 
-/* Project timeline — current stage gold pulse */
-@keyframes aswar-timeline-pulse {
+/* Project timeline — slow breathing glow on current stage */
+@keyframes aswar-timeline-breathe {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(154, 133, 80, 0.45);
+    box-shadow: 0 0 0 0 rgba(154, 133, 80, 0.12);
     opacity: 1;
   }
   50% {
-    box-shadow: 0 0 0 8px rgba(154, 133, 80, 0);
-    opacity: 0.85;
+    box-shadow: 0 0 18px 3px rgba(154, 133, 80, 0.28);
+    opacity: 0.88;
   }
 }
 
-.aswar-timeline-pulse {
-  animation: aswar-timeline-pulse 2.4s ease-in-out infinite;
+.aswar-timeline-breathe {
+  animation: aswar-timeline-breathe 5.5s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .aswar-timeline-pulse {
+  .aswar-timeline-breathe {
     animation: none !important;
   }
 }
