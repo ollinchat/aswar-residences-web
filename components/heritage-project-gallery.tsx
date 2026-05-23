@@ -6,6 +6,7 @@ import {
   HERITAGE_SLIDER_IMAGES,
 } from "@/lib/heritage-gallery";
 import { REMOTE_IMAGE_BLUR_DATA_URL } from "@/lib/image-blur-placeholder";
+import { fillImageParentStyle } from "@/lib/image-layout";
 
 type Variant = "slider" | "masonry";
 
@@ -21,6 +22,7 @@ export function HeritageProjectGallery({ variant = "slider" }: { variant?: Varia
           <div
             key={img.src}
             className="relative h-[200px] w-[min(78vw,300px)] shrink-0 snap-center overflow-hidden rounded-sm bg-charcoal/[0.06] sm:h-[240px] sm:w-[min(70vw,340px)] md:h-[260px] md:w-[300px]"
+            style={fillImageParentStyle}
           >
             <Image
               src={img.src}
@@ -45,7 +47,10 @@ export function HeritageProjectGallery({ variant = "slider" }: { variant?: Varia
       className="grid grid-cols-3 grid-rows-2 items-stretch gap-2 sm:gap-2.5"
       aria-label="Project photography"
     >
-      <div className="relative col-span-2 row-span-2 min-h-[168px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[208px] md:min-h-[228px]">
+      <div
+        className="relative col-span-2 row-span-2 min-h-[168px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[208px] md:min-h-[228px]"
+        style={fillImageParentStyle}
+      >
         <Image
           src={a.src}
           alt={a.alt}
@@ -57,7 +62,10 @@ export function HeritageProjectGallery({ variant = "slider" }: { variant?: Varia
           priority
         />
       </div>
-      <div className="relative col-start-3 row-start-1 min-h-[76px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[96px]">
+      <div
+        className="relative col-start-3 row-start-1 min-h-[76px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[96px]"
+        style={fillImageParentStyle}
+      >
         <Image
           src={b.src}
           alt={b.alt}
@@ -68,7 +76,10 @@ export function HeritageProjectGallery({ variant = "slider" }: { variant?: Varia
           blurDataURL={REMOTE_IMAGE_BLUR_DATA_URL}
         />
       </div>
-      <div className="relative col-start-3 row-start-2 min-h-[76px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[96px]">
+      <div
+        className="relative col-start-3 row-start-2 min-h-[76px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[96px]"
+        style={fillImageParentStyle}
+      >
         <Image
           src={c.src}
           alt={c.alt}

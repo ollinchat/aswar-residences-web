@@ -9,6 +9,7 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { ChevronLeft, ChevronRight, Rotate3d } from "lucide-react";
+import { fillImageParentAbsoluteStyle } from "@/lib/image-layout";
 
 const DRAG_THRESHOLD = 56;
 
@@ -80,6 +81,7 @@ export function ResidenceGallerySlider({ images, label, on360 }: Props) {
             dragElastic={0.88}
             onDragEnd={onDragEnd}
             className="absolute inset-0 cursor-grab active:cursor-grabbing"
+            style={fillImageParentAbsoluteStyle}
           >
             <Image
               src={images[i]}

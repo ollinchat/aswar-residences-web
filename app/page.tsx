@@ -876,9 +876,13 @@ export default function Home() {
                         }
                   }
                 >
-                  <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[4px] bg-neutral-100">
+                  <div
+                    className="relative aspect-[3/4] w-full overflow-hidden rounded-[4px] bg-neutral-100"
+                    style={{ position: "relative" }}
+                  >
                     <motion.div
-                      className="h-full w-full origin-center will-change-transform"
+                      className="relative h-full w-full origin-center will-change-transform"
+                      style={{ position: "relative" }}
                       whileHover={
                         reduceDistrictMotion ? undefined : { scale: 1.02 }
                       }

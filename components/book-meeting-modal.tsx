@@ -199,7 +199,10 @@ export function BookMeetingModal({
                               : "ring-charcoal/12 bg-white/40 hover:ring-charcoal/22"
                           }`}
                         >
-                          <div className="relative aspect-[4/3] bg-charcoal/[0.05]">
+                          <div
+                            className="relative aspect-[4/3] bg-charcoal/[0.05]"
+                            style={{ position: "relative" }}
+                          >
                             <Image
                               src={m.images[0]}
                               alt=""

@@ -18,6 +18,7 @@ import {
 } from "@/lib/amenity-hotspots";
 import { LuxuryRevealItem, LuxuryStagger } from "@/components/luxury-reveal";
 import { AMENITY_VISUALS, type AmenityVisualMedia } from "@/lib/amenity-visuals";
+import { fillImageParentStyle } from "@/lib/image-layout";
 
 const ICON_COLOR = "#9A8550";
 
@@ -85,7 +86,11 @@ function AmenityBackgroundMedia({
       <div className="absolute inset-0 overflow-hidden rounded-none">
         <div
           className={`relative h-full w-full ${burnClass}`}
-          style={reduceMotion ? undefined : wrapStyle}
+          style={
+            reduceMotion
+              ? fillImageParentStyle
+              : { ...fillImageParentStyle, ...wrapStyle }
+          }
         >
           <Image
             src={media.src}
@@ -109,7 +114,11 @@ function AmenityBackgroundMedia({
       <div className="absolute inset-0 overflow-hidden rounded-none">
         <div
           className={`relative h-full w-full ${burnClass}`}
-          style={reduceMotion ? undefined : wrapStyle}
+          style={
+            reduceMotion
+              ? fillImageParentStyle
+              : { ...fillImageParentStyle, ...wrapStyle }
+          }
         >
           <Image
             src={media.poster}
@@ -242,6 +251,7 @@ function AmenityStage({
       exit={reduceMotion ? undefined : { opacity: 0 }}
       transition={crossfade}
       className="absolute inset-0 overflow-hidden rounded-none"
+      style={{ position: "absolute" }}
     >
       <AmenityBackgroundMedia
         media={media}

@@ -1,4 +1,5 @@
 import { sqmToSqft } from "@/lib/area-format";
+import { unsplashImage } from "@/lib/unsplash-image";
 
 export type ResidenceModel = {
   id: string;
@@ -72,9 +73,9 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
       security: "24/7",
     },
     images: [
-      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=88",
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=88",
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=88",
+      unsplashImage("photo-1600585154526-990dced4db0d", 2000, 75),
+      unsplashImage("photo-1600210492486-724fe5c67fb0", 2000, 75),
+      unsplashImage("photo-1600566753190-17f0baa2a6c3", 2000, 75),
     ],
     pano: "/hero-360-panorama.jpg",
     booking: {
@@ -105,9 +106,9 @@ export const RESIDENCE_MODELS: ResidenceModel[] = [
       security: "24/7",
     },
     images: [
-      "https://images.unsplash.com/photo-1600607687644-c7171b42498f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=88",
-      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=88",
-      "https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=88",
+      unsplashImage("photo-1600607687644-c7171b42498f", 2000, 75),
+      unsplashImage("photo-1600047509807-ba8f99d2cdde", 2000, 75),
+      unsplashImage("photo-1600585154084-4e5fe7c39198", 2000, 75),
     ],
     pano: "/hero-360-panorama.jpg",
     booking: {

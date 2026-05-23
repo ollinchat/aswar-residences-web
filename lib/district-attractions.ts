@@ -2,6 +2,7 @@
  * District Highlights — portrait tiles (`aspect-[3/4]`, `object-cover` in `app/page.tsx`).
  */
 import type { CopyKey } from "@/lib/i18n";
+import { unsplashImage } from "@/lib/unsplash-image";
 
 export type DistrictAttraction = {
   src: string;
@@ -18,7 +19,7 @@ const attraction = (
   kickerKey: CopyKey,
   descKey: CopyKey,
 ): DistrictAttraction => ({
-  src: `https://images.unsplash.com/${photoId}?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=88`,
+  src: unsplashImage(photoId, 1600, 75),
   alt,
   titleKey,
   kickerKey,
@@ -27,22 +28,22 @@ const attraction = (
 
 export const DISTRICT_ATTRACTIONS_ALL: DistrictAttraction[] = [
   attraction(
-    "photo-1551884834-b42e9a02d1f3",
-    "Pink flamingos at Ras Al Khor Wildlife Sanctuary wetlands",
+    "photo-1441974231531-c6227db76b6e",
+    "Wetlands and wildlife sanctuary landscape near Ras Al Khor",
     "districtHlSanctuaryTitle",
     "districtHlSanctuaryKicker",
     "districtHlSanctuaryDesc",
   ),
   attraction(
-    "photo-1553284965-680caea199b0",
+    "photo-1544716278-ca5e3f4abd8c",
     "Meydan Racecourse — world-class horse racing under evening lights",
     "districtHlMeydanTitle",
     "districtHlMeydanKicker",
     "districtHlMeydanDesc",
   ),
   attraction(
-    "photo-1518684079-3c83eb24d39d",
-    "Dubai Creek Harbour skyline and waterfront towers at dusk",
+    "photo-1486406146926-c627a92ad1ab",
+    "Dubai Creek Harbour towers and waterfront skyline at dusk",
     "districtHlCreekTowerTitle",
     "districtHlCreekTowerKicker",
     "districtHlCreekTowerDesc",
