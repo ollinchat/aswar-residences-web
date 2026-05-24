@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" fill="none" role="img" aria-label="ASWAR building complete">
+  <defs>
+    <linearGradient id="g5" x1="200" y1="8" x2="200" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="0.35" stop-color="#e8d4a6"/>
+      <stop offset="1" stop-color="#9A8550"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fff" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#9A8550" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#g5)" d="M200 4 L312 420 H88 Z"/>
+  <path fill="url(#glass)" d="M140 100 H260 V400 H140 Z"/>
+  <rect x="152" y="420" width="96" height="16" rx="1" fill="#9A8550" opacity="0.7"/>
+</svg>

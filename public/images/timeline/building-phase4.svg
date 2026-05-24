@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" fill="none" role="img" aria-label="ASWAR building phase 4">
+  <defs>
+    <linearGradient id="g4" x1="200" y1="24" x2="200" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff8eb"/>
+      <stop offset="0.5" stop-color="#d4bc82"/>
+      <stop offset="1" stop-color="#9A8550"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#g4)" d="M200 16 L304 420 H96 Z"/>
+  <rect x="148" y="120" width="104" height="300" fill="#0f0e0d" opacity="0.42"/>
+  <rect x="164" y="420" width="72" height="14" fill="#9A8550" opacity="0.65"/>
+</svg>

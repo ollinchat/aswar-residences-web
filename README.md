@@ -1,6 +1,6 @@
 # ASWAR 01 — Ultra-Luxury Residences
 
-**Live site:** [https://aswar-residences-web.vercel.app](https://aswar-residences-web.vercel.app)
+**Live site:** [https://aswar-residences-web.vercel.app/](https://aswar-residences-web.vercel.app/)
 
 Marketing website for ASWAR International Development — Ras Al Khor, Dubai.
 

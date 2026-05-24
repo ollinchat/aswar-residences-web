@@ -194,22 +194,16 @@ function FilmstripTile({
       }`}
     >
       {inView ? (
-        <div
-          className="absolute inset-0"
-          style={fillImageParentStyle}
-          aria-hidden
-        >
-          <Image
-            src={src}
-            alt=""
-            fill
-            className="object-cover"
-            sizes={IMAGE_SIZES_STRIP}
-            quality={75}
-            loading="lazy"
-            fetchPriority="low"
-          />
-        </div>
+        <Image
+          src={src}
+          alt=""
+          fill
+          className="object-cover"
+          sizes={IMAGE_SIZES_STRIP}
+          quality={75}
+          loading="lazy"
+          fetchPriority="low"
+        />
       ) : (
         <div className="absolute inset-0 bg-white" aria-hidden />
       )}
@@ -355,7 +349,7 @@ export function ProjectAmenities() {
             style={{ position: "relative" }}
           >
             <div
-              className="relative w-full overflow-hidden rounded-none border border-charcoal/10 bg-[#fafafa] [aspect-ratio:21/9] min-h-[200px] max-h-[500px] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.5)]"
+              className="relative w-full min-h-[200px] overflow-hidden rounded-none border border-charcoal/10 bg-[#fafafa] [aspect-ratio:21/9] max-h-[500px] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.5)]"
               style={{ position: "relative" }}
               role="region"
               aria-label={t(featuredKey)}
@@ -369,8 +363,8 @@ export function ProjectAmenities() {
               </AnimatePresence>
             </div>
 
-            <motion.div
-              className="relative aswar-amenity-filmstrip-wrap overflow-hidden rounded-none bg-white py-0"
+            <div
+              className="relative aswar-amenity-filmstrip-wrap min-h-32 overflow-hidden rounded-none bg-white py-0 sm:min-h-36 md:min-h-40"
               style={{ position: "relative" }}
               dir="ltr"
               role="group"
@@ -393,7 +387,7 @@ export function ProjectAmenities() {
                   </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
           </div>
         </MotionConfig>
       </div>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 520" fill="none" role="img" aria-label="ASWAR building phase 1">
+  <defs>
+    <linearGradient id="g1" x1="200" y1="80" x2="200" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#e8d4a6" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#9A8550" stop-opacity="0.75"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#g1)" d="M200 72 L248 420 H152 Z M168 420 V320 H232 V420"/>
+  <rect x="178" y="420" width="44" height="8" fill="#9A8550" opacity="0.5"/>
+</svg>
