@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { LuxuryRevealItem, LuxuryStagger } from "@/components/luxury-reveal";
 import { useLang } from "@/components/language-provider";
-import { fillImageParentStyle } from "@/lib/image-layout";
 import {
   CURRENT_TIMELINE_STAGE_ID,
   PROJECT_TIMELINE_STAGES,
@@ -150,19 +149,20 @@ export function ProjectDevelopmentTimeline() {
                     reduceMotion ? undefined : { opacity: 0, scale: 0.95, y: -20 }
                   }
                   transition={renderTransition}
-                  className="relative z-10 flex h-full w-full items-center justify-center"
+                  className="relative z-10 flex w-full items-center justify-center"
                   style={{ position: "relative" }}
                 >
                   <div
-                    className="relative aspect-[4/5] w-full max-h-[420px]"
-                    style={fillImageParentStyle}
+                    className="relative mx-auto h-[420px] w-full max-w-[320px] min-h-[280px] sm:max-w-[360px]"
+                    style={{ position: "relative", height: 420, minHeight: 280 }}
                   >
                     <Image
                       src={activeStep.imageSrc}
                       alt={t(activeStep.labelKey)}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 400px"
-                      className="object-contain object-bottom drop-shadow-[0_24px_48px_rgba(0,0,0,0.45)]"
+                      width={400}
+                      height={520}
+                      sizes="(max-width: 768px) 80vw, 360px"
+                      className="h-full w-full object-contain object-bottom drop-shadow-[0_24px_48px_rgba(0,0,0,0.45)]"
                       quality={75}
                       priority={activeStep.id === CURRENT_TIMELINE_STAGE_ID}
                     />
