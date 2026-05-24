@@ -30,7 +30,8 @@ export function LuxuryStagger({
   return (
     <motion.div
       ref={ref}
-      className={className}
+      className={`relative ${className ?? ""}`.trim()}
+      style={{ position: "relative" }}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
       variants={luxuryContainerVariants}
@@ -80,7 +81,8 @@ export function LuxuryFadeUp({
   return (
     <motion.div
       ref={ref}
-      className={className}
+      className={`relative ${className ?? ""}`.trim()}
+      style={{ position: "relative" }}
       initial={{ opacity: 0, y: 32 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
       transition={{ duration: LUXURY_DURATION, ease: LUXURY_EASE }}

@@ -18,7 +18,10 @@ import {
 } from "@/lib/amenity-hotspots";
 import { LuxuryRevealItem, LuxuryStagger } from "@/components/luxury-reveal";
 import { AMENITY_VISUALS, type AmenityVisualMedia } from "@/lib/amenity-visuals";
-import { fillImageParentStyle } from "@/lib/image-layout";
+import {
+  fillImageParentAbsoluteStyle,
+  fillImageParentStyle,
+} from "@/lib/image-layout";
 
 const ICON_COLOR = "#9A8550";
 
@@ -83,7 +86,10 @@ function AmenityBackgroundMedia({
 
   if (media.kind === "image") {
     return (
-      <div className="absolute inset-0 overflow-hidden rounded-none">
+      <div
+        className="absolute inset-0 overflow-hidden rounded-none"
+        style={fillImageParentAbsoluteStyle}
+      >
         <div
           className={`relative h-full w-full ${burnClass}`}
           style={
@@ -98,7 +104,7 @@ function AmenityBackgroundMedia({
             fill
             className="object-cover"
             sizes={imageSizes}
-            quality={78}
+            quality={75}
             loading={eager ? "eager" : "lazy"}
             fetchPriority={eager ? "high" : "low"}
           />
@@ -111,7 +117,10 @@ function AmenityBackgroundMedia({
 
   if (!showVideo) {
     return (
-      <div className="absolute inset-0 overflow-hidden rounded-none">
+      <div
+        className="absolute inset-0 overflow-hidden rounded-none"
+        style={fillImageParentAbsoluteStyle}
+      >
         <div
           className={`relative h-full w-full ${burnClass}`}
           style={
@@ -126,7 +135,7 @@ function AmenityBackgroundMedia({
             fill
             className="object-cover"
             sizes={imageSizes}
-            quality={78}
+            quality={75}
             loading={eager ? "eager" : "lazy"}
             fetchPriority={eager ? "high" : "low"}
           />
@@ -185,16 +194,22 @@ function FilmstripTile({
       }`}
     >
       {inView ? (
-        <Image
-          src={src}
-          alt=""
-          fill
-          className="object-cover"
-          sizes={IMAGE_SIZES_STRIP}
-          quality={72}
-          loading="lazy"
-          fetchPriority="low"
-        />
+        <div
+          className="absolute inset-0"
+          style={fillImageParentStyle}
+          aria-hidden
+        >
+          <Image
+            src={src}
+            alt=""
+            fill
+            className="object-cover"
+            sizes={IMAGE_SIZES_STRIP}
+            quality={75}
+            loading="lazy"
+            fetchPriority="low"
+          />
+        </div>
       ) : (
         <div className="absolute inset-0 bg-white" aria-hidden />
       )}
@@ -313,7 +328,7 @@ export function ProjectAmenities() {
 
   return (
     <section
-      className="w-full border-t border-charcoal/10 bg-white py-32 md:py-40"
+      className="relative w-full border-t border-charcoal/10 bg-white py-32 md:py-40"
       aria-label={t("amenitiesTitle")}
     >
       <div className="mx-auto w-full max-w-[1200px] px-4 md:px-6 lg:px-8">
@@ -335,9 +350,13 @@ export function ProjectAmenities() {
         </LuxuryStagger>
 
         <MotionConfig reducedMotion={reduceMotion ? "always" : "never"}>
-          <div className="flex flex-col gap-px md:gap-px shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
+          <div
+            className="relative flex flex-col gap-px md:gap-px shadow-[0_1px_3px_rgba(15,23,42,0.04)]"
+            style={{ position: "relative" }}
+          >
             <div
               className="relative w-full overflow-hidden rounded-none border border-charcoal/10 bg-[#fafafa] [aspect-ratio:21/9] min-h-[200px] max-h-[500px] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.5)]"
+              style={{ position: "relative" }}
               role="region"
               aria-label={t(featuredKey)}
             >
@@ -350,8 +369,9 @@ export function ProjectAmenities() {
               </AnimatePresence>
             </div>
 
-            <div
-              className="aswar-amenity-filmstrip-wrap overflow-hidden rounded-none bg-white py-0"
+            <motion.div
+              className="relative aswar-amenity-filmstrip-wrap overflow-hidden rounded-none bg-white py-0"
+              style={{ position: "relative" }}
               dir="ltr"
               role="group"
               aria-label={t("amenitiesTitle")}
@@ -373,7 +393,7 @@ export function ProjectAmenities() {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
         </MotionConfig>
       </div>

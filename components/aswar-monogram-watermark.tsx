@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { fillImageParentAbsoluteStyle } from "@/lib/image-layout";
 
 const GOLD = "#9A8550";
 
@@ -15,14 +16,15 @@ export function AswarMonogramWatermark({ className }: { className?: string }) {
   const y = useTransform(scrollYProgress, [0, 1], ["-14%", "14%"]);
 
   return (
-    <div
+    <motion.div
       ref={ref}
       className={`pointer-events-none absolute inset-0 overflow-hidden ${className ?? ""}`}
+      style={fillImageParentAbsoluteStyle}
       aria-hidden
     >
       <motion.div
-        className="flex h-full w-full items-center justify-center"
-        style={reduceMotion ? undefined : { y }}
+        className="relative flex h-full w-full items-center justify-center"
+        style={reduceMotion ? { position: "relative" } : { position: "relative", y }}
       >
         <svg
           viewBox="0 0 100 118"
@@ -36,6 +38,6 @@ export function AswarMonogramWatermark({ className }: { className?: string }) {
           />
         </svg>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
