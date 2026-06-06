@@ -245,8 +245,8 @@ html.aswar-a11y-stop-animations *::after {
 
 .amenity-ken-burns-inner {
   transform-origin: center center;
-  animation: amenity-ken-burns 22s ease-in-out infinite;
-  will-change: transform;
+  animation: amenity-ken-burns 28s ease-in-out infinite;
+  contain: layout style paint;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -255,34 +255,53 @@ html.aswar-a11y-stop-animations *::after {
   }
 }
 
-/* Amenities filmstrip — seamless horizontal marquee (3× duplicate track) */
+/* Amenities filmstrip — 2× duplicate track (lighter than 3×) */
 @keyframes amenity-filmstrip-marquee {
   from {
     transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translate3d(-33.333333%, 0, 0);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
+.aswar-amenity-filmstrip-wrap {
+  overflow: hidden;
+  width: 100%;
+}
+
 .aswar-amenity-filmstrip-track {
-  display: flex;
-  flex-direction: row;
+  display: inline-flex;
+  flex-flow: row nowrap;
+  align-items: center;
   width: max-content;
-  animation: amenity-filmstrip-marquee 44s linear infinite;
+  min-width: max-content;
+  flex-shrink: 0;
+  white-space: nowrap;
+  gap: 0;
+}
+
+.aswar-amenity-filmstrip-track--animated {
+  animation: amenity-filmstrip-marquee 52s linear infinite;
   will-change: transform;
 }
 
-.aswar-amenity-filmstrip-wrap:hover .aswar-amenity-filmstrip-track {
+.aswar-amenity-filmstrip-wrap:hover .aswar-amenity-filmstrip-track--animated {
   animation-play-state: paused;
 }
 
 .aswar-amenity-filmstrip-segment {
-  gap: 1px;
+  display: inline-flex;
+  flex-flow: row nowrap;
+  flex-shrink: 0;
+  align-items: center;
+  white-space: nowrap;
+  gap: 4px;
+  padding-inline: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .aswar-amenity-filmstrip-track {
+  .aswar-amenity-filmstrip-track--animated {
     animation: none !important;
     transform: none !important;
   }

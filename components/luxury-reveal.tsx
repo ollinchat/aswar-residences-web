@@ -51,11 +51,15 @@ export function LuxuryRevealItem({
   const reduceMotion = useReducedMotion();
 
   if (reduceMotion) {
-    return <motion.div className={className}>{children}</motion.div>;
+    return <div className={className}>{children}</div>;
   }
 
   return (
-    <motion.div variants={luxuryItemVariants} className={className}>
+    <motion.div
+      variants={luxuryItemVariants}
+      className={`relative ${className ?? ""}`.trim()}
+      style={{ position: "relative" }}
+    >
       {children}
     </motion.div>
   );
@@ -75,7 +79,7 @@ export function LuxuryFadeUp({
   const reduceMotion = useReducedMotion();
 
   if (reduceMotion) {
-    return <motion.div className={className}>{children}</motion.div>;
+    return <div className={className}>{children}</div>;
   }
 
   return (

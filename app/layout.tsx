@@ -83,7 +83,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${geistMono.variable} ${cormorant.variable} ${notoArabic.variable} ${playfair.variable} ${urbanist.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">
+      <body className="relative flex min-h-full flex-col">
         <Providers>{children}</Providers>
       </body>
     </html>

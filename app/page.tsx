@@ -177,10 +177,11 @@ function ScrollBreath() {
   return (
     <div
       className="pointer-events-none absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center md:bottom-10"
+      style={{ position: "absolute" }}
       aria-hidden
     >
       <motion.div
-        className="w-[0.5px] origin-bottom rounded-full bg-white/75"
+        className="relative w-[0.5px] origin-bottom rounded-full bg-white/75"
         initial={{ scaleY: 0.75, opacity: 0.55 }}
         animate={{
           scaleY: [0.72, 1, 0.72],
@@ -191,7 +192,7 @@ function ScrollBreath() {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        style={{ height: 52 }}
+        style={{ position: "relative", height: 52 }}
       />
     </div>
   );
@@ -278,7 +279,7 @@ export default function Home() {
   };
 
   return (
-    <main className="bg-[#FAFAFA] text-charcoal selection:bg-champagne/20">
+    <main className="relative bg-[#FAFAFA] text-charcoal selection:bg-champagne/20">
       <SiteNavbar variant="hero" />
       <PanoramaViewerModal
         open={viewerOpen}
