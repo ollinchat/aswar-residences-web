@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" fill="none" role="img" aria-label="CEO portrait placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="600" y2="800" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f5f3ef"/>
+      <stop offset="0.55" stop-color="#ebe6dc"/>
+      <stop offset="1" stop-color="#ddd5c8"/>
+    </linearGradient>
+    <linearGradient id="silhouette" x1="300" y1="180" x2="300" y2="720" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c4b89a" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#9A8550" stop-opacity="0.12"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="800" fill="url(#bg)"/>
+  <ellipse cx="300" cy="280" rx="88" ry="96" fill="url(#silhouette)"/>
+  <path d="M160 720c28-118 88-178 140-178s112 60 140 178" fill="url(#silhouette)"/>
+  <rect x="48" y="48" width="504" height="704" stroke="#9A8550" stroke-opacity="0.18" stroke-width="1"/>
+</svg>

@@ -113,9 +113,13 @@ export const copy = {
       "Luxury real estate development in Dubai — architectural excellence on the Meydan horizon.",
     aboutBody:
       "ASWAR is a luxury real estate developer devoted to high-end residential architecture in Dubai. Set within Ras Al Khor, near Meydan, the project commands corner positioning on a 2,365.95 sqm plot with clear views toward the Dubai skyline and direct connectivity via Emirates Road (E44).",
-    aboutPillarPrivacy: "Privacy",
-    aboutPillarLuxury: "Luxury",
-    aboutPillarInnovation: "Innovation",
+    aboutCeoKicker: "Leadership",
+    aboutCeoHeading: "Message from the CEO",
+    aboutCeoQuote:
+      "At ASWAR, we believe luxury is not merely an address — it is a covenant of privacy, craft, and forward-thinking design. From our cornerstone in Ras Al Khor, we are shaping residences that will define the next chapter of Dubai's ultra-premium skyline — built for those who demand excellence without compromise.",
+    aboutCeoName: "Emil Borkan",
+    aboutCeoTitle: "Chief Executive Officer",
+    aboutCeoPortraitAlt: "Portrait of Emil Borkan, Chief Executive Officer of ASWAR",
     timelineKicker: "Investment appreciation",
     timelineTitle: "Development & value timeline",
     timelineSubtitle:
@@ -157,6 +161,12 @@ export const copy = {
     locationSubtitle: "Ras Al Khor Industrial Area · Meydan Horizon",
     locationMapCaption:
       "Marker: Ras Al Khor Industrial Area — premium positioning on the Meydan horizon with E44 connectivity.",
+    partnersGridTitle: "Premium Partners & Global Capital",
+    partnerLogoSamiEngineering: "Sami Najami Engineering & Projects L.T.D",
+    partnerLogoSamiEnergy: "Sami Najami Energy EOOD",
+    partnerLogoGentleGiant: "Gentle Giant",
+    partnerLogoVoltix: "Voltix",
+    partnerLogoAswarIntl: "Aswar International Development L.L.C",
     headquartersAddress: "Ras Al Khor Industrial Area, Dubai",
     footerDev: "ASWAR International Development",
     footerLine: "Visionary Architecture · Dubai, UAE",
@@ -393,9 +403,13 @@ export const copy = {
       "تطوير عقاري فاخر في دبي — تميّز معماري على أفق ميدان.",
     aboutBody:
       "أسوار مطوّر عقاري فاخر متخصص في العمارة السكنية الراقية في دبي. يقع المشروع في رأس الخور قرب ميدان، على قطعة زاوية بمساحة ٢٬٣٦٥٫٩٥ م² بإطلالات واضحة على أفق دبي واتصال مباشر عبر طريق الإمارات (E44).",
-    aboutPillarPrivacy: "الخصوصية",
-    aboutPillarLuxury: "الفخامة",
-    aboutPillarInnovation: "الابتكار",
+    aboutCeoKicker: "القيادة",
+    aboutCeoHeading: "كلمة الرئيس التنفيذي",
+    aboutCeoQuote:
+      "في أسوار، نؤمن أن الفخامة ليست عنوانًا فحسب — بل عهد بالخصوصية والحرفية والتصميم المتطلع للمستقبل. من موقعنا في رأس الخور، نصنع مساكن تُعرّف الفصل القادم من أفق دبي الفائق — لمن يطلبون التميز دون تنازلات.",
+    aboutCeoName: "إميل بوركان",
+    aboutCeoTitle: "الرئيس التنفيذي",
+    aboutCeoPortraitAlt: "صورة إميل بوركان، الرئيس التنفيذي لأسوار",
     timelineKicker: "تقدّم الاستثمار",
     timelineTitle: "الجدول الزمني للتطوير والقيمة",
     timelineSubtitle:
@@ -437,6 +451,12 @@ export const copy = {
     locationSubtitle: "منطقة رأس الخور الصناعية · أفق ميدان",
     locationMapCaption:
       "العلامة: منطقة رأس الخور الصناعية — موقع متميز على أفق ميدان مع وصول إلى طريق الإمارات (E44).",
+    partnersGridTitle: "شركاء متميزون ورأس مال عالمي",
+    partnerLogoSamiEngineering: "سامي نجيمي للهندسة والمشاريع ذ.م.م",
+    partnerLogoSamiEnergy: "سامي نجيمي للطاقة",
+    partnerLogoGentleGiant: "جنتل جاينت",
+    partnerLogoVoltix: "Voltix",
+    partnerLogoAswarIntl: "أسوار للتطوير الدولي ذ.م.م",
     headquartersAddress: "منطقة رأس الخور الصناعية، دبي",
     footerDev: "ASWAR International Development",
     footerLine: "عمارةٌ رائدة · دبي، الإمارات",

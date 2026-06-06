@@ -307,6 +307,36 @@ html.aswar-a11y-stop-animations *::after {
   }
 }
 
+/* Partner logo marquee — 2× duplicate track, seamless loop */
+@keyframes partner-marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.partner-marquee-wrap {
+  overflow: hidden;
+  width: 100%;
+}
+
+.partner-marquee-track {
+  animation: partner-marquee-scroll 42s linear infinite;
+}
+
+.partner-marquee-wrap:hover .partner-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partner-marquee-track {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
 /* Floating hub — soft expanding gold glow (Phone & Messages only); not noisy */
 @keyframes aswar-fab-gold-ripple {
   0% {
