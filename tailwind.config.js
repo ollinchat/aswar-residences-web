@@ -15,9 +15,20 @@ module.exports = {
         serif: ["var(--font-cormorant)", "Georgia", "serif"],
         playfair: ["var(--font-playfair)", "Georgia", "serif"],
         urbanist: ["var(--font-urbanist)", "system-ui", "sans-serif"],
-        arabic: ["var(--font-arabic)", "system-ui", "sans-serif"],
+        arabic: [
+          "var(--font-arabic)",
+          "Tajawal",
+          "Segoe UI",
+          "Tahoma",
+          "sans-serif",
+        ],
         mono: ["var(--font-geist-mono)", "ui-monospace", "monospace"],
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        sans: [
+          "var(--font-inter)",
+          "var(--font-arabic)",
+          "system-ui",
+          "sans-serif",
+        ],
       },
       colors: {
         charcoal: "#1A1C1E",

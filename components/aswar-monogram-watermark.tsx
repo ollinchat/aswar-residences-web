@@ -18,15 +18,19 @@ export function AswarMonogramWatermark({ className }: { className?: string }) {
 
   return (
     <div
-      ref={targetRef}
       className={`pointer-events-none absolute inset-0 overflow-hidden ${className ?? ""}`}
       style={fillImageParentAbsoluteStyle}
       aria-hidden
     >
-      <motion.div
-        className="relative flex h-full w-full items-center justify-center"
-        style={reduceMotion ? { position: "relative" } : { position: "relative", y }}
+      <div
+        ref={targetRef}
+        className="relative h-full w-full"
+        style={{ position: "relative" }}
       >
+        <motion.div
+          className="flex h-full w-full items-center justify-center"
+          style={reduceMotion ? undefined : { y }}
+        >
         <svg
           viewBox="0 0 100 118"
           className="h-[min(72vw,520px)] w-[min(58vw,420px)] opacity-[0.015]"
@@ -38,7 +42,8 @@ export function AswarMonogramWatermark({ className }: { className?: string }) {
             d="M50 5 L91 113 H71 L64 88 H36 L29 113 H9 Z M50 34 L43 70 H57 Z"
           />
         </svg>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }

@@ -51,8 +51,19 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+    const root = document.documentElement;
+    const body = document.body;
+    const dir = lang === "ar" ? "rtl" : "ltr";
+
+    root.lang = lang;
+    root.dir = dir;
+    body.lang = lang;
+    body.dir = dir;
+
+    root.classList.toggle("lang-ar", lang === "ar");
+    root.classList.toggle("lang-en", lang === "en");
+    body.classList.toggle("lang-ar", lang === "ar");
+    body.classList.toggle("lang-en", lang === "en");
   }, [lang]);
 
   const t = useCallback(

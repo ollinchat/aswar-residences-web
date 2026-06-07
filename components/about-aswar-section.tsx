@@ -70,6 +70,7 @@ export function AboutAswarSection() {
       <aside
         ref={ceoRef}
         className="relative overflow-hidden bg-[#1a1a1a]"
+        style={{ position: "relative" }}
         aria-labelledby="about-ceo-heading"
       >
         <div

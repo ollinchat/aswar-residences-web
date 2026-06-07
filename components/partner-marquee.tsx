@@ -27,8 +27,14 @@ export function PartnerMarquee() {
         {t("partnersGridTitle")}
       </p>
 
-      <div className="partner-marquee-wrap relative overflow-hidden">
-        <div className="flex w-max flex-row flex-nowrap gap-16 animate-marquee hover:[animation-play-state:paused] md:gap-24">
+      <div
+        className="partner-marquee-wrap relative overflow-hidden"
+        style={{ position: "relative" }}
+      >
+        <div
+          className="relative flex w-max flex-row flex-nowrap gap-16 animate-marquee hover:[animation-play-state:paused] md:gap-24"
+          style={{ position: "relative" }}
+        >
           {trackLogos.map((logo, index) => {
             const { src, altKey } = logo;
             const href = "href" in logo ? logo.href : undefined;
@@ -38,8 +44,8 @@ export function PartnerMarquee() {
                 alt={t(altKey)}
                 width={160}
                 height={40}
-                className="h-10 w-auto max-w-none object-contain opacity-60 contrast-125 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
-                style={{ width: "auto", height: "auto" }}
+                sizes="160px"
+                className="object-contain opacity-60 contrast-125 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
               />
             );
 

@@ -3,8 +3,8 @@ import {
   Cormorant_Garamond,
   Geist_Mono,
   Inter,
-  Noto_Sans_Arabic,
   Playfair_Display,
+  Tajawal,
   Urbanist,
 } from "next/font/google";
 import { Providers } from "./providers";
@@ -28,10 +28,10 @@ const cormorant = Cormorant_Garamond({
   weight: ["300", "400", "500", "600", "700"],
 });
 
-const notoArabic = Noto_Sans_Arabic({
+const tajawal = Tajawal({
   variable: "--font-arabic",
-  subsets: ["arabic"],
-  weight: ["400", "500", "600", "700"],
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "700", "800"],
   display: "swap",
 });
 
@@ -85,9 +85,16 @@ export default function RootLayout({
       lang="en"
       dir="ltr"
       suppressHydrationWarning
-      className={`${inter.variable} ${geistMono.variable} ${cormorant.variable} ${notoArabic.variable} ${playfair.variable} ${urbanist.variable} h-full antialiased`}
+      className={`${inter.variable} ${geistMono.variable} ${cormorant.variable} ${tajawal.variable} ${playfair.variable} ${urbanist.variable} h-full antialiased`}
     >
-      <body className="relative flex min-h-full flex-col">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var l=localStorage.getItem("aswar-lang");if(l==="ar"){var r=document.documentElement;r.lang="ar";r.dir="rtl";r.classList.add("lang-ar");}}catch(e){}})();`,
+          }}
+        />
+      </head>
+      <body className="relative flex min-h-full flex-col font-sans">
         <Providers>{children}</Providers>
       </body>
     </html>
