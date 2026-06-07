@@ -1,3 +1,5 @@
+import { ASWAR_RESIDENCES_SITE_URL } from "@/lib/site-url";
+
 export const PREMIUM_PARTNER_LOGOS = [
   {
     src: "/partners/1.png",
@@ -18,5 +20,6 @@ export const PREMIUM_PARTNER_LOGOS = [
   {
     src: "/partners/5.png",
     altKey: "partnerLogoAswarIntl",
+    href: ASWAR_RESIDENCES_SITE_URL,
   },
 ] as const;

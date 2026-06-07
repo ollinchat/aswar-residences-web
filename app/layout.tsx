@@ -9,6 +9,7 @@ import {
 } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
+import { resolveSiteUrl } from "@/lib/site-url";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -48,15 +49,18 @@ const urbanist = Urbanist({
   display: "swap",
 });
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://aswar.ae";
+const siteUrl = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "ASWAR 01 | Ultra-Luxury Residences Dubai",
   description:
     "ASWAR luxury residences in Ras Al Khor, near Meydan — 1BR and 2BR homes with Dubai skyline views, curated amenities, and architectural excellence.",
+  alternates: {
+    canonical: siteUrl,
+  },
   openGraph: {
+    url: siteUrl,
     title: "ASWAR 01 | International Development",
     description:
       "Invest in Dubai's future. Discover visionary living spaces.",

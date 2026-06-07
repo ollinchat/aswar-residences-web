@@ -307,14 +307,22 @@ html.aswar-a11y-stop-animations *::after {
   }
 }
 
-/* Partner logo marquee — 2× duplicate track, seamless loop */
-@keyframes partner-marquee-scroll {
-  from {
+/* Partner logo marquee — CSS fallback + Tailwind animate-marquee */
+@keyframes marquee {
+  0% {
     transform: translate3d(0, 0, 0);
   }
-  to {
+  100% {
     transform: translate3d(-50%, 0, 0);
   }
+}
+
+.animate-marquee {
+  animation: marquee 42s linear infinite;
+}
+
+.pause-on-hover:hover {
+  animation-play-state: paused;
 }
 
 .partner-marquee-wrap {
@@ -322,16 +330,8 @@ html.aswar-a11y-stop-animations *::after {
   width: 100%;
 }
 
-.partner-marquee-track {
-  animation: partner-marquee-scroll 42s linear infinite;
-}
-
-.partner-marquee-wrap:hover .partner-marquee-track {
-  animation-play-state: paused;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .partner-marquee-track {
+  .partner-marquee-wrap .animate-marquee {
     animation: none !important;
     transform: none !important;
   }
