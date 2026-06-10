@@ -20,6 +20,20 @@ export const copy = {
     heritageLead:
       "Sami Najami carries a multi-decade record of structural delivery across the UAE — the industrial backbone that de-risks ASWAR 01 from foundation to façade.",
     heritageTags: "Engineering · High-rise contracting · Programme governance",
+    heritageName: "Sami Najami",
+    heritageTagEngineering: "Engineering",
+    heritageTagHighRise: "High-rise contracting",
+    heritageTagGovernance: "Programme governance",
+    heritageBio:
+      "Sami Najami Engineering & Projects L.T.D. brings decades of structural engineering and high-rise contracting expertise across the United Arab Emirates. As principal contracting partner to ASWAR International Development, the firm anchors delivery discipline — from foundation and substructure through superstructure and façade completion.",
+    heritageBioSecondary:
+      "Through rigorous programme governance, technical oversight, and a proven tower-delivery methodology, Sami Najami provides the industrial certainty behind ASWAR 01 — de-risking construction from groundworks to handover and ensuring every residence meets the exacting standards its owners expect.",
+    heritageBioTeaser:
+      "Sami Najami Engineering & Projects L.T.D. brings decades of structural engineering and high-rise contracting expertise across the United Arab Emirates. As principal contracting partner to ASWAR International Development, the firm anchors delivery discipline across every phase of tower delivery.",
+    heritageBioExtended:
+      "From foundation and substructure through superstructure and façade completion, the group applies rigorous programme governance, technical oversight, and a proven delivery methodology — providing the industrial certainty behind ASWAR 01 and ensuring every residence meets the exacting standards its owners expect.",
+    heritageReadMore: "Read more",
+    heritageReadLess: "Read less",
     heritageSite: "sami-najami.com",
     heritagePartnerBlurb:
       "Certified delivery partner · Principal contractor to ASWAR International Development.",
@@ -312,6 +326,20 @@ export const copy = {
     heritageLead:
       "سجّلٌ حافلٌ لسامي نجامي في التسليم الإنشائي عبر دولة الإمارات — العمود الفني الذي يُدير مخاطر «أسوار 01» من الأساسات إلى الواجهة.",
     heritageTags: "هندسة إنشائية · ناطحات سحاب · حوكمة مشروع",
+    heritageName: "سامي نجامي",
+    heritageTagEngineering: "الهندسة",
+    heritageTagHighRise: "مقاولات ناطحات السحاب",
+    heritageTagGovernance: "حوكمة البرامج",
+    heritageBio:
+      "تجمع سامي نجامي للهندسة والمشاريع ذ.م.م عقودًا من الخبرة في الهندسة الإنشائية ومقاولات ناطحات السحاب في دولة الإمارات. وبصفتها شريك المقاولات الرئيس لدى ASWAR International Development، تؤسّس الشركة انضباط التنفيذ — من الأساسات والبنية التحتية إلى الهيكل الإنشائي وإكمال الواجهات.",
+    heritageBioSecondary:
+      "من خلال حوكمة برامج صارمة وإشراف هندسي متقن ومنهجية مثبتة في تسليم الأبراج، تمنح سامي نجامي اليقين الصناعي وراء «أسوار 01» — إدارة مخاطر البناء من أعمال الحفر حتى التسليم، وضمان أن كل مسكن يلبي المعايير الرفيعة التي يتوقعها أصحابه.",
+    heritageBioTeaser:
+      "تجمع سامي نجامي للهندسة والمشاريع ذ.م.م عقودًا من الخبرة في الهندسة الإنشائية ومقاولات ناطحات السحاب في دولة الإمارات. وبصفتها شريك المقاولات الرئيس لدى ASWAR International Development، تؤسّس الشركة انضباط التنفيذ في كل مرحلة من مراحل تسليم الأبراج.",
+    heritageBioExtended:
+      "من الأساسات والبنية التحتية إلى الهيكل الإنشائي وإكمال الواجهات، تطبّق المجموعة حوكمة برامج صارمة وإشرافًا هندسيًا متقنًا ومنهجية تسليم مثبتة — مما يمنح اليقين الصناعي وراء «أسوار 01» ويضمن أن كل مسكن يلبي المعايير الرفيعة التي يتوقعها أصحابه.",
+    heritageReadMore: "اقرأ المزيد",
+    heritageReadLess: "عرض أقل",
     heritageSite: "sami-najami.com",
     heritagePartnerBlurb:
       "شريك تنفيذ معتمد · مقاولٌ رئيسٌ لدى ASWAR International Development.",

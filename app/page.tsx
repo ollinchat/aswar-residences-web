@@ -21,7 +21,7 @@ import { SiteNavbar } from "@/components/site-navbar";
 import { PartnerMarquee } from "@/components/partner-marquee";
 import { HeroBackgroundVideo } from "@/components/hero-background-video";
 import { EngineeringFloorPlan } from "@/components/engineering-floor-plan";
-import { HeritageProjectGallery } from "@/components/heritage-project-gallery";
+import { SamiNajamiHeritage } from "@/components/sami-najami-heritage";
 import { PaymentSection } from "@/components/payment-section";
 import { AboutAswarSection } from "@/components/about-aswar-section";
 import { LuxuryRevealItem, LuxuryStagger } from "@/components/luxury-reveal";
@@ -1039,71 +1039,7 @@ export default function Home() {
 
       <PartnerMarquee />
 
-      <section
-        id="heritage"
-        className="border-t border-charcoal/[0.06] bg-white px-6 py-12 text-charcoal md:px-12 md:py-14"
-      >
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-10">
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-8 lg:col-span-4">
-              <div className="shrink-0">
-                <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-charcoal/35">
-                  {t("engineeringSealTitle")}
-                </p>
-                <a
-                  href="https://www.sami-najami.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-5 block w-full max-w-[min(100%,280px)] rounded-lg border border-charcoal/[0.1] bg-white px-4 py-3 shadow-[inset_0_0_0_1px_rgba(26,28,30,0.04)] transition-opacity hover:opacity-90 sm:max-w-[300px] md:px-5 md:py-4"
-                  aria-label="Sami Najami — official site"
-                >
-                  <Image
-                    src="/partners/sami-najami-logo.png"
-                    alt="Sami Najami Engineering & Projects L.T.D"
-                    width={560}
-                    height={160}
-                    className="h-auto w-full object-contain object-left"
-                    sizes="(max-width: 768px) 280px, 300px"
-                    priority={false}
-                  />
-                </a>
-                <p className="mt-2 font-mono text-[8px] uppercase tracking-[0.5em] text-charcoal/25">
-                  {t("engineeringSealParent")}
-                </p>
-              </div>
-              <div className="hidden h-24 w-px shrink-0 bg-charcoal/[0.08] sm:block lg:h-28" aria-hidden />
-              <div className="min-w-0 rounded-sm border border-charcoal/[0.08] bg-[#FAFAFA]/80 px-4 py-3 sm:max-w-[200px]">
-                <p className="font-mono text-[7px] uppercase leading-relaxed tracking-[0.38em] text-charcoal/35">
-                  {t("heritageTags")}
-                </p>
-              </div>
-            </div>
-            <div className="min-w-0 lg:col-span-8">
-              <HeritageProjectGallery variant="masonry" />
-            </div>
-          </div>
-          <p className="mx-auto mt-8 max-w-2xl font-sans text-sm font-normal leading-relaxed text-charcoal/50 md:mt-10 md:text-[15px] rtl:font-arabic rtl:leading-[1.72]">
-            {t("engineeringSealLine")}
-          </p>
-          <div className="mt-6 flex flex-wrap gap-4">
-            <a
-              href="https://www.sami-najami.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex rounded-[2px] border border-charcoal/12 bg-[#0a0a0a]/90 px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white backdrop-blur-xl transition-colors hover:bg-zinc-950/85"
-            >
-              {t("heritageSite")} ↗
-            </a>
-            <a
-              href="/partners/sami-najami-brand.pdf"
-              download
-              className="inline-flex rounded-[2px] border border-charcoal/15 bg-white px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-charcoal/70 transition-colors hover:border-charcoal/30 hover:text-charcoal"
-            >
-              {t("downloadPdf")}
-            </a>
-          </div>
-        </div>
-      </section>
+      <SamiNajamiHeritage />
 
       <footer id="contact" className="border-t border-charcoal/[0.06] bg-[#FAFAFA] px-8 py-20 md:px-12">
         <div className="mx-auto grid max-w-7xl gap-16 md:grid-cols-4 md:gap-12">

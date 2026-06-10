@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   MotionConfig,
@@ -34,19 +34,13 @@ const AMENITY_DESC = {
 } as const satisfies Record<AmenityListKey, CopyKey>;
 
 const ICON_STROKE = 1;
+const AUTO_ADVANCE_MS = 4500;
 
 const IMAGE_SIZES_STAGE =
-  "(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1280px";
-const IMAGE_SIZES_STRIP = "96px";
-const AUTO_ADVANCE_MS = 5500;
-const FILMSTRIP_MARQUEE_COPIES = 2;
+  "(max-width: 768px) 100vw, (max-width: 1280px) 92vw, 1400px";
 
 function amenityAlt(media: AmenityVisualMedia, lang: Lang): string {
   return lang === "ar" ? media.altAr : media.altEn;
-}
-
-function stripImageSrc(media: AmenityVisualMedia): string {
-  return media.kind === "video" ? media.poster : media.src;
 }
 
 function AmenityBackgroundMedia({
@@ -150,45 +144,6 @@ function AmenityBackgroundMedia({
   );
 }
 
-const FilmstripTile = memo(function FilmstripTile({
-  amenityKey,
-  isActive,
-  label,
-  src,
-  onSelect,
-}: {
-  amenityKey: AmenityListKey;
-  isActive: boolean;
-  label: string;
-  src: string;
-  onSelect: (key: AmenityListKey) => void;
-}) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      aria-current={isActive ? "true" : undefined}
-      onClick={() => onSelect(amenityKey)}
-      style={fillImageParentStyle}
-      className={`relative h-20 w-20 shrink-0 overflow-hidden rounded-none border-0 bg-neutral-100 outline-none transition-[opacity,transform,box-shadow] duration-500 focus-visible:ring-2 focus-visible:ring-charcoal/25 focus-visible:ring-offset-2 focus-visible:ring-offset-white md:h-24 md:w-24 ${
-        isActive
-          ? "scale-105 opacity-100 ring-1 ring-[#9A8550]/45 shadow-sm"
-          : "scale-100 opacity-55 hover:opacity-80"
-      }`}
-    >
-      <Image
-        src={src}
-        alt=""
-        fill
-        className="object-cover"
-        sizes={IMAGE_SIZES_STRIP}
-        quality={72}
-        loading="lazy"
-      />
-    </button>
-  );
-});
-
 const AmenityStage = memo(function AmenityStage({
   amenityKey,
 }: {
@@ -221,9 +176,7 @@ const AmenityStage = memo(function AmenityStage({
         imageSizes={IMAGE_SIZES_STAGE}
         eager
       />
-      <div
-        className="absolute inset-y-0 start-0 z-[2] flex w-[38%] min-w-[200px] max-w-[420px] flex-col justify-center gap-4 rounded-none border-e border-white/35 bg-gradient-to-r from-white/80 to-transparent px-5 py-8 backdrop-blur-2xl md:gap-5 md:px-8 md:py-10 lg:px-10"
-      >
+      <div className="absolute inset-y-0 start-0 z-[2] flex w-[42%] min-w-[200px] max-w-[440px] flex-col justify-center gap-4 rounded-none border-e border-white/35 bg-gradient-to-r from-white/80 to-transparent px-5 py-8 backdrop-blur-2xl md:gap-5 md:px-8 md:py-10 lg:px-10">
         <Icon
           width={44}
           height={44}
@@ -247,6 +200,45 @@ const AmenityStage = memo(function AmenityStage({
   );
 });
 
+function AmenityPagination({
+  activeKey,
+  onSelect,
+}: {
+  activeKey: AmenityListKey;
+  onSelect: (key: AmenityListKey) => void;
+}) {
+  const { t } = useLang();
+
+  return (
+    <nav
+      className="flex items-center justify-center gap-2 border-t border-charcoal/10 bg-[#FAFAFA] px-4 py-4 md:py-5"
+      aria-label={t("amenitiesTitle")}
+    >
+      {AMENITY_LIST_ORDER.map((amenityKey) => {
+        const isActive = amenityKey === activeKey;
+        return (
+          <button
+            key={amenityKey}
+            type="button"
+            onClick={() => onSelect(amenityKey)}
+            aria-label={t(amenityKey)}
+            aria-current={isActive ? "true" : undefined}
+            className="rounded-full p-1 outline-none transition-opacity duration-300 hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#9A8550]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAFA]"
+          >
+            <span
+              className={`block rounded-full transition-all duration-500 ${
+                isActive
+                  ? "h-2 w-8 bg-[#9A8550] shadow-[0_0_10px_rgba(154,133,80,0.35)]"
+                  : "h-2 w-2 bg-[#9A8550]/30 hover:bg-[#9A8550]/50"
+              }`}
+            />
+          </button>
+        );
+      })}
+    </nav>
+  );
+}
+
 export function ProjectAmenities() {
   const { t, lang } = useLang();
   const reduceMotion = useReducedMotion();
@@ -256,8 +248,10 @@ export function ProjectAmenities() {
   const [hoverPaused, setHoverPaused] = useState(false);
   const [tabHidden, setTabHidden] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const sliderRef = useRef<HTMLDivElement>(null);
-  const sectionInView = useInView(sectionRef, { amount: 0.12, margin: "0px 0px -15% 0px" });
+  const sectionInView = useInView(sectionRef, {
+    amount: 0.12,
+    margin: "0px 0px -15% 0px",
+  });
 
   const onPromote = useCallback((key: AmenityListKey) => {
     setFeaturedKey(key);
@@ -286,26 +280,14 @@ export function ProjectAmenities() {
     return () => document.removeEventListener("visibilitychange", onVisibility);
   }, []);
 
-  const stripItems = useMemo(
-    () =>
-      AMENITY_LIST_ORDER.map((amenityKey) => ({
-        amenityKey,
-        src: stripImageSrc(AMENITY_VISUALS[amenityKey]),
-        label: `${t(amenityKey)}: ${t(AMENITY_DESC[amenityKey])}`,
-      })),
-    [t, lang],
-  );
-
-  const filmstripAnimated = !reduceMotion && sectionInView;
-
   return (
     <section
       ref={sectionRef}
       className="relative w-full border-t border-charcoal/10 bg-white py-16 md:py-20"
       aria-label={t("amenitiesTitle")}
     >
-      <div className="mx-auto w-full max-w-7xl px-5 md:px-8 lg:px-12">
-        <LuxuryStagger className="mb-5 text-center md:mb-7">
+      <div className="mx-auto w-full max-w-[1440px] px-5 md:px-8 lg:px-12">
+        <LuxuryStagger className="mb-6 text-center md:mb-8">
           <LuxuryRevealItem>
             <h2
               className={`text-[clamp(1.5rem,3.2vw,2rem)] font-extralight tracking-[0.2em] text-[#0f172a] md:tracking-[0.28em] ${lang === "ar" ? "font-arabic" : "font-playfair"}`}
@@ -324,16 +306,15 @@ export function ProjectAmenities() {
 
         <MotionConfig reducedMotion={reduceMotion ? "always" : "never"}>
           <div
-            ref={sliderRef}
-            className="relative flex flex-col gap-px shadow-[0_1px_3px_rgba(15,23,42,0.04)]"
-            style={{ position: "relative" }}
+            className="overflow-hidden rounded-none border border-charcoal/10 bg-[#fafafa] shadow-[0_1px_3px_rgba(15,23,42,0.04)]"
             onMouseEnter={() => setHoverPaused(true)}
             onMouseLeave={() => setHoverPaused(false)}
           >
             <div
-              className="relative h-[min(50vh,480px)] min-h-[260px] max-h-[480px] w-full overflow-hidden rounded-none border border-charcoal/10 bg-[#fafafa] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.5)]"
+              className="relative h-[min(62vh,560px)] min-h-[300px] w-full overflow-hidden sm:min-h-[340px] md:h-[min(68vh,640px)] md:min-h-[400px] lg:h-[min(72vh,720px)] lg:min-h-[440px]"
               style={{ position: "relative" }}
               role="region"
+              aria-roledescription="carousel"
               aria-label={t(featuredKey)}
             >
               <AnimatePresence mode="wait" initial={false}>
@@ -341,35 +322,7 @@ export function ProjectAmenities() {
               </AnimatePresence>
             </div>
 
-            <div
-              className="aswar-amenity-filmstrip-wrap relative h-20 w-full overflow-hidden rounded-none bg-white md:h-24"
-              style={{ position: "relative" }}
-              dir="ltr"
-              role="group"
-              aria-label={t("amenitiesTitle")}
-            >
-              <div
-                className={`aswar-amenity-filmstrip-track flex w-max min-w-max shrink-0 flex-row flex-nowrap items-center ${filmstripAnimated ? "aswar-amenity-filmstrip-track--animated" : ""}`}
-              >
-                {Array.from({ length: FILMSTRIP_MARQUEE_COPIES }, (_, segment) => (
-                  <div
-                    key={segment}
-                    className="aswar-amenity-filmstrip-segment flex shrink-0 flex-row flex-nowrap items-center whitespace-nowrap"
-                  >
-                    {stripItems.map(({ amenityKey, src, label }) => (
-                      <FilmstripTile
-                        key={`${segment}-${amenityKey}`}
-                        amenityKey={amenityKey}
-                        src={src}
-                        label={label}
-                        isActive={amenityKey === featuredKey}
-                        onSelect={onPromote}
-                      />
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
+            <AmenityPagination activeKey={featuredKey} onSelect={onPromote} />
           </div>
         </MotionConfig>
       </div>

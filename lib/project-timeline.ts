@@ -22,10 +22,6 @@ export type TimelineStage = {
   labelKey: CopyKey;
   descriptionKey: CopyKey;
   dateKey: CopyKey;
-  /** Transparent building render — drop PNG at this path (SVG placeholders ship until then). */
-  imageSrc: string;
-  /** Tailwind gradient utilities for the render stage backdrop. */
-  bgGradient: string;
   financials: TimelineFinancials;
 };
 
@@ -60,9 +56,6 @@ function financialsAt(estimatedValue: number): TimelineFinancials {
 /**
  * Indicative capital appreciation by phase (1BR reference, off-plan entry AED 1.65M).
  * Update `estimatedValue` per stage when sales releases new official price bands.
- *
- * Replace `.svg` with `.png` when studio transparent renders land in
- * `public/images/timeline/` (building-phase1.png … building-final.png).
  */
 export const PROJECT_TIMELINE_STAGES: TimelineStage[] = [
   {
@@ -70,8 +63,6 @@ export const PROJECT_TIMELINE_STAGES: TimelineStage[] = [
     labelKey: "timelineStageLand",
     descriptionKey: "timelineStageLandDesc",
     dateKey: "timelineStageLandDate",
-    imageSrc: "/images/timeline/building-phase1.svg",
-    bgGradient: "from-[#111111] to-[#1c1a16]",
     financials: financialsAt(ENTRY_AED),
   },
   {
@@ -79,8 +70,6 @@ export const PROJECT_TIMELINE_STAGES: TimelineStage[] = [
     labelKey: "timelineStageGroundbreaking",
     descriptionKey: "timelineStageGroundbreakingDesc",
     dateKey: "timelineStageGroundbreakingDate",
-    imageSrc: "/images/timeline/building-phase2.svg",
-    bgGradient: "from-[#161512] to-[#22201b]",
     financials: financialsAt(1_780_000),
   },
   {
@@ -88,8 +77,6 @@ export const PROJECT_TIMELINE_STAGES: TimelineStage[] = [
     labelKey: "timelineStageFoundation",
     descriptionKey: "timelineStageFoundationDesc",
     dateKey: "timelineStageFoundationDate",
-    imageSrc: "/images/timeline/building-phase3.svg",
-    bgGradient: "from-[#1a1815] to-[#282520]",
     financials: financialsAt(2_050_000),
   },
   {
@@ -97,8 +84,6 @@ export const PROJECT_TIMELINE_STAGES: TimelineStage[] = [
     labelKey: "timelineStageStructural",
     descriptionKey: "timelineStageStructuralDesc",
     dateKey: "timelineStageStructuralDate",
-    imageSrc: "/images/timeline/building-phase4.svg",
-    bgGradient: "from-[#1c1a16] to-[#2d2922]",
     financials: financialsAt(2_200_000),
   },
   {
@@ -106,8 +91,6 @@ export const PROJECT_TIMELINE_STAGES: TimelineStage[] = [
     labelKey: "timelineStageHandover",
     descriptionKey: "timelineStageHandoverDesc",
     dateKey: "timelineStageHandoverDate",
-    imageSrc: "/images/timeline/building-final.svg",
-    bgGradient: "from-[#0f0e0d] to-[#1a1815]",
     financials: financialsAt(HANDOVER_AED),
   },
 ];
