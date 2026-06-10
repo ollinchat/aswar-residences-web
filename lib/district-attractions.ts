@@ -12,50 +12,53 @@ export type DistrictAttraction = {
   descKey: CopyKey;
 };
 
-const attraction = (
-  photoId: string,
-  alt: string,
-  titleKey: CopyKey,
-  kickerKey: CopyKey,
-  descKey: CopyKey,
-): DistrictAttraction => ({
-  src: unsplashImage(photoId, 1600, 75),
-  alt,
-  titleKey,
-  kickerKey,
-  descKey,
-});
+const districtImage = (file: string) =>
+  `/images/district/${encodeURIComponent(file)}`;
 
 export const DISTRICT_ATTRACTIONS_ALL: DistrictAttraction[] = [
-  attraction(
-    "photo-1441974231531-c6227db76b6e",
-    "Wetlands and wildlife sanctuary landscape near Ras Al Khor",
-    "districtHlSanctuaryTitle",
-    "districtHlSanctuaryKicker",
-    "districtHlSanctuaryDesc",
-  ),
-  attraction(
-    "photo-1544716278-ca5e3f4abd8c",
-    "Meydan Racecourse — world-class horse racing under evening lights",
-    "districtHlMeydanTitle",
-    "districtHlMeydanKicker",
-    "districtHlMeydanDesc",
-  ),
-  attraction(
-    "photo-1486406146926-c627a92ad1ab",
-    "Dubai Creek Harbour towers and waterfront skyline at dusk",
-    "districtHlCreekTowerTitle",
-    "districtHlCreekTowerKicker",
-    "districtHlCreekTowerDesc",
-  ),
-  attraction(
-    "photo-1512453979798-5ea266f8880c",
-    "Downtown Dubai skyline with Burj Khalifa — city centre panorama",
-    "districtHlDowntownTitle",
-    "districtHlDowntownKicker",
-    "districtHlDowntownDesc",
-  ),
+  {
+    src: districtImage("Ras Al Khor Wildlife Sanctuary.png"),
+    alt: "Ras Al Khor Wildlife Sanctuary — flamingos and Dubai skyline at golden hour",
+    titleKey: "districtHlSanctuaryTitle",
+    kickerKey: "districtHlSanctuaryKicker",
+    descKey: "districtHlSanctuaryDesc",
+  },
+  {
+    src: districtImage("Meydan Racecourse.png"),
+    alt: "Meydan Racecourse — world-class horse racing under evening lights",
+    titleKey: "districtHlMeydanTitle",
+    kickerKey: "districtHlMeydanKicker",
+    descKey: "districtHlMeydanDesc",
+  },
+  {
+    src: districtImage("Dubai Creek Harbour.png"),
+    alt: "Dubai Creek Harbour towers and waterfront skyline at dusk",
+    titleKey: "districtHlCreekTowerTitle",
+    kickerKey: "districtHlCreekTowerKicker",
+    descKey: "districtHlCreekTowerDesc",
+  },
+  {
+    src: districtImage("Downtown Dubai.png"),
+    alt: "Downtown Dubai skyline with Burj Khalifa — city centre panorama",
+    titleKey: "districtHlDowntownTitle",
+    kickerKey: "districtHlDowntownKicker",
+    descKey: "districtHlDowntownDesc",
+  },
+  {
+    src: unsplashImage("photo-1497366216548-37526070297c", 1600, 75),
+    alt: "Dubai Design District — contemporary architecture and creative workspace",
+    titleKey: "districtHlD3Title",
+    kickerKey: "districtHlD3Kicker",
+    descKey: "districtHlD3Desc",
+  },
+  {
+    src: unsplashImage("photo-1507525428034-b723cf961d3e", 1600, 75),
+    alt: "Jumeirah Beach — pristine sands and turquoise waters at golden hour",
+    titleKey: "districtHlJumeirahBeachTitle",
+    kickerKey: "districtHlJumeirahBeachKicker",
+    descKey: "districtHlJumeirahBeachDesc",
+  },
 ];
 
-export const DISTRICT_ATTRACTIONS_INITIAL = 4;
-export const DISTRICT_ATTRACTIONS_PAGE = 4;
+export const DISTRICT_ATTRACTIONS_INITIAL = 6;
+export const DISTRICT_ATTRACTIONS_PAGE = 6;

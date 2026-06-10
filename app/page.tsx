@@ -40,7 +40,6 @@ import {
   DISTRICT_ATTRACTIONS_INITIAL,
   DISTRICT_ATTRACTIONS_PAGE,
 } from "@/lib/district-attractions";
-import { REMOTE_IMAGE_BLUR_DATA_URL } from "@/lib/image-blur-placeholder";
 import { monthlyMortgagePayment } from "@/lib/financing-math";
 
 const PanoramaViewerModal = dynamic(
@@ -845,13 +844,13 @@ export default function Home() {
             subtitle={t("districtSubtitle")}
             spacing="spacious"
           />
-          <div className="grid grid-cols-2 gap-6 gap-y-10 md:gap-8 md:gap-y-12 lg:grid-cols-3 lg:gap-10 lg:gap-y-14">
+          <div className="grid grid-cols-1 gap-8 gap-y-10 sm:grid-cols-2 md:gap-8 md:gap-y-12 lg:grid-cols-3 lg:gap-10 lg:gap-y-14">
             {visibleDistrictAttractions.map((img, idx) => {
               const from = districtExpandBaseline;
               const isNew = from != null && idx >= from;
               return (
                 <motion.article
-                  key={img.src}
+                  key={img.titleKey}
                   className="group flex min-h-0 flex-col gap-5 md:gap-6"
                   initial={
                     isNew
@@ -889,11 +888,9 @@ export default function Home() {
                         src={img.src}
                         alt={img.alt}
                         fill
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 400px"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
                         className="object-cover object-center"
-                        priority={idx < 4}
-                        placeholder="blur"
-                        blurDataURL={REMOTE_IMAGE_BLUR_DATA_URL}
+                        priority={idx < 6}
                       />
                     </motion.div>
                   </div>

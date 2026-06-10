@@ -7,6 +7,22 @@ const MIN_INITIAL_DOWN = 550_000;
 const TERM_YEARS = [3, 5, 7, 10] as const;
 const MIN_LOAN_AFTER_DOWN = 50_000;
 
+type TermYears = (typeof TERM_YEARS)[number];
+
+function totalMonthsForTerm(years: TermYears): number {
+  return years * 12;
+}
+
+/** Remaining balance ÷ total months — no interest; term buttons drive recalculation. */
+function monthlyInstallmentFromBalance(
+  remainingBalance: number,
+  years: TermYears,
+): number {
+  const totalMonths = totalMonthsForTerm(years);
+  if (totalMonths <= 0 || remainingBalance <= 0) return 0;
+  return remainingBalance / totalMonths;
+}
+
 const labelClass =
   "font-sans text-[8px] font-medium uppercase tracking-[0.2em] text-zinc-500 rtl:font-arabic rtl:normal-case rtl:tracking-normal rtl:leading-[1.72]";
 
@@ -45,7 +61,7 @@ export function PaymentCalculator({
 }: PaymentCalculatorProps) {
   const [purchasePrice, setPurchasePrice] = useState(initialPurchasePrice);
   const [initialDown, setInitialDown] = useState(MIN_INITIAL_DOWN);
-  const [termYears, setTermYears] = useState<(typeof TERM_YEARS)[number]>(5);
+  const [termYears, setTermYears] = useState<TermYears>(5);
 
   /** Parent passes `key={initialPurchasePrice}` so state resets when the default price changes. */
   useEffect(() => {
@@ -63,10 +79,18 @@ export function PaymentCalculator({
     [initialDown, maxInitialDown],
   );
 
-  const remainingBalance = Math.max(0, purchasePrice - effectiveInitialDown);
-  const nMonths = Math.max(1, Math.round(termYears * 12));
-  const monthlyPayment =
-    nMonths > 0 ? remainingBalance / nMonths : 0;
+  const financingSummary = useMemo(() => {
+    const remainingBalance = Math.max(0, purchasePrice - effectiveInitialDown);
+    const totalMonths = totalMonthsForTerm(termYears);
+    const monthlyInstallment = monthlyInstallmentFromBalance(
+      remainingBalance,
+      termYears,
+    );
+
+    return { remainingBalance, totalMonths, monthlyInstallment };
+  }, [purchasePrice, effectiveInitialDown, termYears]);
+
+  const { remainingBalance, monthlyInstallment } = financingSummary;
 
   const sliderMax = maxInitialDown;
   const sliderMin = MIN_INITIAL_DOWN;
@@ -183,6 +207,7 @@ export function PaymentCalculator({
                   <button
                     key={y}
                     type="button"
+                    aria-pressed={active}
                     onClick={() => setTermYears(y)}
                     className={`min-h-[44px] rounded-lg border px-3 py-2.5 font-sans text-[10px] font-medium tracking-[0.12em] transition-[color,box-shadow,border-color,background] sm:text-[11px] ${
                       active
@@ -217,8 +242,11 @@ export function PaymentCalculator({
                 <dt className={labelClass}>
                   {t("paymentLblMonthlyInstallment")}
                 </dt>
-                <dd className="font-sans text-xl font-semibold tabular-nums tracking-tight text-zinc-900">
-                  {formatMoney(Math.round(monthlyPayment), lang, currency)}
+                <dd
+                  className="font-sans text-xl font-semibold tabular-nums tracking-tight text-zinc-900"
+                  aria-live="polite"
+                >
+                  {formatMoney(Math.round(monthlyInstallment), lang, currency)}
                 </dd>
               </div>
             </dl>

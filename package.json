@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "homepage": "https://aswar-residences-web.vercel.app/",
   "scripts": {
-    "dev": "next dev",
-    "dev:clean": "rm -rf .next && next dev",
+    "dev": "next dev --webpack",
+    "dev:turbo": "next dev",
+    "dev:clean": "rm -rf .next node_modules/.cache && next dev --webpack",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

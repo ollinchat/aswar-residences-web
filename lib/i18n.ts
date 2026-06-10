@@ -248,6 +248,14 @@ export const copy = {
     districtHlDowntownKicker: "10–15 minutes",
     districtHlDowntownDesc:
       "Burj Khalifa, Dubai Mall, and the cultural heart of the emirate — a short drive via Emirates Road (E44).",
+    districtHlD3Title: "Dubai Design District (d3)",
+    districtHlD3Kicker: "Design & culture",
+    districtHlD3Desc:
+      "A global hub for design, fashion, and art, fostering creativity and innovation in the heart of the city.",
+    districtHlJumeirahBeachTitle: "Jumeirah Beach",
+    districtHlJumeirahBeachKicker: "Coastal leisure",
+    districtHlJumeirahBeachDesc:
+      "Pristine white sands and azure waters offering a premier leisure destination and the ultimate coastal lifestyle.",
     liveUpdatesKicker: "Live updates",
     liveUpdatesTitle: "Stay Connected",
     liveUpdatesSubtitle:
@@ -552,6 +560,14 @@ export const copy = {
     districtHlDowntownKicker: "١٠–١٥ دقيقة",
     districtHlDowntownDesc:
       "برج خليفة ودبي مول وقلب الإمارة — بقيادة قصيرة عبر طريق الإمارات (E44).",
+    districtHlD3Title: "حي دبي للتصميم (d3)",
+    districtHlD3Kicker: "تصميم وثقافة",
+    districtHlD3Desc:
+      "مركز عالمي للتصميم والأزياء والفن، يرعى الإبداع والابتكار في قلب المدينة.",
+    districtHlJumeirahBeachTitle: "شاطئ جميرا",
+    districtHlJumeirahBeachKicker: "متعة ساحلية",
+    districtHlJumeirahBeachDesc:
+      "رمال بيضاء نقية ومياه فيروزية — وجهة ترفيهية راقية وأسلوب حياة ساحلي استثنائي.",
     liveUpdatesKicker: "تحديثات مباشرة",
     liveUpdatesTitle: "ابقَ على تواصل",
     liveUpdatesSubtitle: "تابعوا أحدث مستجداتنا على الوسائط",

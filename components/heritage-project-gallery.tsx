@@ -5,7 +5,6 @@ import {
   HERITAGE_MASONRY_IMAGES,
   HERITAGE_SLIDER_IMAGES,
 } from "@/lib/heritage-gallery";
-import { REMOTE_IMAGE_BLUR_DATA_URL } from "@/lib/image-blur-placeholder";
 import { fillImageParentStyle } from "@/lib/image-layout";
 
 type Variant = "slider" | "masonry";
@@ -29,9 +28,7 @@ export function HeritageProjectGallery({ variant = "slider" }: { variant?: Varia
               alt={img.alt}
               fill
               sizes="(max-width:768px) 78vw, 300px"
-              className="object-cover"
-              placeholder="blur"
-              blurDataURL={REMOTE_IMAGE_BLUR_DATA_URL}
+              className="object-cover object-center"
               priority={i < 2}
             />
           </div>
@@ -48,7 +45,7 @@ export function HeritageProjectGallery({ variant = "slider" }: { variant?: Varia
       aria-label="Project photography"
     >
       <div
-        className="relative col-span-2 row-span-2 min-h-[168px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[208px] md:min-h-[228px]"
+        className="relative col-span-2 row-span-2 min-h-[168px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[208px] md:min-h-[240px]"
         style={fillImageParentStyle}
       >
         <Image
@@ -56,14 +53,12 @@ export function HeritageProjectGallery({ variant = "slider" }: { variant?: Varia
           alt={a.alt}
           fill
           sizes="(max-width:768px) 66vw, 440px"
-          className="object-cover"
-          placeholder="blur"
-          blurDataURL={REMOTE_IMAGE_BLUR_DATA_URL}
+          className="object-cover object-center"
           priority
         />
       </div>
       <div
-        className="relative col-start-3 row-start-1 min-h-[76px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[96px]"
+        className="relative col-start-3 row-start-1 min-h-[76px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[96px] md:min-h-[112px]"
         style={fillImageParentStyle}
       >
         <Image
@@ -71,13 +66,11 @@ export function HeritageProjectGallery({ variant = "slider" }: { variant?: Varia
           alt={b.alt}
           fill
           sizes="(max-width:768px) 33vw, 200px"
-          className="object-cover"
-          placeholder="blur"
-          blurDataURL={REMOTE_IMAGE_BLUR_DATA_URL}
+          className="object-cover object-center"
         />
       </div>
       <div
-        className="relative col-start-3 row-start-2 min-h-[76px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[96px]"
+        className="relative col-start-3 row-start-2 min-h-[76px] overflow-hidden rounded-sm bg-charcoal/[0.06] sm:min-h-[96px] md:min-h-[112px]"
         style={fillImageParentStyle}
       >
         <Image
@@ -85,9 +78,7 @@ export function HeritageProjectGallery({ variant = "slider" }: { variant?: Varia
           alt={c.alt}
           fill
           sizes="(max-width:768px) 33vw, 200px"
-          className="object-cover"
-          placeholder="blur"
-          blurDataURL={REMOTE_IMAGE_BLUR_DATA_URL}
+          className="object-cover object-center"
         />
       </div>
     </div>
