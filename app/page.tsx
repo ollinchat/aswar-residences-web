@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { SiteNavbar } from "@/components/site-navbar";
 import { PartnerMarquee } from "@/components/partner-marquee";
+import { HeroBackgroundVideo } from "@/components/hero-background-video";
 import { EngineeringFloorPlan } from "@/components/engineering-floor-plan";
 import { HeritageProjectGallery } from "@/components/heritage-project-gallery";
 import { PaymentSection } from "@/components/payment-section";
@@ -289,16 +290,7 @@ export default function Home() {
       />
 
       <section className="relative h-[100dvh] min-h-[100svh] w-full overflow-hidden">
-        <video
-          className="absolute inset-0 h-full w-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/hero-poster.png"
-        >
-          <source src="/hero-video.mp4" type="video/mp4" />
-        </video>
+        <HeroBackgroundVideo />
         <div
           className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/72"
           aria-hidden
@@ -573,6 +565,7 @@ export default function Home() {
                   <ResidenceGallerySlider
                     images={activeResidence.images}
                     label={activeResidence.label}
+                    objectFit="contain"
                     on360={() =>
                       open360(
                         activeResidence.pano,
@@ -988,6 +981,7 @@ export default function Home() {
         className={`relative overflow-hidden px-6 py-32 transition-colors duration-300 md:px-12 md:py-40 ${
           mapBasemap === "dark" ? "bg-[#1a1a1a]" : "bg-[#ebebeb]"
         }`}
+        style={{ position: "relative" }}
       >
         <AswarMonogramWatermark />
         <div className="relative z-[1] mx-auto max-w-6xl">

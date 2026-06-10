@@ -3,6 +3,7 @@
 
 html {
   scroll-behavior: smooth;
+  position: relative;
 }
 
 :root {

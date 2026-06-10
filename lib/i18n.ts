@@ -117,9 +117,9 @@ export const copy = {
     aboutCeoHeading: "Message from the CEO",
     aboutCeoQuote:
       "At ASWAR, we believe luxury is not merely an address — it is a covenant of privacy, craft, and forward-thinking design. From our cornerstone in Ras Al Khor, we are shaping residences that will define the next chapter of Dubai's ultra-premium skyline — built for those who demand excellence without compromise.",
-    aboutCeoName: "Emil Borkan",
+    aboutCeoName: "Ahmad Najami",
     aboutCeoTitle: "Chief Executive Officer",
-    aboutCeoPortraitAlt: "Portrait of Emil Borkan, Chief Executive Officer of ASWAR",
+    aboutCeoPortraitAlt: "Portrait of Ahmad Najami, Chief Executive Officer of ASWAR",
     timelineKicker: "Investment appreciation",
     timelineTitle: "Development & value timeline",
     timelineSubtitle:
@@ -407,9 +407,9 @@ export const copy = {
     aboutCeoHeading: "كلمة الرئيس التنفيذي",
     aboutCeoQuote:
       "في أسوار، نؤمن أن الفخامة ليست عنوانًا فحسب — بل عهد بالخصوصية والحرفية والتصميم المتطلع للمستقبل. من موقعنا في رأس الخور، نصنع مساكن تُعرّف الفصل القادم من أفق دبي الفائق — لمن يطلبون التميز دون تنازلات.",
-    aboutCeoName: "إميل بوركان",
+    aboutCeoName: "أحمد نجيمي",
     aboutCeoTitle: "الرئيس التنفيذي",
-    aboutCeoPortraitAlt: "صورة إميل بوركان، الرئيس التنفيذي لأسوار",
+    aboutCeoPortraitAlt: "صورة أحمد نجيمي، الرئيس التنفيذي لأسوار",
     timelineKicker: "تقدّم الاستثمار",
     timelineTitle: "الجدول الزمني للتطوير والقيمة",
     timelineSubtitle:

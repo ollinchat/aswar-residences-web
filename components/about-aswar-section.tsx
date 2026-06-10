@@ -7,7 +7,7 @@ import { useLang } from "@/components/language-provider";
 import { fillImageParentStyle } from "@/lib/image-layout";
 import { useRef } from "react";
 
-const CEO_PORTRAIT_SRC = "/images/about/ceo-portrait-placeholder.svg";
+const CEO_PORTRAIT_SRC = "/images/about/ahmad-najami-ceo.png";
 
 export function AboutAswarSection() {
   const { t, lang } = useLang();
@@ -31,6 +31,7 @@ export function AboutAswarSection() {
     <section
       id="about-aswar"
       className="relative scroll-mt-24 overflow-hidden border-t border-charcoal/10 bg-white"
+      style={{ position: "relative" }}
       aria-labelledby="about-aswar-heading"
     >
       <div className="px-6 py-32 md:px-14 md:py-40">

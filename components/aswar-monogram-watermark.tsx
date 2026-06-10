@@ -7,7 +7,7 @@ import { fillImageParentAbsoluteStyle } from "@/lib/image-layout";
 const GOLD = "#9A8550";
 
 export function AswarMonogramWatermark({ className }: { className?: string }) {
-  /** Plain div ref — Framer useScroll requires a non-static target (not motion-only). */
+  /** Plain div ref on a non-static node — required for Framer useScroll. */
   const targetRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
@@ -18,19 +18,15 @@ export function AswarMonogramWatermark({ className }: { className?: string }) {
 
   return (
     <div
+      ref={targetRef}
       className={`pointer-events-none absolute inset-0 overflow-hidden ${className ?? ""}`}
       style={fillImageParentAbsoluteStyle}
       aria-hidden
     >
-      <div
-        ref={targetRef}
-        className="relative h-full w-full"
-        style={{ position: "relative" }}
+      <motion.div
+        className="flex h-full w-full items-center justify-center"
+        style={reduceMotion ? undefined : { y }}
       >
-        <motion.div
-          className="flex h-full w-full items-center justify-center"
-          style={reduceMotion ? undefined : { y }}
-        >
         <svg
           viewBox="0 0 100 118"
           className="h-[min(72vw,520px)] w-[min(58vw,420px)] opacity-[0.015]"
@@ -42,8 +38,7 @@ export function AswarMonogramWatermark({ className }: { className?: string }) {
             d="M50 5 L91 113 H71 L64 88 H36 L29 113 H9 Z M50 34 L43 70 H57 Z"
           />
         </svg>
-        </motion.div>
-      </div>
+      </motion.div>
     </div>
   );
 }
