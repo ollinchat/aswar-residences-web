@@ -5,4 +5,5 @@ export const HERO_VIDEO_SOURCES = [
   "/hero/hero-sequence-3.mp4",
 ] as const;
 
-export const HERO_VIDEO_POSTER = "/hero-poster.png";
+/** Shown instantly on mobile while the first clip buffers. */
+export const HERO_VIDEO_POSTER = "/hero/hero-sequence-1-poster.jpg";

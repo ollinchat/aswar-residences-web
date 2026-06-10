@@ -73,6 +73,7 @@ export function HeroBackgroundVideo() {
         autoPlay
         muted
         playsInline
+        loop={HERO_VIDEO_SOURCES.length === 1}
         preload="auto"
         poster={HERO_VIDEO_POSTER}
         onEnded={activeSlot === "a" ? advanceSequence : undefined}
@@ -81,8 +82,10 @@ export function HeroBackgroundVideo() {
         ref={videoRefB}
         className={videoClass("b")}
         style={{ position: "absolute" }}
+        autoPlay
         muted
         playsInline
+        loop={HERO_VIDEO_SOURCES.length === 1}
         preload="metadata"
         poster={HERO_VIDEO_POSTER}
         onEnded={activeSlot === "b" ? advanceSequence : undefined}
